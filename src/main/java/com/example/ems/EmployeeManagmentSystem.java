@@ -31,10 +31,11 @@ public class EmployeeManagmentSystem extends Application {
         root.setOnMouseDragged((MouseEvent event) -> {
             stage.setX(event.getScreenX() - x);
             stage.setY(event.getScreenY() - y);
+//            stage.setOpacity(0.8);
         });
 
         root.setOnMouseReleased((MouseEvent event) -> {
-            stage.setOpacity(1);
+            stage.setOpacity(0.8);
         });
 
         stage.setTitle("Login!");
