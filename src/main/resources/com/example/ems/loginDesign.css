@@ -1,0 +1,68 @@
+
+.loginform {
+    -fx-border-width: 1;
+    -fx-border-color:  ccc2d9;
+    -fx-border-radius: 15;
+    -fx-background-color:  #ccc2d9;
+    -fx-background-radius: 15;
+    -fx-font-family: 'Arial';
+}
+
+.forgetpassword {
+    -fx-font-size: 12;
+    -fx-border-style: solid;
+    -fx-border-width: 1;
+    -fx-border-color: transparent transparent black transparent;
+    -fx-font-family: 'Arial';
+    -fx-cursor: hand;
+
+}
+
+.signin-btn {
+    -fx-background-color: #5b2d8e;
+    -fx-text-fill: white;
+    -fx-border-style: solid;
+    -fx-border-color: #5b2d8e;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-font-family: 'Arial';
+    -fx-cursor: hand;
+
+}
+
+.signin-btn:hover {
+    -fx-background-color: #9983b2;
+    -fx-text-fill: white;
+    -fx-border-style: solid;
+    -fx-border-color: #9983b2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+
+
+}
+
+.username{
+    -fx-background-color: #9983b2;
+    -fx-text-fill: white;
+    /*-fx-highlight-text-fill: white;*/
+    -fx-border-style: solid;
+    -fx-border-color: #5b2d8e;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-family: 'Arial';
+}
+.password
+{
+    -fx-background-color: #9983b2;
+    -fx-text-fill: white;
+    -fx-border-style: solid;
+    -fx-border-color: #5b2d8e;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-family: 'Arial';
+}
+.forgetpassword:hover {
+    -fx-text-fill: #5b2d8e;
+    -fx-border-color: transparent transparent #5b2d8e transparent;
+
+}
