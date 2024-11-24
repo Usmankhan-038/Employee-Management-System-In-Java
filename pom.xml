@@ -11,9 +11,14 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<junit.version>5.10.2</junit.version>  </properties>
+    <junit.version>5.10.2</junit.version>  </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.33</version>
+    </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
@@ -24,7 +29,7 @@
       <artifactId>javafx-fxml</artifactId>
       <version>17.0.6</version>
     </dependency>
-<dependency>
+    <dependency>
       <groupId>com.dlsc.formsfx</groupId>
       <artifactId>formsfx-core</artifactId>
       <version>11.6.0</version>
@@ -35,7 +40,7 @@
         </exclusion>
       </exclusions>
     </dependency>
-<dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>${junit.version}</version>
@@ -46,7 +51,9 @@
       <artifactId>junit-jupiter-engine</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
-    </dependency>  </dependencies>
+    </dependency>
+
+  </dependencies>
 
   <build>
     <plugins>
@@ -57,6 +64,7 @@
         <configuration>
           <source>23</source>
           <target>23</target>
+          <compilerArgs>--enable-preview</compilerArgs>
         </configuration>
       </plugin>
       <plugin>
