@@ -12,14 +12,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.lang.classfile.Label;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class EMSController {
-//    @FXML
-//    private Label forgetpasswordbtn;
 
     @FXML
     private PasswordField password;
@@ -29,34 +27,57 @@ public class EMSController {
 
     @FXML
     private TextField username;
+
     private Connection con;
     private PreparedStatement prepare;
     private ResultSet result;
     private double x = 0;
     private double y = 0;
 
-    public void loginAdmin(){
+    // Database connection method
+    public static Connection connectDb() {
+        try {
+            String url = "jdbc:mysql://localhost:3306/ems"; // Replace 'ems' with your database name
+            String user = "root"; // Replace with your MySQL username
+            String pass = ""; // Replace with your MySQL password
+            return DriverManager.getConnection(url, user, pass);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void loginAdmin() {
         String name = username.getText();
         String pass = password.getText();
-        String sql = "select * from users where username = ? and password = ? where role_id = 1";
 
-        try{
-            con = database.connectDb();
+        // Fixed SQL query (removed extra 'where')
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ? AND role_id = 1";
+
+        try {
+            con = connectDb();
+
+            if (con == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Error Message");
+                alert.setContentText("Failed to connect to the database.");
+                alert.showAndWait();
+                return;
+            }
+
             prepare = con.prepareStatement(sql);
-            prepare.setString(1,name);
-            prepare.setString(2,pass);
+            prepare.setString(1, name);
+            prepare.setString(2, pass);
             result = prepare.executeQuery();
 
-            if(name.isEmpty() || pass.isEmpty()){
+            if (name.isEmpty() || pass.isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Error Message");
                 alert.setContentText("Please fill all the fields");
                 alert.showAndWait();
-            }
-            else
-            {
-                if(result.next()){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
+            } else {
+                if (result.next()) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText("Success Message");
                     alert.setContentText("Successfully Login");
                     alert.showAndWait();
@@ -68,30 +89,37 @@ public class EMSController {
                     stage.initStyle(StageStyle.TRANSPARENT);
                     stage.setScene(scene);
 
-                    root.setOnMousePressed((javafx.scene.input.MouseEvent event) -> {
-                        x = event.getSceneX();
-                        y = event.getSceneY();
-                    });
+//                    root.setOnMousePressed((MouseEvent event) -> {
+//                        x = event.getSceneX();
+//                        y = event.getSceneY();
+//                    });
+//
+//                    root.setOnMouseDragged((MouseEvent event) -> {
+//                        stage.setX(event.getScreenX() - x);
+//                        stage.setY(event.getScreenY() - y);
+//                        stage.setOpacity(0.8);
+//                    });
 
-                    root.setOnMouseDragged((MouseEvent event) -> {
-                        stage.setX(event.getScreenX() - x);
-                        stage.setY(event.getScreenY() - y);
-                        stage.setOpacity(0.8);
-                    });
-                }
-                else{
+                    root.setOnMouseReleased((MouseEvent event) -> stage.setOpacity(1.0));
+                    stage.show();
+                } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setHeaderText("Error Message");
                     alert.setContentText("Wrong Username or Password");
                     alert.showAndWait();
                 }
             }
-
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            // Close resources
+            try {
+                if (result != null) result.close();
+                if (prepare != null) prepare.close();
+                if (con != null) con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
-
     }
 }

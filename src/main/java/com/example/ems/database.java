@@ -2,16 +2,21 @@ package com.example.ems;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class database {
 
-    public static Connection connectDb(){
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ems","","root");
-            return con;
-        }
-        catch(Exception e){
+    public static Connection connectDb() {
+        String url = "jdbc:mysql://localhost:3306/ems?useSSL=false&allowPublicKeyRetrieval=true";
+        String username = "root";
+        String password = ""; // No password
+
+        try {
+            Connection connection = DriverManager.getConnection(url, username, password);
+            System.out.println("Connected successfully!");
+            connection.close();
+            return connection;
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
