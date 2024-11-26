@@ -1,23 +1,225 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="1000.0" style="-fx-background-color: White;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="500.0" prefWidth="1000.0" style="-fx-background-color: #ccc2d9;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane layoutX="-29.0" layoutY="-3.0" prefHeight="511.0" prefWidth="264.0" style="-fx-background-color: #70489b;">
+      <AnchorPane layoutX="-30.0" layoutY="-3.0" prefHeight="511.0" prefWidth="274.0" styleClass="sidebarmenu" stylesheets="@DashboardDesign.css">
          <children>
 <!--            <FontAwesomeIcon fill="WHITE" fontSmoothingType="LCD" glyphName="USER" layoutX="35.0" layoutY="68.0" selectionEnd="1" selectionFill="#fffafa" size="40 rem" text="" />-->
-            <Label layoutX="78.0" layoutY="36.0" text="Admin" textAlignment="CENTER" textFill="WHITE">
+            <Label layoutX="66.0" layoutY="35.0" text="Admin" textAlignment="CENTER" textFill="WHITE">
                <font>
-                  <Font name="Arial" size="17.0" />
+                  <Font name="Arial Bold" size="15.0" />
                </font>
             </Label>
-            <Label layoutX="78.0" layoutY="54.0" text="View Profile" textFill="#c5c0c0" />
-            <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="46.0" layoutY="62.0" size="2.5em" styleClass="userlogo" />
+            <Label layoutX="66.0" layoutY="49.0" styleClass="viewProfile" stylesheets="@DashboardDesign.css" text="View Profile" textFill="#c5c0c0">
+               <font>
+                  <Font size="10.0" />
+               </font></Label>
+            <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="39.0" layoutY="62.0" size="1.8em" styleClass="userlogo" text="" />
+            <Button id="sidebardashboardbtn" layoutX="30.0" layoutY="102.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@DashboardDesign.css" text="Dashboard" textFill="WHITE">
+               <font>
+                  <Font name="Arial Bold" size="18.0" />
+               </font>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="DASHBOARD" size="1.5em" text="">
+                     <selectionFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </selectionFill>
+                  </FontAwesomeIcon>
+               </graphic>
+               <styleClass>
+                  <String fx:value="dashboard" />
+                  <String fx:value="sidebarmenubtn" />
+                  <String fx:value="active" />
+               </styleClass>
+            </Button>
+            <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="248.0" layoutY="133.0" />
+            <Button id="sidebardashboardbtn" layoutX="30.0" layoutY="153.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@DashboardDesign.css" text="Employee List" textFill="WHITE">
+               <font>
+                  <Font name="Arial Bold" size="16.0" />
+               </font>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="USERS" size="1.5em">
+                     <selectionFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </selectionFill>
+                  </FontAwesomeIcon>
+               </graphic>
+               <styleClass>
+                  <String fx:value="empList" />
+                  <String fx:value="sidebarmenubtn" />
+               </styleClass>
+            </Button>
+            <Button id="sidebardashboardbtn" layoutX="30.0" layoutY="205.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@DashboardDesign.css" text="Employee Job" textFill="WHITE">
+               <font>
+                  <Font name="Arial Bold" size="18.0" />
+               </font>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="SUITCASE" size="1.5em" text="">
+                     <selectionFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </selectionFill>
+                  </FontAwesomeIcon>
+               </graphic>
+               <styleClass>
+                  <String fx:value="empJob" />
+                  <String fx:value="sidebarmenubtn" />
+               </styleClass>
+            </Button>
+            <Button id="sidebardashboardbtn" layoutX="30.0" layoutY="256.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@DashboardDesign.css" text="Employee Holidays" textFill="WHITE">
+               <font>
+                  <Font name="Arial Bold" size="16.0" />
+               </font>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="CALENDAR_ALT" size="1.5em" text="">
+                     <selectionFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </selectionFill>
+                  </FontAwesomeIcon>
+               </graphic>
+               <styleClass>
+                  <String fx:value="empHolidays" />
+                  <String fx:value="sidebarmenubtn" />
+               </styleClass>
+            </Button>
+            <Button id="sidebardashboardbtn" layoutX="30.0" layoutY="306.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@DashboardDesign.css" text="Task List" textFill="WHITE">
+               <font>
+                  <Font name="Arial Bold" size="18.0" />
+               </font>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="TASKS" size="1.5em">
+                     <selectionFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </selectionFill>
+                  </FontAwesomeIcon>
+               </graphic>
+               <styleClass>
+                  <String fx:value="taskList" />
+                  <String fx:value="sidebarmenubtn" />
+               </styleClass>
+            </Button>
+            <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="248.0" layoutY="182.0" />
+            <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="248.0" layoutY="234.0" />
+            <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="248.0" layoutY="285.0" />
+            <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="248.0" layoutY="335.0" />
+            <Button id="sidebardashboardbtn" layoutX="31.0" layoutY="458.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" styleClass="login" stylesheets="@DashboardDesign.css" text="Logout" textFill="WHITE">
+               <font>
+                  <Font name="Arial Bold" size="18.0" />
+               </font>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="DASHBOARD" size="1.5em" text="">
+                     <selectionFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </selectionFill>
+                  </FontAwesomeIcon>
+               </graphic>
+            </Button>
 
          </children>
       </AnchorPane>
@@ -26,7 +228,11 @@
             <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <Button layoutX="993.0" layoutY="-1.0" minHeight="20.0" minWidth="32.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="28.0" styleClass="close" text="X" />
-      <Button layoutX="940.0" mnemonicParsing="false" styleClass="minimize" text="---" />
+      <Button layoutX="948.0" layoutY="-1.0" mnemonicParsing="false" styleClass="close" stylesheets="@DashboardDesign.css">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <FontAwesomeIcon glyphName="CLOSE" layoutX="972.0" layoutY="21.0" size="1.3em" />
    </children>
 </AnchorPane>
