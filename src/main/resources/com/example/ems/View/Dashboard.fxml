@@ -17,9 +17,9 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="549.0" prefWidth="1001.0" style="-fx-background-color: #ccc2d9;" styleClass="layoutscreen" stylesheets="@DashboardDesign.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="549.0" prefWidth="1001.0" style="-fx-background-color: #ccc2d9;" styleClass="layoutscreen" stylesheets="@style/DashboardDesign.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane layoutX="-30.0" prefHeight="567.0" prefWidth="258.0" styleClass="sidebarmenu" stylesheets="@DashboardDesign.css">
+      <AnchorPane layoutX="-30.0" prefHeight="567.0" prefWidth="258.0" styleClass="sidebarmenu" stylesheets="@style/DashboardDesign.css">
          <children>
 <!--            <FontAwesomeIcon fill="WHITE" fontSmoothingType="LCD" glyphName="USER" layoutX="35.0" layoutY="68.0" selectionEnd="1" selectionFill="#fffafa" size="40 rem" text="" />-->
             <Label layoutX="69.0" layoutY="37.0" text="Admin" textAlignment="CENTER" textFill="WHITE">
@@ -27,12 +27,12 @@
                   <Font name="Arial Bold" size="15.0" />
                </font>
             </Label>
-            <Label layoutX="68.0" layoutY="50.0" styleClass="viewProfile" stylesheets="@DashboardDesign.css" text="View Profile" textFill="#c5c0c0">
+            <Label layoutX="68.0" layoutY="50.0" styleClass="viewProfile" stylesheets="@style/DashboardDesign.css" text="View Profile" textFill="#c5c0c0">
                <font>
                   <Font size="10.0" />
                </font></Label>
             <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="39.0" layoutY="62.0" size="1.8em" styleClass="userlogo" text="" />
-            <Button id="sidebardashboardbtn" layoutX="30.0" layoutY="110.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@DashboardDesign.css" text="Dashboard" textFill="WHITE">
+            <Button id="sidebardashboardbtn" layoutX="30.0" layoutY="110.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Dashboard" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
@@ -66,7 +66,7 @@
                </styleClass>
             </Button>
             <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="248.0" layoutY="141.0" />
-            <Button id="sidebardashboardbtn" layoutX="29.0" layoutY="259.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@DashboardDesign.css" text="Employee List" textFill="WHITE">
+            <Button id="sidebardashboardbtn" layoutX="29.0" layoutY="259.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Employee List" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="16.0" />
                </font>
@@ -98,7 +98,7 @@
                   <String fx:value="sidebarmenubtn" />
                </styleClass>
             </Button>
-            <Button id="sidebardashboardbtn" layoutX="29.0" layoutY="311.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@DashboardDesign.css" text="Employee Job" textFill="WHITE">
+            <Button id="sidebardashboardbtn" layoutX="29.0" layoutY="311.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Employee Job" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
@@ -130,7 +130,7 @@
                   <String fx:value="sidebarmenubtn" />
                </styleClass>
             </Button>
-            <Button id="sidebardashboardbtn" layoutX="28.0" layoutY="360.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@DashboardDesign.css" text="Employee Holidays" textFill="WHITE">
+            <Button id="sidebardashboardbtn" layoutX="28.0" layoutY="360.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Employee Holidays" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="16.0" />
                </font>
@@ -162,7 +162,7 @@
                   <String fx:value="sidebarmenubtn" />
                </styleClass>
             </Button>
-            <Button id="sidebardashboardbtn" layoutX="29.0" layoutY="409.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@DashboardDesign.css" text="Task List" textFill="WHITE">
+            <Button id="sidebardashboardbtn" layoutX="29.0" layoutY="409.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Task List" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
@@ -198,7 +198,7 @@
             <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="340.0" />
             <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="389.0" />
             <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="439.0" />
-            <Button id="sidebardashboardbtn" layoutX="30.0" layoutY="514.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" styleClass="login" stylesheets="@DashboardDesign.css" text="Logout" textFill="WHITE">
+            <Button id="sidebardashboardbtn" layoutX="30.0" layoutY="514.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" styleClass="login" stylesheets="@style/DashboardDesign.css" text="Logout" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
@@ -226,7 +226,7 @@
                   </FontAwesomeIcon>
                </graphic>
             </Button>
-            <Button id="sidebardashboardbtn" layoutX="30.0" layoutY="160.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@DashboardDesign.css" text="Add Employee" textFill="WHITE">
+            <Button id="sidebardashboardbtn" layoutX="30.0" layoutY="160.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Add Employee" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="16.0" />
                </font>
@@ -259,7 +259,7 @@
                </styleClass>
             </Button>
             <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="248.0" layoutY="189.0" />
-            <Button id="sidebardashboardbtn" layoutX="29.0" layoutY="209.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@DashboardDesign.css" text="Employee Salaries" textFill="WHITE">
+            <Button id="sidebardashboardbtn" layoutX="29.0" layoutY="209.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Employee Salaries" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="16.0" />
                </font>
@@ -295,7 +295,7 @@
 
          </children>
       </AnchorPane>
-      <Button layoutX="948.0" layoutY="-1.0" mnemonicParsing="false" styleClass="close" stylesheets="@DashboardDesign.css">
+      <Button layoutX="948.0" layoutY="-1.0" mnemonicParsing="false" styleClass="close" stylesheets="@style/DashboardDesign.css">
          <font>
             <Font size="14.0" />
          </font>

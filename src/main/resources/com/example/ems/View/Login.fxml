@@ -10,13 +10,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="350.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ems.EMSController">
+<AnchorPane prefHeight="350.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginController">
    <children>
       <ImageView fitHeight="417.0" fitWidth="875.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../assets/images/login.png" />
+            <Image url="@../../../../assets/images/login.png" />
          </image></ImageView>
-      <AnchorPane id="login_form" layoutX="547.6666666666667" layoutY="54.0" prefHeight="275.0" prefWidth="286.0" styleClass="loginform" stylesheets="@loginDesign.css" AnchorPane.bottomAnchor="59.333333333333314" AnchorPane.rightAnchor="41.66666666666663" AnchorPane.topAnchor="54.0">
+      <AnchorPane id="login_form" layoutX="547.6666666666667" layoutY="54.0" prefHeight="275.0" prefWidth="286.0" styleClass="loginform" stylesheets="@style/loginDesign.css" AnchorPane.bottomAnchor="59.333333333333314" AnchorPane.rightAnchor="41.66666666666663" AnchorPane.topAnchor="54.0">
          <children>
             <Label layoutX="15.0" layoutY="42.0" text="Username" textFill="#1e1e1e">
                <font>

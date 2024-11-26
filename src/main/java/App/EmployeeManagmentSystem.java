@@ -1,4 +1,4 @@
-package com.example.ems;
+package App;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,12 +17,10 @@ public class EmployeeManagmentSystem extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(EmployeeManagmentSystem.class.getResource("Document.fxml")));
+        // Load the FXML file from the correct path
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/ems/View/Login.fxml")));
         Scene scene = new Scene(root, 873, 400);
 
-
-
-//        stage.initStyle(StageStyle.transperent);
         root.setOnMousePressed((MouseEvent event) -> {
             x = event.getSceneX();
             y = event.getSceneY();
@@ -43,9 +41,7 @@ public class EmployeeManagmentSystem extends Application {
         stage.show();
     }
 
-
     public static void main(String[] args) {
         launch(args);
-
     }
 }

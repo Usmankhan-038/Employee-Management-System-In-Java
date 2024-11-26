@@ -1,4 +1,4 @@
-package com.example.ems;
+package Controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +17,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class EMSController {
+public class LoginController {
 
     @FXML
     private PasswordField password;
@@ -83,7 +83,7 @@ public class EMSController {
                     alert.showAndWait();
 
                     signinbtn.getScene().getWindow().hide();
-                    Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
+                    Parent root = FXMLLoader.load(getClass().getResource("/com/example/ems/View/Dashboard.fxml"));
                     Stage stage = new Stage();
                     Scene scene = new Scene(root);
                     stage.initStyle(StageStyle.TRANSPARENT);
