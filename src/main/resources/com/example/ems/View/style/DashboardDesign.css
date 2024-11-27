@@ -72,3 +72,39 @@
     -fx-text-fill: #a38fb9;
     -fx-border-color: transparent transparent #a38fb9 transparent;
 }
+
+.viewcard {
+    -fx-background-color: white;
+    -fx-cursor: hand;
+    -fx-font-family: 'Arial';
+    -fx-font-size: 10;
+}
+
+
+
+.table-view {
+    -fx-background-color: white;
+    -fx-font-family: 'Arial';
+    -fx-font-size: 10;
+    -fx-border-color: transparent;
+    -fx-border-radius: 8;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #70489b;
+    -fx-border-insets: 0 0 0 0;
+    -fx-background-radius: 8px 8px 0px 0px;
+}
+
+.table-view .table-column {
+    -fx-alignment: center;
+}
+
+.table-view .column-header, .filter {
+    -fx-background-color: #70489b;
+    -fx-text-fill: white;
+    -fx-font-size: 10;
+    -fx-font-family: 'Arial';
+    -fx-border-color: transparent;
+    -fx-border-radius: 8;
+}
