@@ -43,7 +43,7 @@
 
 .username{
     -fx-background-color: #9983b2;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
     /*-fx-highlight-text-fill: white;*/
     -fx-border-style: solid;
     -fx-border-color: #5b2d8e;
@@ -54,7 +54,7 @@
 .password
 {
     -fx-background-color: #9983b2;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
     -fx-border-style: solid;
     -fx-border-color: #5b2d8e;
     -fx-border-radius: 5;
@@ -66,3 +66,4 @@
     -fx-border-color: transparent transparent #5b2d8e transparent;
 
 }
+
