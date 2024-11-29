@@ -5,9 +5,10 @@ module com.example.ems {
     requires com.dlsc.formsfx;
     requires java.sql;
     requires java.desktop;
+    requires fontawesomefx;
 
     opens com.example.ems to javafx.fxml;
-    exports com.example.ems;
+//    exports com.example.ems;
     exports Model;
     opens Model to javafx.fxml;
     exports Controllers;
