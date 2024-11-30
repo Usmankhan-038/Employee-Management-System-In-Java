@@ -22,7 +22,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<fx:root fx:id="mainForm" prefHeight="549.0" prefWidth="1001.0" style="-fx-background-color: #ccc2d9;" styleClass="layoutscreen" stylesheets="@style/DashboardDesign.css" type="AnchorPane" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.DashboardController">
+<AnchorPane fx:id="mainForm" prefHeight="549.0" prefWidth="1001.0" style="-fx-background-color: #ccc2d9;" styleClass="layoutscreen" stylesheets="@style/DashboardDesign.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.DashboardController">
    <children>
       <AnchorPane layoutX="-30.0" prefHeight="567.0" prefWidth="258.0" styleClass="sidebarmenu" stylesheets="@style/DashboardDesign.css">
          <children>
@@ -650,4 +650,4 @@
          </graphic>
       </Button>
    </children>
-</fx:root>
+</AnchorPane>

@@ -171,6 +171,7 @@ public class DashboardController implements Initializable {
     private AnchorPane mainForm;
 
     public void close() {
+
         System.exit(0);
     }
 
@@ -181,8 +182,8 @@ public class DashboardController implements Initializable {
         Stage stage = (Stage) mainForm.getScene().getWindow();
         stage.setIconified(true);
     }
-//    private double x = 0;
-//    private double y = 0;
+    private double x = 0;
+    private double y = 0;
 
     public void logout()
     {
@@ -195,12 +196,13 @@ public class DashboardController implements Initializable {
             if(action.get().equals(ButtonType.OK))
             {
                 logout.getScene().getWindow().hide();
-                Parent root = FXMLLoader.load(getClass().getResource("/com/example/ems/View/Dashboard.fxml"));
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ems/View/Dashboard.fxml"));
+                Parent root = loader.load();  // Ensure root is correctly set in FXML
                 Stage stage = new Stage();
-                Scene scene = new Scene(root);
-                stage.initStyle(StageStyle.TRANSPARENT);
-                stage.setScene(scene);
+                stage.setScene(new Scene(root));
                 stage.show();
+
             }
         }
         catch(Exception e)
