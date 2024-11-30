@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.stage.StageStyle;
 //import java.lang.classfile.Label;
+import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.Objects;
 import java.util.Optional;
@@ -132,7 +133,7 @@ public class DashboardController implements Initializable {
     private Button emp_upload_photo;
 
     @FXML
-    private Button employeeJobBtn;
+    private Button employeesalListBtn;
 
     @FXML
     private Button employeeListBtn;
@@ -182,6 +183,61 @@ public class DashboardController implements Initializable {
         Stage stage = (Stage) mainForm.getScene().getWindow();
         stage.setIconified(true);
     }
+
+    public void switchForm(javafx.event.ActionEvent event) {
+        // Reset visibility for all sections
+        add_emp.setVisible(false);
+        add_emp_salary.setVisible(false);
+        emp_salary_list.setVisible(false);
+        view_emp.setVisible(false);
+        admin_dashboard.setVisible(false);
+
+        // Reset 'active' class for all buttons
+        resetActiveClasses();
+
+        // Switch visibility and activate the appropriate button
+        if (event.getSource() == addEmployeeBtn) {
+            add_emp.setVisible(true);
+            activateButton(addEmployeeBtn);
+        } else if (event.getSource() == add_employee_sal) {
+            add_emp_salary.setVisible(true);
+            activateButton(employeeSalariesBtn);
+        } else if (event.getSource() == dashboarbbtn) {
+            admin_dashboard.setVisible(true);
+            activateButton(dashboarbbtn);
+        } else if (event.getSource() == EmployeeHolidaysBtn) {
+            activateButton(EmployeeHolidaysBtn);
+        } else if (event.getSource() == employeesalListBtn) {
+            emp_salary_list.setVisible(true);
+            activateButton(employeesalListBtn);
+        } else if (event.getSource() == employeeListBtn) {
+            view_emp.setVisible(true);
+            activateButton(employeeListBtn);
+        } else if (event.getSource() == employeeSalariesBtn) {
+            emp_salary_list.setVisible(true);
+            activateButton(employeeSalariesBtn);
+        } else if (event.getSource() == taskLListBtn) {
+            activateButton(taskLListBtn);
+        }
+    }
+
+    // Helper Method: Reset 'active' classes for all buttons
+    private void resetActiveClasses() {
+        dashboarbbtn.getStyleClass().remove("active");
+        addEmployeeBtn.getStyleClass().remove("active");
+        EmployeeHolidaysBtn.getStyleClass().remove("active");
+        employeesalListBtn.getStyleClass().remove("active");
+        employeeListBtn.getStyleClass().remove("active");
+        employeeSalariesBtn.getStyleClass().remove("active");
+        taskLListBtn.getStyleClass().remove("active");
+    }
+
+    // Helper Method: Activate a specific button
+    private void activateButton(Button button) {
+        if (!button.getStyleClass().contains("active")) {
+            button.getStyleClass().add("active");
+        }
+    }
     private double x = 0;
     private double y = 0;
 
@@ -197,7 +253,7 @@ public class DashboardController implements Initializable {
             {
                 logout.getScene().getWindow().hide();
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ems/View/Dashboard.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/ems/View/Login.fxml"));
                 Parent root = loader.load();  // Ensure root is correctly set in FXML
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root));
@@ -215,6 +271,7 @@ public class DashboardController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 //        throw new UnsupportedOperationException("Not supported yet.");
     }
+
 
 
 }
