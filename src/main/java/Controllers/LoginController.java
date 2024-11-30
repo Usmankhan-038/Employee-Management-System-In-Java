@@ -78,6 +78,7 @@ public class LoginController {
                 alert.showAndWait();
             } else {
                 if (result.next()) {
+                    getData.username = name;
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText("Success Message");
                     alert.setContentText("Successfully Login");

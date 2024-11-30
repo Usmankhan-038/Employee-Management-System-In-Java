@@ -13,7 +13,7 @@ public class database {
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
             System.out.println("Connected successfully!");
-            connection.close();
+//            connection.close();
             return connection;
         } catch (Exception e) {
             e.printStackTrace();
