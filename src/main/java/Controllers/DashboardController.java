@@ -3,14 +3,20 @@ package Controllers;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import javafx.scene.image.ImageView;
+import javafx.stage.StageStyle;
 //import java.lang.classfile.Label;
 import java.net.URL;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
@@ -132,6 +138,9 @@ public class DashboardController implements Initializable {
     private Button employeeListBtn;
 
     @FXML
+    private Button logout;
+
+    @FXML
     private Button employeeSalariesBtn;
 
     @FXML
@@ -172,14 +181,37 @@ public class DashboardController implements Initializable {
         Stage stage = (Stage) mainForm.getScene().getWindow();
         stage.setIconified(true);
     }
+//    private double x = 0;
+//    private double y = 0;
 
-    public void Logout()
+    public void logout()
     {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Message");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to logout?");
+        Optional<ButtonType> action = alert.showAndWait();
+        try {
+            if(action.get().equals(ButtonType.OK))
+            {
+                logout.getScene().getWindow().hide();
+                Parent root = FXMLLoader.load(getClass().getResource("/com/example/ems/View/Dashboard.fxml"));
+                Stage stage = new Stage();
+                Scene scene = new Scene(root);
+                stage.initStyle(StageStyle.TRANSPARENT);
+                stage.setScene(scene);
+                stage.show();
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
 
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        throw new UnsupportedOperationException("Not supported yet.");
+//        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 

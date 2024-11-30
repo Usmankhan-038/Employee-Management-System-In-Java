@@ -22,7 +22,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainForm" prefHeight="549.0" prefWidth="1001.0" style="-fx-background-color: #ccc2d9;" styleClass="layoutscreen" stylesheets="@style/DashboardDesign.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="mainForm" prefHeight="549.0" prefWidth="1001.0" style="-fx-background-color: #ccc2d9;" styleClass="layoutscreen" stylesheets="@style/DashboardDesign.css" type="AnchorPane" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.DashboardController">
    <children>
       <AnchorPane layoutX="-30.0" prefHeight="567.0" prefWidth="258.0" styleClass="sidebarmenu" stylesheets="@style/DashboardDesign.css">
          <children>
@@ -203,7 +203,7 @@
             <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="340.0" />
             <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="389.0" />
             <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="439.0" />
-            <Button id="sidebardashboardbtn" layoutX="30.0" layoutY="514.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="240.0" styleClass="login" stylesheets="@style/DashboardDesign.css" text="Logout" textFill="WHITE">
+            <Button id="sidebardashboardbtn" fx:id="logout" layoutX="30.0" layoutY="514.0" mnemonicParsing="false" onAction="#logout" prefHeight="50.0" prefWidth="240.0" styleClass="login" stylesheets="@style/DashboardDesign.css" text="Logout" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
@@ -300,7 +300,7 @@
 
          </children>
       </AnchorPane>
-      <Button fx:id="closeBtn" layoutX="965.0" mnemonicParsing="false" styleClass="close" stylesheets="@style/DashboardDesign.css">
+      <Button fx:id="closeBtn" layoutX="965.0" mnemonicParsing="false" onAction="#close" styleClass="close" stylesheets="@style/DashboardDesign.css">
          <font>
             <Font size="14.0" />
          </font>
@@ -637,7 +637,7 @@
             <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="114.0" layoutY="66.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
          </children>
       </AnchorPane>
-      <Button fx:id="minimizeBtn" layoutX="935.0" mnemonicParsing="false" styleClass="close" stylesheets="@style/DashboardDesign.css">
+      <Button fx:id="minimizeBtn" layoutX="935.0" mnemonicParsing="false" onAction="#minimize" styleClass="close" stylesheets="@style/DashboardDesign.css">
          <font>
             <Font size="14.0" />
          </font>
@@ -650,4 +650,4 @@
          </graphic>
       </Button>
    </children>
-</AnchorPane>
+</fx:root>
