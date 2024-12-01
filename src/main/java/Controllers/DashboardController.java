@@ -5,6 +5,8 @@ import Model.database;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +32,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import static Model.database.connectDb;
+import static java.lang.Integer.parseInt;
 
 public class DashboardController implements Initializable {
     @FXML
@@ -185,6 +188,22 @@ public class DashboardController implements Initializable {
     @FXML
     private Label username;
 
+    @FXML
+    private Label emp_view_email;
+
+    @FXML
+    private Label emp_view_gender;
+
+    @FXML
+    private Label emp_view_name;
+
+    @FXML
+    private Label emp_view_phone;
+
+    @FXML
+    private Label emp_view_position;
+
+
     private Image image;
 
     private Connection connect;
@@ -324,6 +343,7 @@ public class DashboardController implements Initializable {
         emp_salary_list.setVisible(false);
         view_emp.setVisible(false);
         admin_dashboard.setVisible(false);
+        emp_list.setVisible(false);
 
         // Reset 'active' class for all buttons
         resetActiveClasses();
@@ -340,10 +360,16 @@ public class DashboardController implements Initializable {
             activateButton(dashboarbbtn);
         } else if (event.getSource() == EmployeeHolidaysBtn) {
             activateButton(EmployeeHolidaysBtn);
-        } else if (event.getSource() == employeesalListBtn) {
+        } else if (event.getSource() == employeesalListBtn)
+        {
             emp_salary_list.setVisible(true);
             activateButton(employeesalListBtn);
-        } else if (event.getSource() == employeeListBtn) {
+
+            addEmployeePosition();
+            addEmployeeGender();
+            addEmployeeSearch();
+        }
+        else if (event.getSource() == employeeListBtn) {
             emp_list.setVisible(true);
             activateButton(employeeListBtn);
         } else if (event.getSource() == employeeSalariesBtn) {
@@ -381,98 +407,6 @@ public class DashboardController implements Initializable {
 
     }
 
-//    public ObservableList<EmployeeData> addEmployeeListdata() {
-//        ObservableList<EmployeeData> listData = FXCollections.observableArrayList();
-//
-//        String sql = "SELECT * FROM employeesdata";
-//        connect = connectDb();
-//
-//        try {
-//            prepare = connect.prepareStatement(sql);
-//            result = prepare.executeQuery();
-//
-//            int sno = 1; // Serial number
-//            while (result.next()) {
-//                // Create a new HashMap for each employee
-//                HashMap<String, String> employee = new HashMap<>();
-//                employee.put("sno", String.valueOf(sno++));
-//                employee.put("id", result.getString("id"));
-//                employee.put("name", result.getString("name"));
-//                employee.put("email", result.getString("email"));
-//                employee.put("phone", result.getString("phone"));
-//                employee.put("position", result.getString("position"));
-//                employee.put("gender", result.getString("gender"));
-//                employee.put("action", "View");
-//                EmployeeData employeeD = new EmployeeData(employee);
-//                // Add to the list
-////                Employee employeeD = new Employee(1,result.getString("name"), result.getString("email"), result.getString("phone"), result.getString("position"), result.getString("gender"));
-//
-//
-//                listData.add(employeeD);
-//                System.out.println(employeeD);
-//                System.out.println(employeeD.getName());
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                if (result != null) result.close();
-//                if (prepare != null) prepare.close();
-//                if (connect != null) connect.close();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return listData;
-//    }
-//    public ObservableList<EmployeeData> addEmployeeListData() {
-//
-//        ObservableList<EmployeeData> listData = FXCollections.observableArrayList();
-//        String sql = "SELECT * FROM employeesdata";
-//
-//        connect = connectDb();
-//
-//        try {
-//            prepare = connect.prepareStatement(sql);
-//            result = prepare.executeQuery();
-//            EmployeeData employeeDa = null;
-//            Integer sno = 1;
-//            while (result.next()) {
-//                employeeDa = new EmployeeData(
-//                        sno++,
-//                        result.getInt("id"),
-//                        result.getString("name"),
-//                        result.getString("email"),
-//                        result.getString("gender"),
-//                        result.getString("email"),
-//                        result.getString("position"));
-//
-//                listData.add(employeeDa);
-//
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return listData;
-//    }
-//    private ObservableList<EmployeeData> addEmployeeList;
-//
-//    public void addEmployeeShowListData() {
-//        addEmployeeList = addEmployeeListData();
-//
-//        emp_sno_col.setCellValueFactory(new PropertyValueFactory<>("sno"));
-//        emp_employeeID_col.setCellValueFactory(new PropertyValueFactory<>("id"));
-//        emp_empName_col.setCellValueFactory(new PropertyValueFactory<>("name"));
-//        emp_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
-//        emp_phoneNumber_col.setCellValueFactory(new PropertyValueFactory<>("phone"));
-//        emp_action_col.setCellValueFactory(new PropertyValueFactory<>("action"));
-//
-//
-//        emp_tableview.setItems(addEmployeeList);
-//        System.out.println(addEmployeeList);
-//
-//    }
     public ObservableList<EmployeeData> addEmployeeListdata() {
         ObservableList<EmployeeData> listData = FXCollections.observableArrayList();
         String sql = "SELECT * FROM employeesdata";
@@ -483,8 +417,18 @@ public class DashboardController implements Initializable {
             result = prepare.executeQuery();
 
             int sno = 1;
+            String empId = "";
             while (result.next()) {
                 HashMap<String, String> employee = new HashMap<>();
+                if(!(result.getString("id").isEmpty()))
+                {
+                    if (Integer.parseInt(result.getString("id")) < 10) {
+                        empId = "EMP-0" + result.getString("id");
+                    } else {
+                        empId = "EMP-"+result.getString("id");
+                    }
+                }
+
                 employee.put("sno", String.valueOf(sno++));
                 employee.put("id", result.getString("id"));
                 employee.put("name", result.getString("name"));
@@ -519,75 +463,107 @@ public class DashboardController implements Initializable {
         emp_empName_col.setCellValueFactory(new PropertyValueFactory<>("name"));
         emp_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
         emp_phoneNumber_col.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        emp_action_col.setCellValueFactory(new PropertyValueFactory<>("action"));
+        emp_action_col.setCellFactory(tc -> new TableCell<EmployeeData, String>() {
+            private final Button btn = new Button("View");
 
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    btn.setOnAction(e -> {
+                        EmployeeData employee = getTableView().getItems().get(getIndex());
+                        System.out.println("View details for: " + employee.getName());
+                        emp_view_name.setText(employee.getName());
+                        emp_view_email.setText(employee.getEmail());
+                        emp_view_phone.setText(employee.getPhone());
+                        emp_view_position.setText(employee.getPosition());
+                        emp_view_gender.setText(employee.getGender());
+                        view_emp.setVisible(true);
+                        emp_list.setVisible(false);
+                        // Add custom logic to view employee details.
+                    });
+                    btn.getStyleClass().add("view-button");
+                    setGraphic(btn);
+                }
+            }
+        });
+
+
+        emp_tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        emp_email_col.setPrefWidth(250);
+        emp_employeeID_col.setPrefWidth(50);
         emp_tableview.setItems(addEmployeeList);
 
         System.out.println(addEmployeeList);
     }
-    // Display employee data in the TableView
-//    public void addEmployeeshowList() {
-//        addEmployeeList = addEmployeeListdata();
+
+//    public void addEmployeeSearch()
+//    {
+//        FilteredList<EmployeeData> filteredData = new FilteredList<>(addEmployeeList, b -> true);
+//        emp_sal_search1.textProperty().addListener((observable, oldValue, newValue) -> {
+//            filteredData.setPredicate(employee -> {
+//                if (newValue == null || newValue.isEmpty()) {
+//                    return true;
+//                }
 //
-//        // Map columns to getters
-//        emp_sno_col.setCellValueFactory(new PropertyValueFactory<>("sno"));
-//        emp_employeeID_col.setCellValueFactory(new PropertyValueFactory<>("id"));
-//        emp_empName_col.setCellValueFactory(new PropertyValueFactory<>("name"));
-//        emp_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
-//        emp_phoneNumber_col.setCellValueFactory(new PropertyValueFactory<>("phone"));
-//        emp_action_col.setCellValueFactory(new PropertyValueFactory<>("action"));
+//                String lowerCaseFilter = newValue.toLowerCase();
 //
-////        emp_sno_col.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSno()));
-////        emp_empName_col.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
-////        emp_email_col.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
-////        emp_phoneNumber_col.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPhone()));
+//                if (employee.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+//                    return true;
+//                } else if (employee.getEmail().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+//                    return true;
+//                } else if (employee.getPhone().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+//                    return true;
+//                } else if (employee.getPosition().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+//                    return true;
+//                } else if (employee.getGender().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+//                    return true;
+//                } else {
+//                    return false;
+//                }
+//            });
+//        });
+//        SortedList<EmployeeData> sortedData = new SortedList<>(filteredData);
+//        sortedData.comparatorProperty().bind(emp_tableview.comparatorProperty());
+//        emp_tableview.setItems(sortedData);
 //
-//        // Set the items in the TableView
-//        emp_tableview.setItems(addEmployeeList);
-//        System.out.println(addEmployeeList);
-//
-////        System.out.println(addEmployeeList);
-////        // Debug: Print fetched employee data
-////        // Debug: Print fetched employee data
-////        for (EmployeeData employee : addEmployeeList) {
-////            EmployeeData.showEmployeeData(employee);
-////        }
 //    }
 
+    public void addEmployeeSearch() {
 
-//    public void addEmployeeSelect() {
-//        // Get selected employee data from the correct TableView
-//        EmployeeData employeeData = emp_tableview.getSelectionModel().getSelectedItem();
-//
-//        // Get the selected index from the table
-//        int num = emp_tableview.getSelectionModel().getSelectedIndex();
-//
-//        // If no selection is made, return early
-//        if (num < 0) {
-//            return;
-//        }
-//
-//        // Retrieve the employee data from the HashMap
-//        HashMap<String, String> employeeInfo = employeeData.getEmployeeData();
-//
-//        // Set the text fields with employee information
-//        emp_name.setText(employeeInfo.get("name"));
-//        emp_email.setText(employeeInfo.get("email"));
-//        emp_phoneNo.setText(employeeInfo.get("phone"));
-//
-//        // Assuming image URI is stored in the HashMap, and it's correctly formatted
-//        String imageUri = employeeInfo.get("imageUri"); // Assuming the image URI is stored with the key "imageUri"
-//
-//        if (imageUri != null && !imageUri.isEmpty()) {
-//            // Use the correct file path if the image is stored locally
-//            Image image = new Image("file:" + imageUri, 101, 150, false, true);
-//            add_emp_image_view.setImage(image);
-//        } else {
-//            // Set a default image or handle the case when no image is available
-//            add_emp_image_view.setImage(null);
-//        }
-//    }
+        FilteredList<EmployeeData> filter = new FilteredList<>(addEmployeeList, e -> true);
 
+        emp_sal_search1.textProperty().addListener((Observable, oldValue, newValue) -> {
+
+            filter.setPredicate(predicateEmployeeData -> {
+
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                String searchKey = newValue.toLowerCase();
+
+                if (predicateEmployeeData.getId().toString().contains(searchKey)) {
+                    return true;
+                } else if (predicateEmployeeData.getName().toLowerCase().contains(searchKey)) {
+                    return true;
+                } else if (predicateEmployeeData.getEmail().toLowerCase().contains(searchKey)) {
+                    return true;
+                } else if (predicateEmployeeData.getPhone().toLowerCase().contains(searchKey)) {
+                    return true;
+                }  else {
+                    return false;
+                }
+            });
+        });
+
+        SortedList<EmployeeData> sortList = new SortedList<>(filter);
+
+        sortList.comparatorProperty().bind(emp_tableview.comparatorProperty());
+        emp_tableview.setItems(sortList);
+    }
 
     public void logout()
     {

@@ -377,7 +377,7 @@
       </AnchorPane>
       <AnchorPane fx:id="emp_list" layoutX="285.0" layoutY="58.0" prefHeight="507.0" prefWidth="722.0">
          <children>
-            <TableView fx:id="emp_tableview" layoutX="13.0" layoutY="74.0" prefHeight="421.0" prefWidth="688.0">
+            <TableView fx:id="emp_tableview" layoutX="13.0" layoutY="74.0" onKeyTyped="#addEmployeeSearch" prefHeight="421.0" prefWidth="688.0">
                <columns>
                   <TableColumn fx:id="emp_sno_col" prefWidth="56.66668701171875" text="S No" />
                   <TableColumn fx:id="emp_employeeID_col" prefWidth="102.66668701171875" text="Employee ID" />
@@ -392,7 +392,7 @@
                   <Font name="System Bold" size="36.0" />
                </font>
             </Label>
-            <TextField fx:id="emp_sal_search1" layoutX="467.0" layoutY="28.0" prefHeight="25.0" prefWidth="234.0" promptText="Search" style="-fx-padding: 5 10 5 25;" styleClass="searchfield" />
+            <TextField fx:id="emp_sal_search1" layoutX="467.0" layoutY="28.0" onKeyTyped="#addEmployeeSearch" prefHeight="25.0" prefWidth="234.0" promptText="Search" style="-fx-padding: 5 10 5 25;" styleClass="searchfield" />
             <FontAwesomeIcon glyphName="SEARCH" layoutX="473.0" layoutY="48.0" size="1.3em" />
             <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="119.0" layoutY="51.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
          </children>
@@ -411,7 +411,7 @@
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="15.0" layoutY="46.0" style="fx-font-size: 16;" text="M Usman Ali">
+                  <Label fx:id="emp_view_name" layoutX="15.0" layoutY="46.0" style="fx-font-size: 16;" text="M Usman Ali">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -421,7 +421,7 @@
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="174.0" layoutY="45.0" style="fx-font-size: 16;" text="fk514955@gmail.com">
+                  <Label fx:id="emp_view_email" layoutX="174.0" layoutY="45.0" style="fx-font-size: 16;" text="fk514955@gmail.com">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -431,7 +431,7 @@
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="389.0" layoutY="45.0" style="fx-font-size: 16;" text="0301 5215234">
+                  <Label fx:id="emp_view_phone" layoutX="389.0" layoutY="45.0" style="fx-font-size: 16;" text="0301 5215234">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -441,7 +441,7 @@
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="561.0" layoutY="45.0" style="fx-font-size: 16;" text="Male">
+                  <Label fx:id="emp_view_gender" layoutX="561.0" layoutY="45.0" style="fx-font-size: 16;" text="Male">
                      <font>
                         <Font size="17.0" />
                      </font>
@@ -451,7 +451,7 @@
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="15.0" layoutY="118.0" style="fx-font-size: 16;" text="Backend Developer">
+                  <Label fx:id="emp_view_position" layoutX="15.0" layoutY="118.0" style="fx-font-size: 16;" text="Backend Developer">
                      <font>
                         <Font size="17.0" />
                      </font>
