@@ -1,8 +1,11 @@
 package Controllers;
 
 
+import Model.database;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -69,7 +72,7 @@ public class DashboardController implements Initializable {
     private Label dashboard_totalPresent_Count;
 
     @FXML
-    private TableColumn<?, String> emp_action_col;
+    private TableColumn<EmployeeData, String> emp_action_col;
 
     @FXML
     private TextField emp_email;
@@ -81,7 +84,7 @@ public class DashboardController implements Initializable {
     private TableColumn<EmployeeData, String> emp_empName_col;
 
     @FXML
-    private TableColumn<?, ?> emp_employeeID_col;
+    private TableColumn<EmployeeData, String> emp_employeeID_col;
 
     @FXML
     private ComboBox<String> emp_gender;
@@ -126,7 +129,7 @@ public class DashboardController implements Initializable {
     private TableView<EmployeeData> emp_sal_tableview;
 
     @FXML
-    private TableView<?> emp_tableview;
+    private TableView<EmployeeData> emp_tableview;
 
     @FXML
     private AnchorPane emp_salary_list;
@@ -302,6 +305,11 @@ public class DashboardController implements Initializable {
 
     }
 
+    public void close()
+    {
+        System.exit(0);
+    }
+
     public void minimize()
     {
 
@@ -309,7 +317,7 @@ public class DashboardController implements Initializable {
         stage.setIconified(true);
     }
 
-    public void switchForm(javafx.event.ActionEvent event) {
+    public void switchForm(ActionEvent event) {
         // Reset visibility for all sections
         add_emp.setVisible(false);
         add_emp_salary.setVisible(false);
@@ -373,36 +381,125 @@ public class DashboardController implements Initializable {
 
     }
 
+//    public ObservableList<EmployeeData> addEmployeeListdata() {
+//        ObservableList<EmployeeData> listData = FXCollections.observableArrayList();
+//
+//        String sql = "SELECT * FROM employeesdata";
+//        connect = connectDb();
+//
+//        try {
+//            prepare = connect.prepareStatement(sql);
+//            result = prepare.executeQuery();
+//
+//            int sno = 1; // Serial number
+//            while (result.next()) {
+//                // Create a new HashMap for each employee
+//                HashMap<String, String> employee = new HashMap<>();
+//                employee.put("sno", String.valueOf(sno++));
+//                employee.put("id", result.getString("id"));
+//                employee.put("name", result.getString("name"));
+//                employee.put("email", result.getString("email"));
+//                employee.put("phone", result.getString("phone"));
+//                employee.put("position", result.getString("position"));
+//                employee.put("gender", result.getString("gender"));
+//                employee.put("action", "View");
+//                EmployeeData employeeD = new EmployeeData(employee);
+//                // Add to the list
+////                Employee employeeD = new Employee(1,result.getString("name"), result.getString("email"), result.getString("phone"), result.getString("position"), result.getString("gender"));
+//
+//
+//                listData.add(employeeD);
+//                System.out.println(employeeD);
+//                System.out.println(employeeD.getName());
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            try {
+//                if (result != null) result.close();
+//                if (prepare != null) prepare.close();
+//                if (connect != null) connect.close();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return listData;
+//    }
+//    public ObservableList<EmployeeData> addEmployeeListData() {
+//
+//        ObservableList<EmployeeData> listData = FXCollections.observableArrayList();
+//        String sql = "SELECT * FROM employeesdata";
+//
+//        connect = connectDb();
+//
+//        try {
+//            prepare = connect.prepareStatement(sql);
+//            result = prepare.executeQuery();
+//            EmployeeData employeeDa = null;
+//            Integer sno = 1;
+//            while (result.next()) {
+//                employeeDa = new EmployeeData(
+//                        sno++,
+//                        result.getInt("id"),
+//                        result.getString("name"),
+//                        result.getString("email"),
+//                        result.getString("gender"),
+//                        result.getString("email"),
+//                        result.getString("position"));
+//
+//                listData.add(employeeDa);
+//
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return listData;
+//    }
+//    private ObservableList<EmployeeData> addEmployeeList;
+//
+//    public void addEmployeeShowListData() {
+//        addEmployeeList = addEmployeeListData();
+//
+//        emp_sno_col.setCellValueFactory(new PropertyValueFactory<>("sno"));
+//        emp_employeeID_col.setCellValueFactory(new PropertyValueFactory<>("id"));
+//        emp_empName_col.setCellValueFactory(new PropertyValueFactory<>("name"));
+//        emp_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
+//        emp_phoneNumber_col.setCellValueFactory(new PropertyValueFactory<>("phone"));
+//        emp_action_col.setCellValueFactory(new PropertyValueFactory<>("action"));
+//
+//
+//        emp_tableview.setItems(addEmployeeList);
+//        System.out.println(addEmployeeList);
+//
+//    }
     public ObservableList<EmployeeData> addEmployeeListdata() {
         ObservableList<EmployeeData> listData = FXCollections.observableArrayList();
-
-        String sql = "SELECT * FROM employees";
-        connect = connectDb(); // Ensure connectDb() establishes a database connection
+        String sql = "SELECT * FROM employeesdata";
+        connect = connectDb();
 
         try {
             prepare = connect.prepareStatement(sql);
             result = prepare.executeQuery();
 
+            int sno = 1;
             while (result.next()) {
-                // Create a HashMap to store the employee data
-                HashMap<String, String> employeeData = new HashMap<>();
-                employeeData.put("name", result.getString("name"));
-                employeeData.put("email", result.getString("email"));
-                employeeData.put("phone", result.getString("phone"));
-                employeeData.put("gender", result.getString("gender"));
-                employeeData.put("position", result.getString("position"));
+                HashMap<String, String> employee = new HashMap<>();
+                employee.put("sno", String.valueOf(sno++));
+                employee.put("id", result.getString("id"));
+                employee.put("name", result.getString("name"));
+                employee.put("email", result.getString("email"));
+                employee.put("phone", result.getString("phone"));
+                employee.put("position", result.getString("position"));
+                employee.put("gender", result.getString("gender"));
+                employee.put("action", "View");
 
-                // Create an EmployeeData object and populate it with the HashMap
-                EmployeeData data = new EmployeeData();
-                data.EmployeeData(employeeData); // Call the method to set employee data
-
-                // Add the EmployeeData object to the list
-                listData.add(data);
+                EmployeeData employeeD = new EmployeeData(employee);
+                listData.add(employeeD);
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            // Close resources to prevent memory leaks
             try {
                 if (result != null) result.close();
                 if (prepare != null) prepare.close();
@@ -413,41 +510,84 @@ public class DashboardController implements Initializable {
         }
         return listData;
     }
-    public void close() {
-
-        System.exit(0);
-    }
-    ObservableList<EmployeeData> addEmployeeList;
-    public void addEmployeeshowList()
-    {
+    private ObservableList<EmployeeData> addEmployeeList = FXCollections.observableArrayList();
+    public void addEmployeeshowList() {
         addEmployeeList = addEmployeeListdata();
+
         emp_sno_col.setCellValueFactory(new PropertyValueFactory<>("sno"));
+        emp_employeeID_col.setCellValueFactory(new PropertyValueFactory<>("id"));
         emp_empName_col.setCellValueFactory(new PropertyValueFactory<>("name"));
         emp_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
         emp_phoneNumber_col.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        emp_action_col.setText("View");
+        emp_action_col.setCellValueFactory(new PropertyValueFactory<>("action"));
 
+        emp_tableview.setItems(addEmployeeList);
+
+        System.out.println(addEmployeeList);
     }
+    // Display employee data in the TableView
+//    public void addEmployeeshowList() {
+//        addEmployeeList = addEmployeeListdata();
+//
+//        // Map columns to getters
+//        emp_sno_col.setCellValueFactory(new PropertyValueFactory<>("sno"));
+//        emp_employeeID_col.setCellValueFactory(new PropertyValueFactory<>("id"));
+//        emp_empName_col.setCellValueFactory(new PropertyValueFactory<>("name"));
+//        emp_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
+//        emp_phoneNumber_col.setCellValueFactory(new PropertyValueFactory<>("phone"));
+//        emp_action_col.setCellValueFactory(new PropertyValueFactory<>("action"));
+//
+////        emp_sno_col.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSno()));
+////        emp_empName_col.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+////        emp_email_col.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
+////        emp_phoneNumber_col.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPhone()));
+//
+//        // Set the items in the TableView
+//        emp_tableview.setItems(addEmployeeList);
+//        System.out.println(addEmployeeList);
+//
+////        System.out.println(addEmployeeList);
+////        // Debug: Print fetched employee data
+////        // Debug: Print fetched employee data
+////        for (EmployeeData employee : addEmployeeList) {
+////            EmployeeData.showEmployeeData(employee);
+////        }
+//    }
 
-    public void addEmpoyeeSelect()
-    {
-        EmployeeData employeeData = emp_sal_tableview.getSelectionModel().getSelectedItem();
-        int num = emp_tableview.getSelectionModel().getSelectedIndex();
-        HashMap<String, String> employeeInfo =  employeeData.getEmployeeData();
-        if((num -1)< -1)
-        {
-            return;
-        }
 
-        emp_name.setText(String.valueOf(employeeInfo.get("name")));
-        emp_email.setText(String.valueOf(employeeInfo.get("email")));
-        emp_phoneNo.setText(String.valueOf(employeeInfo.get("phone")));
-        emp_email.setText(String.valueOf(employeeInfo.get("email")));
+//    public void addEmployeeSelect() {
+//        // Get selected employee data from the correct TableView
+//        EmployeeData employeeData = emp_tableview.getSelectionModel().getSelectedItem();
+//
+//        // Get the selected index from the table
+//        int num = emp_tableview.getSelectionModel().getSelectedIndex();
+//
+//        // If no selection is made, return early
+//        if (num < 0) {
+//            return;
+//        }
+//
+//        // Retrieve the employee data from the HashMap
+//        HashMap<String, String> employeeInfo = employeeData.getEmployeeData();
+//
+//        // Set the text fields with employee information
+//        emp_name.setText(employeeInfo.get("name"));
+//        emp_email.setText(employeeInfo.get("email"));
+//        emp_phoneNo.setText(employeeInfo.get("phone"));
+//
+//        // Assuming image URI is stored in the HashMap, and it's correctly formatted
+//        String imageUri = employeeInfo.get("imageUri"); // Assuming the image URI is stored with the key "imageUri"
+//
+//        if (imageUri != null && !imageUri.isEmpty()) {
+//            // Use the correct file path if the image is stored locally
+//            Image image = new Image("file:" + imageUri, 101, 150, false, true);
+//            add_emp_image_view.setImage(image);
+//        } else {
+//            // Set a default image or handle the case when no image is available
+//            add_emp_image_view.setImage(null);
+//        }
+//    }
 
-        String uri = "file:"+add_emp_image_view.getImage();
-        image = new Image(uri,101,150,false,true);
-        add_emp_image_view.setImage(image);
-    }
 
     public void logout()
     {

@@ -377,7 +377,7 @@
       </AnchorPane>
       <AnchorPane fx:id="emp_list" layoutX="285.0" layoutY="58.0" prefHeight="507.0" prefWidth="722.0">
          <children>
-            <TableView fx:id="emp_tableview" layoutX="13.0" layoutY="74.0" onSort="#addEmployeeshowList" prefHeight="421.0" prefWidth="688.0">
+            <TableView fx:id="emp_tableview" layoutX="13.0" layoutY="74.0" prefHeight="421.0" prefWidth="688.0">
                <columns>
                   <TableColumn fx:id="emp_sno_col" prefWidth="56.66668701171875" text="S No" />
                   <TableColumn fx:id="emp_employeeID_col" prefWidth="102.66668701171875" text="Employee ID" />

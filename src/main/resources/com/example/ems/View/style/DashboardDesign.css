@@ -122,38 +122,38 @@
 
 /* Table content row styling */
 .table-row-cell {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: #a38fb9;
     -fx-border-color: transparent transparent #EAEAEA transparent;
-    -fx-padding: 5;
+    /*-fx-padding: 5;*/
 }
 
 /* Alternate row styling */
-.table-row-cell:odd {
-    -fx-background-color: #F7F6FB;
-}
+/*.table-row-cell:odd {*/
+/*    -fx-background-color: #F7F6FB;*/
+/*}*/
 
 /* Highlight selected row */
-.table-row-cell:selected {
-    -fx-background-color: #D6C9EF;
-    -fx-text-fill: black;
-}
+/*.table-row-cell:selected {*/
+/*    -fx-background-color: #D6C9EF;*/
+/*    -fx-text-fill: black;*/
+/*}*/
 
 /* Table cell styling */
-.table-cell {
-    -fx-font-family: "Arial";
-    -fx-font-size: 12px;
-    -fx-text-fill: #555;
-    -fx-alignment: CENTER_LEFT;
-    -fx-padding: 5;
-}
+/*.table-cell {*/
+/*    -fx-font-family: "Arial";*/
+/*    -fx-font-size: 12px;*/
+/*    -fx-text-fill: #555;*/
+/*    -fx-alignment: CENTER_LEFT;*/
+/*    -fx-padding: 5;*/
+/*}*/
 
 /* Placeholder for empty table content */
-.table-view .placeholder {
-    -fx-font-family: "Arial";
-    -fx-font-size: 14px;
-    -fx-text-fill: #999;
-    -fx-alignment: CENTER;
-}
+/*.table-view .placeholder {*/
+/*    -fx-font-family: "Arial";*/
+/*    -fx-font-size: 14px;*/
+/*    -fx-text-fill: #999;*/
+/*    -fx-alignment: CENTER;*/
+/*}*/
 .searchfield {
     -fx-background-color: #d9d9d9;
     -fx-text-fill: black;
