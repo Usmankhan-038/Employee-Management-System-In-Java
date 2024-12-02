@@ -166,7 +166,7 @@
 }
 
 .field {
-    -fx-background-color: #d9d9d9;
+    -fx-background-color: #9983b2;
     -fx-text-fill: black;
     -fx-highlight-text-fill: black;
     -fx-border-style: solid;
@@ -210,5 +210,6 @@
     -fx-font-family: 'Arial';
     -fx-cursor: hand;
     -fx-alignment: center;
-    -fx-start-margin: 10px;
+    /*-fx-start-margin: 10;*/
+    -fx-font: 8;
 }

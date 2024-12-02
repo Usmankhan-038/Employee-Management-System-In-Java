@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -103,6 +104,9 @@ public class DashboardController implements Initializable {
 
     @FXML
     private ComboBox<String> emp_position;
+
+    @FXML
+    private ComboBox<String> emp_sal_name;
 
     @FXML
     private TableColumn<?, ?> emp_sal_empName_col;
@@ -311,6 +315,89 @@ public class DashboardController implements Initializable {
         }
     }
 
+
+    private ArrayList<String> name;
+    public void addEmployeeSalAdd() {
+        connect = connectDb();
+        String selectQuery = "SELECT id FROM employeesdata WHERE name = ?";
+
+        try {
+            // Ensure an employee name is selected
+            if (emp_sal_name.getSelectionModel().getSelectedItem() == null) {
+                showAlert(Alert.AlertType.ERROR, "Error Message", "Please select an employee name.");
+                return;
+            }
+
+            // Ensure all fields are filled
+            if (employee_sal_phone.getText().isEmpty() ||
+                    employee_sal_email.getText().isEmpty() ||
+                    employee_sal_salary.getText().isEmpty()) {
+
+                showAlert(Alert.AlertType.ERROR, "Error Message", "Please fill in all fields.");
+                return;
+            }
+
+            // Fetch employee ID based on the selected name
+            PreparedStatement preparedStatement = connect.prepareStatement(selectQuery);
+            preparedStatement.setString(1, emp_sal_name.getSelectionModel().getSelectedItem().trim());
+            ResultSet result = preparedStatement.executeQuery();
+
+            if (!result.next()) {
+                showAlert(Alert.AlertType.ERROR, "Error Message", "Employee not found in the database.");
+                return;
+            }
+
+            String employeeId = result.getString("id");
+
+            // Check if salary for the employee already exists
+            String checkQuery = "SELECT * FROM salaries_and_taxes WHERE employee_id = ?";
+            preparedStatement = connect.prepareStatement(checkQuery);
+            preparedStatement.setString(1, employeeId);
+            ResultSet resultCheck = preparedStatement.executeQuery();
+
+            if (resultCheck.next()) {
+                showAlert(Alert.AlertType.ERROR, "Error Message", "Employee salary already exists.");
+                return;
+            }
+
+            // Insert salary and taxes for the employee
+            String salaryQuery = "INSERT INTO salaries_and_taxes(employee_id, salary) VALUES(?, ?)";
+            preparedStatement = connect.prepareStatement(salaryQuery);
+            preparedStatement.setString(1, employeeId);
+            preparedStatement.setString(2, employee_sal_salary.getText().trim());
+
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                showAlert(Alert.AlertType.INFORMATION, "Information Message", "Employee salary added successfully!");
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Error Message", "Failed to add employee salary.");
+            }
+
+            // Refresh employee list
+            addEmployeeSalaryshowList();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error Message", "An error occurred: " + e.getMessage());
+        } finally {
+            try {
+                if (result != null) result.close();
+                if (connect != null) connect.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+
+    private void showAlert(Alert.AlertType alertType, String headerMessage, String contentMessage) {
+        Alert alert = new Alert(alertType);
+        alert.setHeaderText(headerMessage);
+        alert.setContentText(contentMessage);
+        alert.showAndWait();
+    }
+
+
     public void addEmployeeInsertImage(){
         FileChooser open = new FileChooser();
         open.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Images", "*.jpg", "*.png"));
@@ -323,6 +410,73 @@ public class DashboardController implements Initializable {
         }
 
     }
+
+    public void addEmployeeName() {
+        ObservableList<String> name = FXCollections.observableArrayList();
+
+        try {
+            String sql = "SELECT name FROM employeesdata";
+            connect = connectDb();
+
+            if (connect != null) {
+                prepare = connect.prepareStatement(sql);
+                result = prepare.executeQuery();
+
+                while (result.next()) {
+                    name.add(result.getString("name"));
+                    System.out.println("Fetched Name: " + result.getString("name")); // Debug log
+                }
+
+                // Bind the list to the ComboBox.
+                emp_sal_name.setItems(name);
+
+                // Add listener to ComboBox to handle selection changes
+                emp_sal_name.setOnAction(event -> {
+                    addEmployeeSalaryData();
+                });
+            } else {
+                System.err.println("Database connection failed.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (result != null) result.close();
+                if (prepare != null) prepare.close();
+                if (connect != null) connect.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void addEmployeeSalaryData() {
+        try {
+            connect = connectDb();
+            String selectQuery = "SELECT * FROM employeesdata WHERE name = ?";
+            PreparedStatement preparedStatement = connect.prepareStatement(selectQuery);
+            preparedStatement.setString(1, emp_sal_name.getSelectionModel().getSelectedItem()); // Selected name from ComboBox
+            ResultSet result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                employee_sal_phone.setText(result.getString("phone"));
+                employee_sal_email.setText(result.getString("email"));
+                employee_sal_email.setDisable(true);
+                employee_sal_phone.setDisable(true);
+            } else {
+//                showAlert(Alert.AlertType.ERROR, "Error Message", "Employee not found.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connect != null) connect.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
 
     public void close()
     {
@@ -352,7 +506,13 @@ public class DashboardController implements Initializable {
         if (event.getSource() == addEmployeeBtn) {
             add_emp.setVisible(true);
             activateButton(addEmployeeBtn);
-        } else if (event.getSource() == add_employee_sal) {
+
+            addEmployeePosition();
+            addEmployeeGender();
+            addEmployeeSearch();
+
+
+        } else if (event.getSource() == employeeSalariesBtn) {
             add_emp_salary.setVisible(true);
             activateButton(employeeSalariesBtn);
         } else if (event.getSource() == dashboarbbtn) {
@@ -365,9 +525,7 @@ public class DashboardController implements Initializable {
             emp_salary_list.setVisible(true);
             activateButton(employeesalListBtn);
 
-            addEmployeePosition();
-            addEmployeeGender();
-            addEmployeeSearch();
+
         }
         else if (event.getSource() == employeeListBtn) {
             emp_list.setVisible(true);
@@ -405,6 +563,114 @@ public class DashboardController implements Initializable {
     {
         username.setText(getData.username);
 
+    }
+
+    public ObservableList<EmployeeData> addEmployeeSalListdata() {
+        ObservableList<EmployeeData> listData = FXCollections.observableArrayList();
+        String sql = "SELECT (S.employee_id,S.salary, E.name, E.phone, E.position) FROM salaries_and_taxes S JOIN employeesdata E ON S.employee_id = E.id";
+        connect = connectDb();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            int sno = 1;
+            String empId = "";
+            while (result.next()) {
+                HashMap<String, String> employee = new HashMap<>();
+                if(!(result.getString("id").isEmpty()))
+                {
+                    if (Integer.parseInt(result.getString("id")) < 10) {
+                        empId = "EMP-0" + result.getString("id");
+                    } else {
+                        empId = "EMP-"+result.getString("id");
+                    }
+                }
+
+                employee.put("sno", String.valueOf(sno++));
+                employee.put("id", result.getString("employee_id"));
+                employee.put("name", result.getString("name"));
+                employee.put("phone", result.getString("phone"));
+                employee.put("position", result.getString("position"));
+                employee.put("salary", toString().valueOf(result.getString("salary")));
+
+                EmployeeData employeeD = new EmployeeData(employee);
+                listData.add(employeeD);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (result != null) result.close();
+                if (prepare != null) prepare.close();
+                if (connect != null) connect.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return listData;
+    }
+    private ObservableList<EmployeeData> addEmployeeSalList = FXCollections.observableArrayList();
+    public void addEmployeeSalaryshowList() {
+        addEmployeeSalList = addEmployeeSalListdata();
+
+        emp_sal_sno_col.setCellValueFactory(new PropertyValueFactory<>("sno"));
+        emp_sal_employeeID_col.setCellValueFactory(new PropertyValueFactory<>("id"));
+        emp_sal_empName_col.setCellValueFactory(new PropertyValueFactory<>("name"));
+        emp_sal_phoneNumber_col.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        emp_sal_position_col.setCellValueFactory(new PropertyValueFactory<>("position"));
+        emp_sal_salary_col.setCellValueFactory(new PropertyValueFactory<>("salary"));
+
+//        emp_action_col.setCellFactory(tc -> new TableCell<EmployeeData, String>() {
+//            private final Button btnView = new Button("View");
+//            private final Button btnEdit = new Button("Edit");
+//            private final Button btndelete = new Button("Delete");
+//            private final HBox actionButtons = new HBox(12); // Adjust spacing between buttons
+//
+//            {
+//                actionButtons.getChildren().addAll(btnView, btnEdit);
+//            }
+//
+//            @Override
+//            protected void updateItem(String item, boolean empty) {
+//                super.updateItem(item, empty);
+//                if (empty) {
+//                    setGraphic(null);
+//                } else {
+//                    EmployeeData employee = getTableView().getItems().get(getIndex());
+//
+//                    btnView.setOnAction(e -> {
+//                        System.out.println("View details for: " + employee.getName());
+//                        emp_view_name.setText(employee.getName());
+//                        emp_view_email.setText(employee.getEmail());
+//                        emp_view_phone.setText(employee.getPhone());
+//                        emp_view_position.setText(employee.getPosition());
+//                        emp_view_gender.setText(employee.getGender());
+//                        view_emp.setVisible(true);
+//                        emp_list.setVisible(false);
+//                    });
+//
+//                    btnEdit.setOnAction(e -> {
+//                        System.out.println("Edit details for: " + employee.getName());
+//                        // Add custom logic to edit employee details.
+//                    });
+//
+//                    btnView.getStyleClass().add("view-button");
+//                    btnEdit.getStyleClass().add("view-button");
+////                    btndelete.getStyleClass().add("view-button");
+//
+//                    setGraphic(actionButtons);
+//                }
+//            }
+//        });
+
+
+        emp_sal_tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        emp_email_col.setPrefWidth(250);
+        emp_employeeID_col.setPrefWidth(50);
+        emp_sal_tableview.setItems(addEmployeeList);
+
+        System.out.println(addEmployeeList);
     }
 
     public ObservableList<EmployeeData> addEmployeeListdata() {
@@ -464,7 +730,14 @@ public class DashboardController implements Initializable {
         emp_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
         emp_phoneNumber_col.setCellValueFactory(new PropertyValueFactory<>("phone"));
         emp_action_col.setCellFactory(tc -> new TableCell<EmployeeData, String>() {
-            private final Button btn = new Button("View");
+            private final Button btnView = new Button("View");
+            private final Button btnEdit = new Button("Edit");
+            private final Button btndelete = new Button("Delete");
+            private final HBox actionButtons = new HBox(12); // Adjust spacing between buttons
+
+            {
+                actionButtons.getChildren().addAll(btnView, btnEdit);
+            }
 
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -472,8 +745,9 @@ public class DashboardController implements Initializable {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    btn.setOnAction(e -> {
-                        EmployeeData employee = getTableView().getItems().get(getIndex());
+                    EmployeeData employee = getTableView().getItems().get(getIndex());
+
+                    btnView.setOnAction(e -> {
                         System.out.println("View details for: " + employee.getName());
                         emp_view_name.setText(employee.getName());
                         emp_view_email.setText(employee.getEmail());
@@ -482,59 +756,33 @@ public class DashboardController implements Initializable {
                         emp_view_gender.setText(employee.getGender());
                         view_emp.setVisible(true);
                         emp_list.setVisible(false);
-                        // Add custom logic to view employee details.
                     });
-                    btn.getStyleClass().add("view-button");
-                    setGraphic(btn);
+
+                    btnEdit.setOnAction(e -> {
+                        System.out.println("Edit details for: " + employee.getName());
+                        // Add custom logic to edit employee details.
+                    });
+
+                    btnView.getStyleClass().add("view-button");
+                    btnEdit.getStyleClass().add("view-button");
+//                    btndelete.getStyleClass().add("view-button");
+
+                    setGraphic(actionButtons);
                 }
             }
         });
 
 
         emp_tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        emp_email_col.setPrefWidth(250);
-        emp_employeeID_col.setPrefWidth(50);
-        emp_tableview.setItems(addEmployeeList);
+        emp_tableview.setItems(addEmployeeSalList);
 
-        System.out.println(addEmployeeList);
+        System.out.println(addEmployeeSalList);
     }
 
-//    public void addEmployeeSearch()
-//    {
-//        FilteredList<EmployeeData> filteredData = new FilteredList<>(addEmployeeList, b -> true);
-//        emp_sal_search1.textProperty().addListener((observable, oldValue, newValue) -> {
-//            filteredData.setPredicate(employee -> {
-//                if (newValue == null || newValue.isEmpty()) {
-//                    return true;
-//                }
-//
-//                String lowerCaseFilter = newValue.toLowerCase();
-//
-//                if (employee.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-//                    return true;
-//                } else if (employee.getEmail().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-//                    return true;
-//                } else if (employee.getPhone().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-//                    return true;
-//                } else if (employee.getPosition().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-//                    return true;
-//                } else if (employee.getGender().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-//                    return true;
-//                } else {
-//                    return false;
-//                }
-//            });
-//        });
-//        SortedList<EmployeeData> sortedData = new SortedList<>(filteredData);
-//        sortedData.comparatorProperty().bind(emp_tableview.comparatorProperty());
-//        emp_tableview.setItems(sortedData);
-//
-//    }
 
     public void addEmployeeSearch() {
 
         FilteredList<EmployeeData> filter = new FilteredList<>(addEmployeeList, e -> true);
-
         emp_sal_search1.textProperty().addListener((Observable, oldValue, newValue) -> {
 
             filter.setPredicate(predicateEmployeeData -> {
@@ -545,25 +793,33 @@ public class DashboardController implements Initializable {
 
                 String searchKey = newValue.toLowerCase();
 
-                if (predicateEmployeeData.getId().toString().contains(searchKey)) {
+                if (predicateEmployeeData.getId().contains(searchKey)) {
+                    System.out.println(predicateEmployeeData.getId());
+
                     return true;
                 } else if (predicateEmployeeData.getName().toLowerCase().contains(searchKey)) {
                     return true;
                 } else if (predicateEmployeeData.getEmail().toLowerCase().contains(searchKey)) {
                     return true;
+
                 } else if (predicateEmployeeData.getPhone().toLowerCase().contains(searchKey)) {
                     return true;
-                }  else {
+                }else {
+                    System.out.println("No match found");
                     return false;
+
                 }
             });
         });
+        System.out.println(filter);
+        filter.forEach(System.out::println);
 
         SortedList<EmployeeData> sortList = new SortedList<>(filter);
 
         sortList.comparatorProperty().bind(emp_tableview.comparatorProperty());
         emp_tableview.setItems(sortList);
     }
+
 
     public void logout()
     {
@@ -597,6 +853,10 @@ public class DashboardController implements Initializable {
         displayUsername();
         addEmployeePosition();
         addEmployeeGender();
+        addEmployeeName();
+        addEmployeeSalAdd();
+        addEmployeeSalaryshowList();
+
     }
 
 
