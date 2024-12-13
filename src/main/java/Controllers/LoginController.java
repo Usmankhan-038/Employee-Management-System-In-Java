@@ -47,21 +47,97 @@ public class LoginController {
         }
     }
 
+//    public void loginAdmin() {
+//        String name = username.getText();
+//        String pass = password.getText();
+//
+//        // Fixed SQL query (removed extra 'where')
+//        String sql = "SELECT * FROM users WHERE username = ? AND password = ? AND role_id = 1";
+//        String employeelogin = "SELECT * FROM users WHERE username = ? AND password = ? AND role_id = 2";
+//        if (sql.isEmpty() && employeelogin.isEmpty()) {
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setHeaderText("Error Message");
+//            alert.setContentText("SQL query is missing.");
+//            alert.showAndWait();
+//            return;
+//        }
+//
+//        if (name.isEmpty() || pass.isEmpty()) {
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setHeaderText("Error Message");
+//            alert.setContentText("Please fill all the fields.");
+//            alert.showAndWait();
+//            return;
+//        }
+//
+//        String query = !sql.isEmpty() ? sql : employeelogin;
+//        String fxmlPath = !sql.isEmpty()
+//                ? "/com/example/ems/View/AdminDashboard.fxml"
+//                : "/com/example/ems/View/EmployeeDashboard.fxml";
+//
+//        try {
+//            con = connectDb();
+//
+//            if (con == null) {
+//                Alert alert = new Alert(Alert.AlertType.ERROR);
+//                alert.setHeaderText("Error Message");
+//                alert.setContentText("Failed to connect to the database.");
+//                alert.showAndWait();
+//                return;
+//            }
+//
+//            prepare = con.prepareStatement(query);
+//            prepare.setString(1, name);
+//            prepare.setString(2, pass);
+//            result = prepare.executeQuery();
+//
+//            if (result.next()) {
+//                getData.username = name;
+//                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//                alert.setHeaderText("Success Message");
+//                alert.setContentText("Successfully Login");
+//                alert.showAndWait();
+//
+//                signinbtn.getScene().getWindow().hide();
+//                Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+//                Stage stage = new Stage();
+//                Scene scene = new Scene(root);
+//                stage.initStyle(StageStyle.TRANSPARENT);
+//                stage.setScene(scene);
+//
+//                root.setOnMouseReleased(event -> stage.setOpacity(1.0));
+//                stage.show();
+//            } else {
+//                Alert alert = new Alert(Alert.AlertType.ERROR);
+//                alert.setHeaderText("Error Message");
+//                alert.setContentText("Wrong Username or Password");
+//                alert.showAndWait();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setHeaderText("Error Message");
+//            alert.setContentText("An unexpected error occurred.");
+//            alert.showAndWait();
+//        } finally {
+//            try {
+//                if (result != null) result.close();
+//                if (prepare != null) prepare.close();
+//                if (con != null) con.close();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//
+//    }
+
+
     public void loginAdmin() {
         String name = username.getText();
         String pass = password.getText();
 
-        // Fixed SQL query (removed extra 'where')
-        String sql = "SELECT * FROM users WHERE username = ? AND password = ? AND role_id = 1";
-        String employeelogin = "SELECT * FROM users WHERE username = ? AND password = ? AND role_id = 2";
-        if (sql.isEmpty() && employeelogin.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Error Message");
-            alert.setContentText("SQL query is missing.");
-            alert.showAndWait();
-            return;
-        }
-
+        // Check if fields are empty
         if (name.isEmpty() || pass.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Error Message");
@@ -70,10 +146,8 @@ public class LoginController {
             return;
         }
 
-        String query = !sql.isEmpty() ? sql : employeelogin;
-        String fxmlPath = !sql.isEmpty()
-                ? "/com/example/ems/View/AdminDashboard.fxml"
-                : "/com/example/ems/View/EmployeeDashboard.fxml";
+        // SQL query to check credentials and role_id
+        String sql = "SELECT role_id FROM users WHERE username = ? AND password = ?";
 
         try {
             con = connectDb();
@@ -86,28 +160,47 @@ public class LoginController {
                 return;
             }
 
-            prepare = con.prepareStatement(query);
+            prepare = con.prepareStatement(sql);
             prepare.setString(1, name);
             prepare.setString(2, pass);
             result = prepare.executeQuery();
 
             if (result.next()) {
+                int roleId = result.getInt("role_id");
+                String fxmlPath;
+
+                // Determine dashboard based on role_id
+                if (roleId == 1) { // Admin
+                    fxmlPath = "/com/example/ems/View/AdminDashboard.fxml";
+                } else if (roleId == 2) { // Employee
+                    fxmlPath = "/com/example/ems/View/EmployeeDashboard.fxml";
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Error Message");
+                    alert.setContentText("Invalid role ID.");
+                    alert.showAndWait();
+                    return;
+                }
+
                 getData.username = name;
+
+                // Success message
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText("Success Message");
-                alert.setContentText("Successfully Login");
+                alert.setContentText("Successfully Logged In");
                 alert.showAndWait();
 
+                // Redirect to the appropriate dashboard
                 signinbtn.getScene().getWindow().hide();
                 Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
                 Stage stage = new Stage();
                 Scene scene = new Scene(root);
                 stage.initStyle(StageStyle.TRANSPARENT);
                 stage.setScene(scene);
-
                 root.setOnMouseReleased(event -> stage.setOpacity(1.0));
                 stage.show();
             } else {
+                // Wrong username or password
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Error Message");
                 alert.setContentText("Wrong Username or Password");
@@ -128,7 +221,6 @@ public class LoginController {
                 e.printStackTrace();
             }
         }
-
-
     }
+
 }
