@@ -567,39 +567,47 @@ public class DashboardController implements Initializable {
 
     public ObservableList<EmployeeData> addEmployeeSalListdata() {
         ObservableList<EmployeeData> listData = FXCollections.observableArrayList();
-        String sql = "SELECT (S.employee_id,S.salary, E.name, E.phone, E.position) FROM salaries_and_taxes S JOIN employeesdata E ON S.employee_id = E.id";
-        connect = connectDb();
+
+        // Correct SQL Query
+        String sql = "SELECT S.employee_id, S.salary, E.name, E.phone, E.position " +
+                "FROM salaries_and_taxes AS S " +
+                "LEFT JOIN employeesdata AS E ON S.employee_id = E.id";
+
+        connect = connectDb(); // Assuming connectDb() establishes the connection.
 
         try {
             prepare = connect.prepareStatement(sql);
             result = prepare.executeQuery();
 
-            int sno = 1;
-            String empId = "";
+            int sno = 1; // Serial Number
             while (result.next()) {
                 HashMap<String, String> employee = new HashMap<>();
-                if(!(result.getString("id").isEmpty()))
-                {
-                    if (Integer.parseInt(result.getString("id")) < 10) {
-                        empId = "EMP-0" + result.getString("id");
-                    } else {
-                        empId = "EMP-"+result.getString("id");
-                    }
+
+                // Format Employee ID
+                String empId = "";
+                String employeeId = result.getString("employee_id");
+                if (employeeId != null && !employeeId.isEmpty()) {
+                    empId = (Integer.parseInt(employeeId) < 10) ?
+                            "EMP-0" + employeeId :
+                            "EMP-" + employeeId;
                 }
 
+                // Populate Employee Data
                 employee.put("sno", String.valueOf(sno++));
-                employee.put("id", result.getString("employee_id"));
-                employee.put("name", result.getString("name"));
-                employee.put("phone", result.getString("phone"));
-                employee.put("position", result.getString("position"));
-                employee.put("salary", toString().valueOf(result.getString("salary")));
+                employee.put("id", empId);
+                employee.put("name", result.getString("name") != null ? result.getString("name") : "N/A");
+                employee.put("phone", result.getString("phone") != null ? result.getString("phone") : "N/A");
+                employee.put("position", result.getString("position") != null ? result.getString("position") : "N/A");
+                employee.put("salary", String.format("%.2f", result.getDouble("salary")));
 
+                // Add to EmployeeData object
                 EmployeeData employeeD = new EmployeeData(employee);
                 listData.add(employeeD);
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            // Close resources
             try {
                 if (result != null) result.close();
                 if (prepare != null) prepare.close();
@@ -610,6 +618,7 @@ public class DashboardController implements Initializable {
         }
         return listData;
     }
+
     private ObservableList<EmployeeData> addEmployeeSalList = FXCollections.observableArrayList();
     public void addEmployeeSalaryshowList() {
         addEmployeeSalList = addEmployeeSalListdata();
@@ -621,54 +630,13 @@ public class DashboardController implements Initializable {
         emp_sal_position_col.setCellValueFactory(new PropertyValueFactory<>("position"));
         emp_sal_salary_col.setCellValueFactory(new PropertyValueFactory<>("salary"));
 
-//        emp_action_col.setCellFactory(tc -> new TableCell<EmployeeData, String>() {
-//            private final Button btnView = new Button("View");
-//            private final Button btnEdit = new Button("Edit");
-//            private final Button btndelete = new Button("Delete");
-//            private final HBox actionButtons = new HBox(12); // Adjust spacing between buttons
-//
-//            {
-//                actionButtons.getChildren().addAll(btnView, btnEdit);
-//            }
-//
-//            @Override
-//            protected void updateItem(String item, boolean empty) {
-//                super.updateItem(item, empty);
-//                if (empty) {
-//                    setGraphic(null);
-//                } else {
-//                    EmployeeData employee = getTableView().getItems().get(getIndex());
-//
-//                    btnView.setOnAction(e -> {
-//                        System.out.println("View details for: " + employee.getName());
-//                        emp_view_name.setText(employee.getName());
-//                        emp_view_email.setText(employee.getEmail());
-//                        emp_view_phone.setText(employee.getPhone());
-//                        emp_view_position.setText(employee.getPosition());
-//                        emp_view_gender.setText(employee.getGender());
-//                        view_emp.setVisible(true);
-//                        emp_list.setVisible(false);
-//                    });
-//
-//                    btnEdit.setOnAction(e -> {
-//                        System.out.println("Edit details for: " + employee.getName());
-//                        // Add custom logic to edit employee details.
-//                    });
-//
-//                    btnView.getStyleClass().add("view-button");
-//                    btnEdit.getStyleClass().add("view-button");
-////                    btndelete.getStyleClass().add("view-button");
-//
-//                    setGraphic(actionButtons);
-//                }
-//            }
-//        });
+
 
 
         emp_sal_tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         emp_email_col.setPrefWidth(250);
         emp_employeeID_col.setPrefWidth(50);
-        emp_sal_tableview.setItems(addEmployeeList);
+        emp_sal_tableview.setItems(addEmployeeSalList);
 
         System.out.println(addEmployeeList);
     }

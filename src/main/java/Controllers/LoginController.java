@@ -16,7 +16,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Objects;
 
 public class LoginController {
 
@@ -54,6 +53,27 @@ public class LoginController {
 
         // Fixed SQL query (removed extra 'where')
         String sql = "SELECT * FROM users WHERE username = ? AND password = ? AND role_id = 1";
+        String employeelogin = "SELECT * FROM users WHERE username = ? AND password = ? AND role_id = 2";
+        if (sql.isEmpty() && employeelogin.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Error Message");
+            alert.setContentText("SQL query is missing.");
+            alert.showAndWait();
+            return;
+        }
+
+        if (name.isEmpty() || pass.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Error Message");
+            alert.setContentText("Please fill all the fields.");
+            alert.showAndWait();
+            return;
+        }
+
+        String query = !sql.isEmpty() ? sql : employeelogin;
+        String fxmlPath = !sql.isEmpty()
+                ? "/com/example/ems/View/AdminDashboard.fxml"
+                : "/com/example/ems/View/EmployeeDashboard.fxml";
 
         try {
             con = connectDb();
@@ -66,55 +86,40 @@ public class LoginController {
                 return;
             }
 
-            prepare = con.prepareStatement(sql);
+            prepare = con.prepareStatement(query);
             prepare.setString(1, name);
             prepare.setString(2, pass);
             result = prepare.executeQuery();
 
-            if (name.isEmpty() || pass.isEmpty()) {
+            if (result.next()) {
+                getData.username = name;
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Success Message");
+                alert.setContentText("Successfully Login");
+                alert.showAndWait();
+
+                signinbtn.getScene().getWindow().hide();
+                Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+                Stage stage = new Stage();
+                Scene scene = new Scene(root);
+                stage.initStyle(StageStyle.TRANSPARENT);
+                stage.setScene(scene);
+
+                root.setOnMouseReleased(event -> stage.setOpacity(1.0));
+                stage.show();
+            } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Error Message");
-                alert.setContentText("Please fill all the fields");
+                alert.setContentText("Wrong Username or Password");
                 alert.showAndWait();
-            } else {
-                if (result.next()) {
-                    getData.username = name;
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setHeaderText("Success Message");
-                    alert.setContentText("Successfully Login");
-                    alert.showAndWait();
-
-                    signinbtn.getScene().getWindow().hide();
-                    Parent root = FXMLLoader.load(getClass().getResource("/com/example/ems/View/Dashboard.fxml"));
-                    Stage stage = new Stage();
-                    Scene scene = new Scene(root);
-                    stage.initStyle(StageStyle.TRANSPARENT);
-                    stage.setScene(scene);
-
-//                    root.setOnMousePressed((MouseEvent event) -> {
-//                        x = event.getSceneX();
-//                        y = event.getSceneY();
-//                    });
-//
-//                    root.setOnMouseDragged((MouseEvent event) -> {
-//                        stage.setX(event.getScreenX() - x);
-//                        stage.setY(event.getScreenY() - y);
-//                        stage.setOpacity(0.8);
-//                    });
-
-                    root.setOnMouseReleased((MouseEvent event) -> stage.setOpacity(1.0));
-                    stage.show();
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText("Error Message");
-                    alert.setContentText("Wrong Username or Password");
-                    alert.showAndWait();
-                }
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Error Message");
+            alert.setContentText("An unexpected error occurred.");
+            alert.showAndWait();
         } finally {
-            // Close resources
             try {
                 if (result != null) result.close();
                 if (prepare != null) prepare.close();
@@ -123,5 +128,7 @@ public class LoginController {
                 e.printStackTrace();
             }
         }
+
+
     }
 }

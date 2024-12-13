@@ -526,7 +526,7 @@
             <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="117.0" layoutY="330.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="add_emp_salary" layoutX="273.0" layoutY="44.0" prefHeight="507.0" prefWidth="722.0">
+      <AnchorPane fx:id="add_emp_salary" layoutX="273.0" layoutY="44.0" prefHeight="507.0" prefWidth="722.0" visible="false">
          <children>
             <Label layoutX="14.0" layoutY="14.0" text="Add Employee Salary">
                <font>
@@ -561,7 +561,7 @@
             <ComboBox fx:id="emp_sal_name" layoutX="18.0" layoutY="130.0" onAction="#addEmployeeName" onInputMethodTextChanged="#addEmployeeSalaryData" prefHeight="35.0" prefWidth="340.0" promptText="Select Name" styleClass="field" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="emp_salary_list" layoutX="275.0" layoutY="48.0" prefHeight="507.0" prefWidth="722.0" visible="false">
+      <AnchorPane fx:id="emp_salary_list" layoutX="275.0" layoutY="48.0" prefHeight="507.0" prefWidth="722.0">
          <children>
             <TableView fx:id="emp_sal_tableview" layoutX="13.0" layoutY="74.0" prefHeight="421.0" prefWidth="688.0">
                <columns>
