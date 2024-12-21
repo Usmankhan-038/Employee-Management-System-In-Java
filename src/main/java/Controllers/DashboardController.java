@@ -49,6 +49,9 @@ public class DashboardController implements Initializable {
     private Button add_emp_btn;
 
     @FXML
+    private AnchorPane leave_request_screen;
+
+    @FXML
     private AnchorPane add_emp_image;
 
     @FXML
@@ -90,6 +93,11 @@ public class DashboardController implements Initializable {
     @FXML
     private TableColumn<EmployeeData, String> emp_employeeID_col;
 
+
+
+    @FXML
+    private TableColumn<Leave, String> leave_request_action;
+
     @FXML
     private ComboBox<String> emp_gender;
 
@@ -121,6 +129,21 @@ public class DashboardController implements Initializable {
     private TableColumn<?, ?> emp_sal_position_col;
 
     @FXML
+    private TableColumn<Leave, String> emp_leaveID_col;
+
+
+    @FXML
+    private TableColumn<Leave, String> emp_emp_name_col;
+
+
+    @FXML
+    private TableColumn<Leave, String> emp_leaveType_col;
+
+
+    @FXML
+    private TableColumn<Leave, String> emp_leaveDate_col;
+
+    @FXML
     private TableColumn<?, ?> emp_sal_salary_col;
 
     @FXML
@@ -135,9 +158,15 @@ public class DashboardController implements Initializable {
     @FXML
     private TableView<EmployeeData> emp_sal_tableview;
 
+
+    @FXML
+    private TableView<Leave> leave_request_tableview;
     @FXML
     private TableView<EmployeeData> emp_tableview;
 
+
+    @FXML
+    private TableColumn<Leave, String> leave_sno;
     @FXML
     private AnchorPane emp_salary_list;
 
@@ -498,6 +527,8 @@ public class DashboardController implements Initializable {
         view_emp.setVisible(false);
         admin_dashboard.setVisible(false);
         emp_list.setVisible(false);
+        leave_request_screen.setVisible(false);
+
 
         // Reset 'active' class for all buttons
         resetActiveClasses();
@@ -518,8 +549,6 @@ public class DashboardController implements Initializable {
         } else if (event.getSource() == dashboarbbtn) {
             admin_dashboard.setVisible(true);
             activateButton(dashboarbbtn);
-        } else if (event.getSource() == EmployeeHolidaysBtn) {
-            activateButton(EmployeeHolidaysBtn);
         } else if (event.getSource() == employeesalListBtn)
         {
             emp_salary_list.setVisible(true);
@@ -535,6 +564,10 @@ public class DashboardController implements Initializable {
             activateButton(employeeSalariesBtn);
         } else if (event.getSource() == taskLListBtn) {
             activateButton(taskLListBtn);
+        } else if (event.getSource() == EmployeeHolidaysBtn) {
+            leave_request_screen.setVisible(true);
+            activateButton(EmployeeHolidaysBtn);
+            addLeaveRequestList();
         }
     }
 
@@ -747,6 +780,202 @@ public class DashboardController implements Initializable {
         System.out.println(addEmployeeSalList);
     }
 
+    // Leave Request Screen Function
+//    public ObservableList<EmployeeData> leaveRequest() {
+//        ObservableList<EmployeeData> listData = FXCollections.observableArrayList();
+//        String sql = "SELECT empdata.id AS employee_id, empdata.name AS employee_name, " +
+//                "leaves.id AS leave_id, leaves.leave_type, leaves.leave_date " +
+//                "FROM employeesdata AS empdata " +
+//                "LEFT JOIN leaves ON empdata.id = leaves.employee_id"; // Join employees and leaves
+//
+//        connect = connectDb();
+//
+//        try {
+//            prepare = connect.prepareStatement(sql);
+//            result = prepare.executeQuery();
+//            System.out.print(result);
+//            int sno = 1;
+//            while (result.next()) {
+//
+//
+//                // Extract data from the result set
+//                HashMap<String, String> employee = new HashMap<>();
+//                String leaveId = result.getString("leave_id");
+//                String employeeId = result.getString("employee_id");
+//                String employeeName = result.getString("employee_name");
+//                String leaveType = result.getString("leave_type");
+//                String leaveDate = result.getString("leave_date");
+//
+//                // Fill data into the HashMap
+//                employee.put("sno", String.valueOf(sno++));
+//                employee.put("employeeId", employeeId != null ? employeeId : "N/A");
+//                employee.put("leaveId", leaveId != null ? leaveId : "N/A");
+//                employee.put("name", employeeName != null ? employeeName : "N/A");
+//                employee.put("leaveType", leaveType != null ? leaveType : "N/A");
+//                employee.put("leaveDate", leaveDate != null ? leaveDate : "N/A");
+//                employee.put("action", "View");
+//
+//                // Convert HashMap to EmployeeData
+//                EmployeeData employeeData = new EmployeeData(employee);
+//                listData.add(employeeData);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            try {
+//                if (result != null) result.close();
+//                if (prepare != null) prepare.close();
+//                if (connect != null) connect.close();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return listData;
+//    }
+//
+//    private ObservableList<EmployeeData> leaveRequestList = FXCollections.observableArrayList();
+//
+//    public void addLeaveRequestList() {
+//        leaveRequestList = leaveRequest();
+//
+//        // Map TableView columns to data fields
+//        emp_sno_col.setCellValueFactory(new PropertyValueFactory<>("sno"));
+////        emp_empID_col.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
+//        emp_leaveID_col.setCellValueFactory(new PropertyValueFactory<>("leaveId"));
+//        emp_empName_col.setCellValueFactory(new PropertyValueFactory<>("name"));
+//        emp_leaveType_col.setCellValueFactory(new PropertyValueFactory<>("leaveType"));
+//        emp_leaveDate_col.setCellValueFactory(new PropertyValueFactory<>("leaveDate"));
+//
+//        // Set the Action column with a "View" button
+//        emp_action_col.setCellFactory(tc -> new TableCell<EmployeeData, String>() {
+//            private final Button btnView = new Button("View");
+//
+//            {
+//                btnView.getStyleClass().add("view-button"); // Optional CSS styling
+//            }
+//
+//            @Override
+//            protected void updateItem(String item, boolean empty) {
+//                super.updateItem(item, empty);
+//                if (empty) {
+//                    setGraphic(null);
+//                } else {
+//                    EmployeeData employee = getTableView().getItems().get(getIndex());
+//
+//                    // Action for the View button
+//                    btnView.setOnAction(e -> {
+//                        System.out.println("Viewing details for: " + employee.getName());
+//                        // Example: Show employee details in a separate panel
+//                        emp_view_name.setText(employee.getName());
+////                        emp_view_leaveType.setText(employee.getLeaveType());
+////                        emp_view_leaveDate.setText(employee.getLeaveDate());
+//                        view_emp.setVisible(true);
+//                        emp_list.setVisible(false);
+//                    });
+//
+//                    setGraphic(btnView); // Set the button in the Action column
+//                }
+//            }
+//        });
+//
+//        // Set the items in the TableView
+//        leave_request_tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+//        leave_request_tableview.setItems(leaveRequestList);
+//
+//        System.out.println(leaveRequestList); // Debugging log
+//    }
+
+    public ObservableList<Leave> leaveRequest() {
+        ObservableList<Leave> listData = FXCollections.observableArrayList();
+        String sql = "SELECT empdata.id AS employee_id, empdata.name AS employee_name," +
+                "leaves.id AS leave_id, leaves.leave_type, leaves.leave_date, leaves.reason " +
+                "FROM employeesdata AS empdata " +
+                "RIGHT JOIN leaves ON empdata.id = leaves.employee_id";
+        connect = connectDb();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            //System.out.println(result);
+
+            int sno = 1;
+            while (result.next()) {
+                HashMap<String, String> leaveData = new HashMap<>();
+                leaveData.put("sno", String.valueOf(sno++));
+                leaveData.put("leave_id", result.getString("leave_id"));
+                leaveData.put("emp_name", result.getString("employee_name"));
+                leaveData.put("leave_type", result.getString("leave_type"));
+                leaveData.put("leave_date", result.getString("leave_date"));
+                leaveData.put("reason", result.getString("reason"));
+                leaveData.put("action", "View");
+
+                leaveData.forEach((key, value) -> System.out.println(key + ": " + value)); // Debug log
+                // Create Leave object using the hashmap
+                Leave leaveD = new Leave(leaveData);
+                listData.add(leaveD);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (result != null) result.close();
+                if (prepare != null) prepare.close();
+                if (connect != null) connect.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return listData;
+    }
+
+    private ObservableList<Leave> leaveRequestList = FXCollections.observableArrayList();
+
+    public void addLeaveRequestList() {
+        leaveRequestList = leaveRequest();
+
+        // Map table columns to Leave object properties
+        leave_sno.setCellValueFactory(new PropertyValueFactory<>("sno"));
+        emp_leaveID_col.setCellValueFactory(new PropertyValueFactory<>("leaveId"));
+        emp_emp_name_col.setCellValueFactory(new PropertyValueFactory<>("employeeName"));
+        emp_leaveType_col.setCellValueFactory(new PropertyValueFactory<>("leaveType"));
+        emp_leaveDate_col.setCellValueFactory(new PropertyValueFactory<>("leaveDate"));
+
+        leave_request_action.setCellFactory(tc -> new TableCell<Leave, String>() {
+            private final Button btnView = new Button("View");
+            private final HBox actionButtons = new HBox(10); // Adjust spacing if needed
+
+            {
+                actionButtons.getChildren().addAll(btnView);
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    Leave leave = getTableView().getItems().get(getIndex());
+
+                    // Set up button action
+                    btnView.setOnAction(e -> {
+                        // Add logic to display or handle leave request details
+                    });
+
+                    // Optional: Style buttons
+                    btnView.getStyleClass().add("view-button");
+
+                    setGraphic(actionButtons);
+                }
+            }
+        });
+
+        leave_request_tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        leave_request_tableview.setItems(leaveRequestList);
+
+        System.out.println("Leave Request List: " + leaveRequestList);
+    }
+
 
     public void addEmployeeSearch() {
 
@@ -824,6 +1053,7 @@ public class DashboardController implements Initializable {
         addEmployeeName();
         addEmployeeSalAdd();
         addEmployeeSalaryshowList();
+        addLeaveRequestList();
 
     }
 
