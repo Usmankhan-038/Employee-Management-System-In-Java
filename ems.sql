@@ -51,7 +51,7 @@ CREATE TABLE `employeesdata` (
 
 /*Data for the table `employeesdata` */
 
-insert  into `employeesdata`(`id`,`user_id`,`name`,`email`,`phone`,`gender`,`position`,`sent_email`,`created_at`,`updated_at`) values (8,NULL,'Adil Shahzad','adil2@gmail.com','0302 60000006','male','Supervisor',0,'2024-12-02 20:30:37','2024-12-02 20:30:37'),(9,NULL,'Usman','usman@gmail.com','03022103233','male','Supervisor',0,'2024-12-03 01:10:51','2024-12-03 01:10:51'),(10,NULL,'Faizan','Faizan@mailinator.com','02343432435','male','Manager',0,'2024-12-21 22:48:16','2024-12-21 22:48:16');
+insert  into `employeesdata`(`id`,`user_id`,`name`,`email`,`phone`,`gender`,`position`,`sent_email`,`created_at`,`updated_at`) values (8,1,'Adil Shahzad','adil2@gmail.com','0302 60000006','male','Supervisor',0,'2024-12-02 20:30:37','2024-12-02 20:30:37'),(9,2,'Usman','usman@gmail.com','03022103233','male','Supervisor',0,'2024-12-03 01:10:51','2024-12-03 01:10:51'),(10,3,'Faizan','Faizan@mailinator.com','02343432435','male','Manager',0,'2024-12-21 22:48:16','2024-12-21 22:48:16');
 
 /*Table structure for table `leaves` */
 
