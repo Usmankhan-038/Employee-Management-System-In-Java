@@ -47,11 +47,11 @@ CREATE TABLE `employeesdata` (
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 /*Data for the table `employeesdata` */
 
-insert  into `employeesdata`(`id`,`user_id`,`name`,`email`,`phone`,`gender`,`position`,`sent_email`,`created_at`,`updated_at`) values (8,NULL,'Adil Shahzad','adil2@gmail.com','0302 60000006','male','Supervisor',0,'2024-12-02 20:30:37','2024-12-02 20:30:37'),(9,NULL,'Usman','usman@gmail.com','03022103233','male','Supervisor',0,'2024-12-03 01:10:51','2024-12-03 01:10:51');
+insert  into `employeesdata`(`id`,`user_id`,`name`,`email`,`phone`,`gender`,`position`,`sent_email`,`created_at`,`updated_at`) values (8,NULL,'Adil Shahzad','adil2@gmail.com','0302 60000006','male','Supervisor',0,'2024-12-02 20:30:37','2024-12-02 20:30:37'),(9,NULL,'Usman','usman@gmail.com','03022103233','male','Supervisor',0,'2024-12-03 01:10:51','2024-12-03 01:10:51'),(10,NULL,'Faizan','Faizan@mailinator.com','02343432435','male','Manager',0,'2024-12-21 22:48:16','2024-12-21 22:48:16');
 
 /*Table structure for table `leaves` */
 
@@ -64,14 +64,15 @@ CREATE TABLE `leaves` (
   `leave_date` varchar(50) NOT NULL,
   `reason` text NOT NULL,
   `approved` tinyint(1) DEFAULT 0,
+  `reject` tinyint(1) DEFAULT 0,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `leaves` */
 
-insert  into `leaves`(`id`,`employee_id`,`leave_type`,`leave_date`,`reason`,`approved`,`created_at`,`updated_at`) values (1,8,'Medical Leave','2024-12-17','asdfgb',0,'2024-12-21 12:13:08','2024-12-21 12:13:08');
+insert  into `leaves`(`id`,`employee_id`,`leave_type`,`leave_date`,`reason`,`approved`,`reject`,`created_at`,`updated_at`) values (1,8,'Medical Leave','2024-12-17','asdfgb',0,0,'2024-12-21 12:13:08','2024-12-21 12:13:08'),(2,10,'Casual Leave','2024-12-24','This is the reason for leave',1,0,'2024-12-21 22:49:30','2024-12-21 22:49:30');
 
 /*Table structure for table `roles` */
 
@@ -122,11 +123,11 @@ CREATE TABLE `users` (
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `users` */
 
-insert  into `users`(`id`,`username`,`password`,`email`,`role_id`,`created_at`,`updated_at`) values (1,'Usman','usman','usman@mailinator.com',1,'2024-11-25 00:44:57','2024-11-25 00:44:57'),(2,'Adil Shahzad','Adil','adil@mailinator.com',2,'2024-12-13 23:15:02','2024-12-13 23:15:02');
+insert  into `users`(`id`,`username`,`password`,`email`,`role_id`,`created_at`,`updated_at`) values (1,'Usman','usman','usman@mailinator.com',1,'2024-11-25 00:44:57','2024-11-25 00:44:57'),(2,'Adil Shahzad','Adil','adil@mailinator.com',2,'2024-12-13 23:15:02','2024-12-13 23:15:02'),(3,'Faizan','faizan','faizan@mailinator.com',2,'2024-12-21 22:47:07','2024-12-21 22:47:07');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
