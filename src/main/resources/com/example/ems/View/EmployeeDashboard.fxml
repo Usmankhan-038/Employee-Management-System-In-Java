@@ -22,9 +22,9 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainForm" prefHeight="549.0" prefWidth="1001.0" style="-fx-background-color: #ccc2d9;" styleClass="layoutscreen" stylesheets="@style/DashboardDesign.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.EmployeeDashboardController">
+<AnchorPane fx:id="mainForm" prefHeight="556.0" prefWidth="1006.0" style="-fx-background-color: #ccc2d9;" styleClass="layoutscreen" stylesheets="@style/DashboardDesign.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.EmployeeDashboardController">
     <children>
-        <AnchorPane layoutX="-25.0" layoutY="4.0" prefHeight="567.0" prefWidth="258.0" styleClass="sidebarmenu" stylesheets="@style/DashboardDesign.css">
+        <AnchorPane layoutX="-25.0" prefHeight="571.0" prefWidth="273.0" styleClass="sidebarmenu" stylesheets="@style/DashboardDesign.css">
             <children>
                 <!--            <FontAwesomeIcon fill="WHITE" fontSmoothingType="LCD" glyphName="USER" layoutX="35.0" layoutY="68.0" selectionEnd="1" selectionFill="#fffafa" size="40 rem" text="" />-->
                 <Label fx:id="username" layoutX="69.0" layoutY="37.0" text="Admin" textAlignment="CENTER" textFill="WHITE">
@@ -32,10 +32,6 @@
                         <Font name="Arial Bold" size="15.0" />
                     </font>
                 </Label>
-                <Label layoutX="68.0" layoutY="50.0" styleClass="viewProfile" stylesheets="@style/DashboardDesign.css" text="View Profile" textFill="#c5c0c0">
-                    <font>
-                        <Font size="10.0" />
-                    </font></Label>
                 <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="39.0" layoutY="62.0" size="1.8em" styleClass="userlogo" text="" />
                 <Button id="sidebardashboardbtn" fx:id="dashboarbbtn" layoutX="30.0" layoutY="110.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Dashboard" textFill="WHITE">
                     <font>
@@ -71,7 +67,7 @@
                     </styleClass>
                 </Button>
                 <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="248.0" layoutY="141.0" />
-                <Button id="sidebardashboardbtn" fx:id="employeeListBtn" layoutX="29.0" layoutY="259.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="View Task" textFill="WHITE">
+                <Button id="sidebardashboardbtn" fx:id="viewTaskBtn" layoutX="29.0" layoutY="259.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="View Task" textFill="WHITE">
                     <font>
                         <Font name="Arial Bold" size="16.0" />
                     </font>
@@ -103,7 +99,7 @@
                         <String fx:value="sidebarmenubtn" />
                     </styleClass>
                 </Button>
-                <Button id="sidebardashboardbtn" fx:id="employeesalListBtn" layoutX="29.0" layoutY="311.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Edit Profile" textFill="WHITE">
+                <Button id="sidebardashboardbtn" fx:id="editProfileBtn" layoutX="29.0" layoutY="311.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Edit Profile" textFill="WHITE">
                     <font>
                         <Font name="Arial Bold" size="18.0" />
                     </font>
@@ -165,7 +161,7 @@
                         </FontAwesomeIcon>
                     </graphic>
                 </Button>
-                <Button id="sidebardashboardbtn" fx:id="addEmployeeBtn" layoutX="30.0" layoutY="160.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Request For Leave" textFill="WHITE">
+                <Button id="sidebardashboardbtn" fx:id="requestForLeaveBtn" layoutX="30.0" layoutY="160.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Request For Leave" textFill="WHITE">
                     <font>
                         <Font name="Arial Bold" size="16.0" />
                     </font>
@@ -198,7 +194,7 @@
                     </styleClass>
                 </Button>
                 <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="248.0" layoutY="189.0" />
-                <Button id="sidebardashboardbtn" fx:id="employeeSalariesBtn" layoutX="29.0" layoutY="209.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="View Attendence" textFill="WHITE">
+                <Button id="sidebardashboardbtn" fx:id="viewAttendence" layoutX="29.0" layoutY="209.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="View Attendence" textFill="WHITE">
                     <font>
                         <Font name="Arial Bold" size="16.0" />
                     </font>
@@ -231,6 +227,11 @@
                     </styleClass>
                 </Button>
                 <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="238.0" />
+            <Button fx:id="viewProfileBtn" layoutX="67.0" layoutY="54.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="16.0" prefWidth="57.0" text="View Profile">
+               <font>
+                  <Font size="7.0" />
+               </font>
+            </Button>
 
             </children>
         </AnchorPane>
@@ -246,7 +247,7 @@
                 </FontAwesomeIcon>
             </graphic>
         </Button>
-        <AnchorPane fx:id="admin_dashboard" layoutX="267.0" layoutY="36.0" prefHeight="513.0" prefWidth="722.0" styleClass="dashboardPage" visible="false">
+        <AnchorPane fx:id="employee_dashboard" layoutX="267.0" layoutY="36.0" prefHeight="513.0" prefWidth="722.0" styleClass="dashboardPage">
             <children>
                 <Label layoutX="8.333333333333332" layoutY="-4.0" text="Dashboard" AnchorPane.leftAnchor="8.333333333333332">
                     <font>
@@ -309,136 +310,76 @@
                 <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="111.0" layoutY="45.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="view_emp" layoutX="263.0" layoutY="38.0" prefHeight="507.0" prefWidth="722.0" visible="false">
+        <AnchorPane fx:id="view_profile_screen" layoutX="263.0" layoutY="38.0" prefHeight="507.0" prefWidth="722.0" visible="false">
             <children>
-                <Label graphicTextGap="0.0" layoutX="15.0" layoutY="2.0" text="View Employee">
+                <Label graphicTextGap="0.0" layoutX="15.0" layoutY="2.0" text="View Profile">
                     <font>
                         <Font name="System Bold" size="36.0" />
                     </font>
                 </Label>
-                <AnchorPane layoutX="13.0" layoutY="127.0" prefHeight="160.0" prefWidth="695.0" style="-fx-font-size: 15;" styleClass="viewcard" stylesheets="@style/DashboardDesign.css">
+                <AnchorPane layoutX="13.0" layoutY="127.0" prefHeight="223.0" prefWidth="695.0" style="-fx-font-size: 15;" styleClass="viewcard" stylesheets="@style/DashboardDesign.css">
                     <children>
-                        <Label layoutX="15.0" layoutY="26.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Name" textAlignment="CENTER">
+                        <Label layoutX="31.0" layoutY="20.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Name" textAlignment="CENTER">
                             <font>
                                 <Font name="Arial" size="16.0" />
                             </font>
                         </Label>
-                        <Label fx:id="emp_view_name" layoutX="15.0" layoutY="46.0" style="fx-font-size: 16;" text="M Usman Ali">
+                        <Label fx:id="emp_view_name" layoutX="31.0" layoutY="40.0" style="fx-font-size: 16;" text="M Usman Ali">
                             <font>
                                 <Font size="17.0" />
                             </font>
                         </Label>
-                        <Label layoutX="174.0" layoutY="25.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Email" textAlignment="CENTER">
+                        <Label layoutX="272.0" layoutY="23.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Email" textAlignment="CENTER">
                             <font>
                                 <Font name="Arial" size="16.0" />
                             </font>
                         </Label>
-                        <Label fx:id="emp_view_email" layoutX="174.0" layoutY="45.0" style="fx-font-size: 16;" text="fk514955@gmail.com">
+                        <Label fx:id="emp_view_email" layoutX="272.0" layoutY="43.0" style="fx-font-size: 16;" text="fk514955@gmail.com">
                             <font>
                                 <Font size="17.0" />
                             </font>
                         </Label>
-                        <Label layoutX="389.0" layoutY="25.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Phone" textAlignment="CENTER">
+                        <Label layoutX="545.0" layoutY="23.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Phone" textAlignment="CENTER">
                             <font>
                                 <Font name="Arial" size="16.0" />
                             </font>
                         </Label>
-                        <Label fx:id="emp_view_phone" layoutX="389.0" layoutY="45.0" style="fx-font-size: 16;" text="0301 5215234">
+                        <Label fx:id="emp_view_phone" layoutX="545.0" layoutY="43.0" style="fx-font-size: 16;" text="0301 5215234">
                             <font>
                                 <Font size="17.0" />
                             </font>
                         </Label>
-                        <Label layoutX="561.0" layoutY="25.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Gender" textAlignment="CENTER">
+                        <Label layoutX="31.0" layoutY="127.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Gender" textAlignment="CENTER">
                             <font>
                                 <Font name="Arial" size="16.0" />
                             </font>
                         </Label>
-                        <Label fx:id="emp_view_gender" layoutX="561.0" layoutY="45.0" style="fx-font-size: 16;" text="Male">
+                        <Label fx:id="emp_view_gender" layoutX="31.0" layoutY="147.0" style="fx-font-size: 16;" text="Male">
                             <font>
                                 <Font size="17.0" />
                             </font>
                         </Label>
-                        <Label layoutX="15.0" layoutY="98.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Position" textAlignment="CENTER">
+                        <Label layoutX="272.0" layoutY="124.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Position" textAlignment="CENTER">
                             <font>
                                 <Font name="Arial" size="16.0" />
                             </font>
                         </Label>
-                        <Label fx:id="emp_view_position" layoutX="15.0" layoutY="118.0" style="fx-font-size: 16;" text="Backend Developer">
+                        <Label fx:id="emp_view_position" layoutX="272.0" layoutY="144.0" style="fx-font-size: 16;" text="Backend Developer">
                             <font>
                                 <Font size="17.0" />
                             </font>
                         </Label>
                     </children></AnchorPane>
-                <AnchorPane layoutX="13.0" layoutY="337.0" prefHeight="156.0" prefWidth="695.0" style="-fx-font-size: 15;" styleClass="viewcard" stylesheets="@style/DashboardDesign.css">
-                    <children>
-                        <Label layoutX="15.0" layoutY="17.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Salary" textAlignment="CENTER">
-                            <font>
-                                <Font name="Arial" size="16.0" />
-                            </font>
-                        </Label>
-                        <Label layoutX="15.0" layoutY="37.0" style="fx-font-size: 16;" text="Rs 75,000">
-                            <font>
-                                <Font size="17.0" />
-                            </font>
-                        </Label>
-                        <Label layoutX="174.0" layoutY="16.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Total Holidays" textAlignment="CENTER">
-                            <font>
-                                <Font name="Arial" size="16.0" />
-                            </font>
-                        </Label>
-                        <Label layoutX="174.0" layoutY="36.0" style="fx-font-size: 16;" text="1">
-                            <font>
-                                <Font size="17.0" />
-                            </font>
-                        </Label>
-                        <Label layoutX="389.0" layoutY="16.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Phone" textAlignment="CENTER">
-                            <font>
-                                <Font name="Arial" size="16.0" />
-                            </font>
-                        </Label>
-                        <Label layoutX="389.0" layoutY="35.0" style="fx-font-size: 16;" text="0301 5215234">
-                            <font>
-                                <Font size="17.0" />
-                            </font>
-                        </Label>
-                        <Label layoutX="561.0" layoutY="16.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Gender" textAlignment="CENTER">
-                            <font>
-                                <Font name="Arial" size="16.0" />
-                            </font>
-                        </Label>
-                        <Label layoutX="561.0" layoutY="36.0" style="fx-font-size: 16;" text="Male">
-                            <font>
-                                <Font size="17.0" />
-                            </font>
-                        </Label>
-                        <Label layoutX="15.0" layoutY="89.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Position" textAlignment="CENTER">
-                            <font>
-                                <Font name="Arial" size="16.0" />
-                            </font>
-                        </Label>
-                        <Label layoutX="15.0" layoutY="109.0" style="fx-font-size: 16;" text="Backend Developer">
-                            <font>
-                                <Font size="17.0" />
-                            </font>
-                        </Label>
-                    </children>
-                </AnchorPane>
                 <Label layoutX="15.0" layoutY="84.0" text="Personal Detail">
-                    <font>
-                        <Font name="System Bold" size="24.0" />
-                    </font>
-                </Label>
-                <Label layoutX="16.0" layoutY="295.0" text="Company Detail">
                     <font>
                         <Font name="System Bold" size="24.0" />
                     </font>
                 </Label>
                 <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="119.0" layoutY="52.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
                 <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="116.0" layoutY="116.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
-                <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="117.0" layoutY="330.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="add_emp_salary" layoutX="273.0" layoutY="44.0" prefHeight="507.0" prefWidth="722.0">
+        <AnchorPane fx:id="edit_profile_screen" layoutX="273.0" layoutY="44.0" prefHeight="507.0" prefWidth="722.0" visible="false">
             <children>
                 <Label layoutX="14.0" layoutY="14.0" text="Edit Profile">
                     <font>
@@ -450,7 +391,7 @@
                         <Font name="Arial" size="18.0" />
                     </font>
                 </Label>
-                <Button fx:id="updateButton" layoutX="14.0" layoutY="445.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="240.0" styleClass="btn" text="Update Profile" />
+                <Button fx:id="updateButton" layoutX="14.0" layoutY="445.0" mnemonicParsing="false" onAction="#updateProfile" prefHeight="35.0" prefWidth="240.0" styleClass="btn" text="Update Profile" />
                 <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="114.0" layoutY="65.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
                 <ComboBox fx:id="emp_gender" layoutX="366.0" layoutY="181.0" onAction="#addEmployeeGender" prefHeight="35.0" prefWidth="340.0" promptText="Select Gender" styleClass="field" />
             <TextField fx:id="emp_name" layoutX="14.0" layoutY="109.0" prefHeight="35.0" prefWidth="340.0" promptText="Name" styleClass="field" />
@@ -473,19 +414,18 @@
             </Label>
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="emp_salary_list" layoutX="275.0" layoutY="48.0" prefHeight="507.0" prefWidth="722.0" visible="false">
+        <AnchorPane fx:id="view_task_screen" layoutX="275.0" layoutY="48.0" prefHeight="507.0" prefWidth="722.0" visible="false">
             <children>
-                <TableView fx:id="emp_sal_tableview" layoutX="13.0" layoutY="74.0" prefHeight="421.0" prefWidth="688.0">
+                <TableView fx:id="task_tableview" layoutX="13.0" layoutY="74.0" prefHeight="421.0" prefWidth="688.0">
                     <columns>
                         <TableColumn fx:id="emp_sal_sno_col" prefWidth="56.66668701171875" text="S No" />
-                        <TableColumn fx:id="emp_sal_employeeID_col" prefWidth="92.66665649414062" text="Employee ID" />
-                        <TableColumn fx:id="emp_sal_empName_col" prefWidth="129.99996948242188" text="Employee Name" />
-                        <TableColumn fx:id="emp_sal_phoneNumber_col" prefWidth="110.66671752929688" text="Phone Number" />
-                        <TableColumn fx:id="emp_sal_position_col" prefWidth="117.33331298828125" style="-fx-text-alignment: center;" styleClass="tableview" text="Position" />
-                        <TableColumn fx:id="emp_sal_salary_col" prefWidth="179.3333740234375" style="-fx-text-alignment: center;" text="Salary" />
+                        <TableColumn fx:id="emp_sal_employeeID_col" prefWidth="92.66665649414062" text="Task ID" />
+                        <TableColumn fx:id="emp_sal_empName_col" prefWidth="249.33343505859375" text="Task" />
+                        <TableColumn fx:id="emp_sal_phoneNumber_col" prefWidth="126.6666259765625" text="Due Date" />
+                        <TableColumn fx:id="emp_sal_salary_col" prefWidth="161.33331298828125" style="-fx-text-alignment: center;" text="Satus" />
                     </columns>
                 </TableView>
-                <Label layoutX="17.0" layoutY="15.0" text="Employee Salary List">
+                <Label layoutX="17.0" layoutY="15.0" text="View Task">
                     <font>
                         <Font name="System Bold" size="36.0" />
                     </font>
@@ -494,7 +434,7 @@
                 <FontAwesomeIcon glyphName="SEARCH" layoutX="469.0" layoutY="46.0" size="1.3em" />
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="request_for_leave" layoutX="263.0" layoutY="34.0" prefHeight="507.0" prefWidth="722.0" styleClass="fieldlabel" visible="false">
+        <AnchorPane fx:id="request_for_leave_screen" layoutX="263.0" layoutY="34.0" prefHeight="507.0" prefWidth="722.0" styleClass="fieldlabel" visible="false">
             <children>
                 <Label layoutX="14.0" layoutY="14.0" text="Request For Leave">
                     <font>

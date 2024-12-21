@@ -51,7 +51,7 @@ CREATE TABLE `employeesdata` (
 
 /*Data for the table `employeesdata` */
 
-insert  into `employeesdata`(`id`,`user_id`,`name`,`email`,`phone`,`gender`,`position`,`sent_email`,`created_at`,`updated_at`) values (8,NULL,'Adil Shahzad','adil2@gmail.com','1234565432','male','Supervisor',0,'2024-12-02 20:30:37','2024-12-02 20:30:37'),(9,NULL,'Usman','usman@gmail.com','03022103233','male','Supervisor',0,'2024-12-03 01:10:51','2024-12-03 01:10:51');
+insert  into `employeesdata`(`id`,`user_id`,`name`,`email`,`phone`,`gender`,`position`,`sent_email`,`created_at`,`updated_at`) values (8,NULL,'Adil Shahzad','adil2@gmail.com','0302 60000006','male','Supervisor',0,'2024-12-02 20:30:37','2024-12-02 20:30:37'),(9,NULL,'Usman','usman@gmail.com','03022103233','male','Supervisor',0,'2024-12-03 01:10:51','2024-12-03 01:10:51');
 
 /*Table structure for table `leaves` */
 
@@ -96,8 +96,10 @@ DROP TABLE IF EXISTS `salaries_and_taxes`;
 CREATE TABLE `salaries_and_taxes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `employee_id` int(11) DEFAULT NULL,
-  `salary` int(11) DEFAULT 0,
-  `salary_increment` int(11) DEFAULT 0,
+  `salary` int(11) NOT NULL DEFAULT 0,
+  `salary_increment` int(11) NOT NULL DEFAULT 0,
+  `leave_charges` int(11) NOT NULL DEFAULT 0,
+  `tax_deduction` int(11) NOT NULL DEFAULT 0,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
@@ -105,7 +107,7 @@ CREATE TABLE `salaries_and_taxes` (
 
 /*Data for the table `salaries_and_taxes` */
 
-insert  into `salaries_and_taxes`(`id`,`employee_id`,`salary`,`salary_increment`,`created_at`,`updated_at`) values (1,8,12,0,'2024-12-03 00:15:58','2024-12-03 00:15:58');
+insert  into `salaries_and_taxes`(`id`,`employee_id`,`salary`,`salary_increment`,`leave_charges`,`tax_deduction`,`created_at`,`updated_at`) values (1,8,12,0,0,0,'2024-12-03 00:15:58','2024-12-03 00:15:58');
 
 /*Table structure for table `users` */
 

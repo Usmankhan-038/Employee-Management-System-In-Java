@@ -218,8 +218,35 @@ public class EmployeeDashboardController implements Initializable {
     private Button emp_request_for_leave;
 
     @FXML
-    private AnchorPane request_for_leave;
+    private AnchorPane request_for_leave_screen;
 
+    @FXML
+    private Button requestForLeaveBtn;
+
+    @FXML
+    private AnchorPane view_task_screen;
+
+    @FXML
+    private AnchorPane edit_profile_screen;
+
+    @FXML
+    private AnchorPane view_profile_screen;
+
+
+    @FXML
+    private Button viewAttendence;
+
+    @FXML
+    private AnchorPane employee_dashboard;
+
+    @FXML
+    private Button viewTaskBtn;
+
+    @FXML
+    private Button editProfileBtn;
+
+    @FXML
+    private Button viewProfileBtn;
 
 
     private Image image;
@@ -398,6 +425,45 @@ public class EmployeeDashboardController implements Initializable {
         alert.showAndWait();
     }
 
+    public void profile()
+    {
+        connect = connectDb(); // Establish DB connection
+
+        try {
+            // Fetch the current user (assuming username is stored in `getData.username`)
+            String query = "SELECT * FROM employeesdata WHERE name = ?";
+            PreparedStatement preparedStatement = connect.prepareStatement(query);
+            preparedStatement.setString(1, getData.username.trim());
+            result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                // Display the data in the form fields
+                emp_view_name.setText(result.getString("name"));
+                emp_view_email.setText(result.getString("email"));
+                emp_view_phone.setText(result.getString("phone"));
+                emp_view_gender.setText(result.getString("gender"));
+                emp_view_position.setText(result.getString("position"));
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Error Message", "Employee not found.");
+                return;
+            }
+
+            // Update logic
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error Message", "An error occurred: " + e.getMessage());
+        } finally {
+            try {
+                if (result != null) result.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            // Do NOT close `connect` here as it's needed for the update action
+        }
+    }
+
 
     public void addEmployeeSearch() {
 
@@ -452,7 +518,7 @@ public class EmployeeDashboardController implements Initializable {
 
     }
     public void updateProfile() {
-        connect = connectDb(); // Assuming `connectDb()` establishes the DB connection
+        connect = connectDb(); // Establish DB connection
 
         try {
             // Fetch the current user (assuming username is stored in `getData.username`)
@@ -474,9 +540,8 @@ public class EmployeeDashboardController implements Initializable {
 
             // Update logic
             updateButton.setOnAction(event -> {
-                try {
-                    String updateQuery = "UPDATE employeesdata SET name = ?, email = ?, phone = ?, gender = ? WHERE name = ?";
-                    PreparedStatement updateStatement = connect.prepareStatement(updateQuery);
+                try (PreparedStatement updateStatement = connect.prepareStatement(
+                        "UPDATE employeesdata SET name = ?, email = ?, phone = ?, gender = ? WHERE name = ?")) {
 
                     // Get updated data from the form fields
                     String updatedName = emp_name.getText().trim();
@@ -516,10 +581,10 @@ public class EmployeeDashboardController implements Initializable {
         } finally {
             try {
                 if (result != null) result.close();
-                if (connect != null) connect.close();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+            // Do NOT close `connect` here as it's needed for the update action
         }
     }
 
@@ -537,62 +602,55 @@ public class EmployeeDashboardController implements Initializable {
     }
 
     public void switchForm(ActionEvent event) {
+
+        profile();
         // Reset visibility for all sections
-        request_for_leave.setVisible(false);
-        add_emp_salary.setVisible(false);
-        emp_salary_list.setVisible(false);
-        view_emp.setVisible(false);
-        admin_dashboard.setVisible(false);
-        emp_list.setVisible(false);
+        request_for_leave_screen.setVisible(false);
+        view_profile_screen.setVisible(false);
+        edit_profile_screen.setVisible(false);
+        view_task_screen.setVisible(false);
+        employee_dashboard.setVisible(false);
+        request_for_leave_screen.setVisible(false);
 
         // Reset 'active' class for all buttons
         resetActiveClasses();
 
         // Switch visibility and activate the appropriate button
-        if (event.getSource() == addEmployeeBtn) {
-            request_for_leave.setVisible(true);
-            activateButton(addEmployeeBtn);
+        if (event.getSource() == requestForLeaveBtn) {
+            request_for_leave_screen.setVisible(true);
+            activateButton(requestForLeaveBtn);
 
             addLeaveType();
             addEmployeeGender();
 
-
-
-        } else if (event.getSource() == employeeSalariesBtn) {
-            add_emp_salary.setVisible(true);
-            activateButton(employeeSalariesBtn);
+        } else if (event.getSource() == viewAttendence) {
+//            add_emp_salary.setVisible(true);
+            activateButton(viewAttendence);
         } else if (event.getSource() == dashboarbbtn) {
-            admin_dashboard.setVisible(true);
+            employee_dashboard.setVisible(true);
             activateButton(dashboarbbtn);
-        } else if (event.getSource() == EmployeeHolidaysBtn) {
-            activateButton(EmployeeHolidaysBtn);
-        } else if (event.getSource() == employeesalListBtn)
-        {
-            emp_salary_list.setVisible(true);
-            activateButton(employeesalListBtn);
-
-
+        } else if (event.getSource() == viewTaskBtn) {
+            view_task_screen.setVisible(true);
+            activateButton(viewTaskBtn);
+        } else if (event.getSource() == editProfileBtn) {
+            edit_profile_screen.setVisible(true);
+            activateButton(editProfileBtn);
+        } else if (event.getSource() == viewProfileBtn) {
+            view_profile_screen.setVisible(true);
+            activateButton(viewProfileBtn);
         }
-        else if (event.getSource() == employeeListBtn) {
-            emp_list.setVisible(true);
-            activateButton(employeeListBtn);
-        } else if (event.getSource() == employeeSalariesBtn) {
-            emp_salary_list.setVisible(true);
-            activateButton(employeeSalariesBtn);
-        } else if (event.getSource() == taskLListBtn) {
-            activateButton(taskLListBtn);
-        }
+
     }
 
     // Helper Method: Reset 'active' classes for all buttons
     private void resetActiveClasses() {
         dashboarbbtn.getStyleClass().remove("active");
-        addEmployeeBtn.getStyleClass().remove("active");
-        EmployeeHolidaysBtn.getStyleClass().remove("active");
-        employeesalListBtn.getStyleClass().remove("active");
-        employeeListBtn.getStyleClass().remove("active");
-        employeeSalariesBtn.getStyleClass().remove("active");
-        taskLListBtn.getStyleClass().remove("active");
+        viewAttendence.getStyleClass().remove("active");
+        viewTaskBtn.getStyleClass().remove("active");
+        requestForLeaveBtn.getStyleClass().remove("active");
+        editProfileBtn.getStyleClass().remove("active");
+        viewProfileBtn.getStyleClass().remove("active");
+//        taskLListBtn.getStyleClass().remove("active");
     }
 
     // Helper Method: Activate a specific button
@@ -634,6 +692,8 @@ public class EmployeeDashboardController implements Initializable {
         username.setText(getData.username);
         addLeaveType();
         addEmployeeGender();
+        updateProfile();
+        profile();
 
 
     }
