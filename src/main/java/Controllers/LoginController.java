@@ -2,6 +2,7 @@ package Controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -137,7 +138,6 @@ public class LoginController {
         String name = username.getText();
         String pass = password.getText();
 
-        // Check if fields are empty
         if (name.isEmpty() || pass.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Error Message");
@@ -146,9 +146,7 @@ public class LoginController {
             return;
         }
 
-        // SQL query to check credentials and role_id
         String sql = "SELECT role_id FROM users WHERE username = ? AND password = ?";
-
         try {
             con = connectDb();
 
@@ -168,11 +166,10 @@ public class LoginController {
             if (result.next()) {
                 int roleId = result.getInt("role_id");
                 String fxmlPath;
-
-                // Determine dashboard based on role_id
-                if (roleId == 1) { // Admin
+                System.out.println(roleId);
+                if (roleId == 1) {
                     fxmlPath = "/com/example/ems/View/AdminDashboard.fxml";
-                } else if (roleId == 2) { // Employee
+                } else if (roleId == 2) {
                     fxmlPath = "/com/example/ems/View/EmployeeDashboard.fxml";
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -184,13 +181,11 @@ public class LoginController {
 
                 getData.username = name;
 
-                // Success message
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText("Success Message");
                 alert.setContentText("Successfully Logged In");
                 alert.showAndWait();
 
-                // Redirect to the appropriate dashboard
                 signinbtn.getScene().getWindow().hide();
                 Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
                 Stage stage = new Stage();
@@ -200,7 +195,6 @@ public class LoginController {
                 root.setOnMouseReleased(event -> stage.setOpacity(1.0));
                 stage.show();
             } else {
-                // Wrong username or password
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Error Message");
                 alert.setContentText("Wrong Username or Password");

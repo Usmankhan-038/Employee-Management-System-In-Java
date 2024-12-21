@@ -227,8 +227,8 @@ public class DashboardController implements Initializable {
         {
             listP.add(text);
         }
-        ObservableList<String> observableList = FXCollections.observableList(listP);
-        emp_position.setItems(observableList);
+//        ObservableList<String> observableList = FXCollections.observableList(listP);
+//        emp_position.setItems(observableList);
     }
 
     public void addEmployeeGender ()
@@ -239,8 +239,8 @@ public class DashboardController implements Initializable {
         {
             listG.add(text);
         }
-        ObservableList<String> observableList = FXCollections.observableList(listG);
-        emp_gender.setItems(observableList);
+//        ObservableList<String> observableList = FXCollections.observableList(listG);
+//        emp_gender.setItems(observableList);
 
     }
     public void addEmployeeAdd() {

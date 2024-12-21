@@ -9,12 +9,12 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.InnerShadow?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
@@ -22,9 +22,9 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainForm" prefHeight="549.0" prefWidth="1001.0" style="-fx-background-color: #ccc2d9;" styleClass="layoutscreen" stylesheets="@style/DashboardDesign.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.DashboardController">
+<AnchorPane fx:id="mainForm" prefHeight="549.0" prefWidth="1001.0" style="-fx-background-color: #ccc2d9;" styleClass="layoutscreen" stylesheets="@style/DashboardDesign.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.EmployeeDashboardController">
     <children>
-        <AnchorPane layoutX="-30.0" prefHeight="567.0" prefWidth="258.0" styleClass="sidebarmenu" stylesheets="@style/DashboardDesign.css">
+        <AnchorPane layoutX="-25.0" layoutY="4.0" prefHeight="567.0" prefWidth="258.0" styleClass="sidebarmenu" stylesheets="@style/DashboardDesign.css">
             <children>
                 <!--            <FontAwesomeIcon fill="WHITE" fontSmoothingType="LCD" glyphName="USER" layoutX="35.0" layoutY="68.0" selectionEnd="1" selectionFill="#fffafa" size="40 rem" text="" />-->
                 <Label fx:id="username" layoutX="69.0" layoutY="37.0" text="Admin" textAlignment="CENTER" textFill="WHITE">
@@ -103,7 +103,7 @@
                         <String fx:value="sidebarmenubtn" />
                     </styleClass>
                 </Button>
-                <Button id="sidebardashboardbtn" fx:id="employeesalListBtn" layoutX="29.0" layoutY="311.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Update Personal Profile" textFill="WHITE">
+                <Button id="sidebardashboardbtn" fx:id="employeesalListBtn" layoutX="29.0" layoutY="311.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Edit Profile" textFill="WHITE">
                     <font>
                         <Font name="Arial Bold" size="18.0" />
                     </font>
@@ -135,74 +135,8 @@
                         <String fx:value="sidebarmenubtn" />
                     </styleClass>
                 </Button>
-                <Button id="sidebardashboardbtn" fx:id="EmployeeHolidaysBtn" layoutX="28.0" layoutY="360.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Employee Holidays" textFill="WHITE">
-                    <font>
-                        <Font name="Arial Bold" size="16.0" />
-                    </font>
-                    <padding>
-                        <Insets left="20.0" right="20.0" />
-                    </padding>
-                    <graphic>
-                        <FontAwesomeIcon fill="WHITE" glyphName="CALENDAR_ALT" size="1.5em" text="">
-                            <selectionFill>
-                                <LinearGradient endX="1.0" endY="1.0">
-                                    <stops>
-                                        <Stop>
-                                            <color>
-                                                <Color />
-                                            </color>
-                                        </Stop>
-                                        <Stop offset="1.0">
-                                            <color>
-                                                <Color red="1.0" green="1.0" blue="1.0" />
-                                            </color>
-                                        </Stop>
-                                    </stops>
-                                </LinearGradient>
-                            </selectionFill>
-                        </FontAwesomeIcon>
-                    </graphic>
-                    <styleClass>
-                        <String fx:value="empHolidays" />
-                        <String fx:value="sidebarmenubtn" />
-                    </styleClass>
-                </Button>
-                <Button id="sidebardashboardbtn" fx:id="taskLListBtn" layoutX="29.0" layoutY="409.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Task List" textFill="WHITE">
-                    <font>
-                        <Font name="Arial Bold" size="18.0" />
-                    </font>
-                    <padding>
-                        <Insets left="20.0" right="20.0" />
-                    </padding>
-                    <graphic>
-                        <FontAwesomeIcon fill="WHITE" glyphName="TASKS" size="1.5em">
-                            <selectionFill>
-                                <LinearGradient endX="1.0" endY="1.0">
-                                    <stops>
-                                        <Stop>
-                                            <color>
-                                                <Color />
-                                            </color>
-                                        </Stop>
-                                        <Stop offset="1.0">
-                                            <color>
-                                                <Color red="1.0" green="1.0" blue="1.0" />
-                                            </color>
-                                        </Stop>
-                                    </stops>
-                                </LinearGradient>
-                            </selectionFill>
-                        </FontAwesomeIcon>
-                    </graphic>
-                    <styleClass>
-                        <String fx:value="taskList" />
-                        <String fx:value="sidebarmenubtn" />
-                    </styleClass>
-                </Button>
                 <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="288.0" />
                 <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="340.0" />
-                <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="389.0" />
-                <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="439.0" />
                 <Button id="sidebardashboardbtn" fx:id="logout" layoutX="30.0" layoutY="514.0" mnemonicParsing="false" onAction="#logout" prefHeight="50.0" prefWidth="240.0" styleClass="login" stylesheets="@style/DashboardDesign.css" text="Logout" textFill="WHITE">
                     <font>
                         <Font name="Arial Bold" size="18.0" />
@@ -375,28 +309,6 @@
                 <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="111.0" layoutY="45.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="emp_list" layoutX="285.0" layoutY="58.0" prefHeight="507.0" prefWidth="722.0" visible="false">
-            <children>
-                <TableView fx:id="emp_tableview" layoutX="13.0" layoutY="74.0" onKeyTyped="#addEmployeeSearch" prefHeight="421.0" prefWidth="688.0">
-                    <columns>
-                        <TableColumn fx:id="emp_sno_col" prefWidth="56.66668701171875" text="S No" />
-                        <TableColumn fx:id="emp_employeeID_col" prefWidth="102.66668701171875" text="Employee ID" />
-                        <TableColumn fx:id="emp_empName_col" prefWidth="132.66665649414062" text="Employee Name" />
-                        <TableColumn fx:id="emp_phoneNumber_col" prefWidth="127.99993896484375" text="Phone Number" />
-                        <TableColumn fx:id="emp_email_col" prefWidth="178.6666259765625" style="-fx-text-alignment: center;" styleClass="tableview" text="Email" />
-                        <TableColumn fx:id="emp_action_col" prefWidth="90.6666259765625" style="-fx-text-alignment: center;" text="Action" />
-                    </columns>
-                </TableView>
-                <Label layoutX="18.0" layoutY="-2.0" text="Employee List">
-                    <font>
-                        <Font name="System Bold" size="36.0" />
-                    </font>
-                </Label>
-                <TextField fx:id="emp_sal_search1" layoutX="467.0" layoutY="28.0" onKeyTyped="#addEmployeeSearch" prefHeight="25.0" prefWidth="234.0" promptText="Search" style="-fx-padding: 5 10 5 25;" styleClass="searchfield" />
-                <FontAwesomeIcon glyphName="SEARCH" layoutX="473.0" layoutY="48.0" size="1.3em" />
-                <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="119.0" layoutY="51.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
-            </children>
-        </AnchorPane>
         <AnchorPane fx:id="view_emp" layoutX="263.0" layoutY="38.0" prefHeight="507.0" prefWidth="722.0" visible="false">
             <children>
                 <Label graphicTextGap="0.0" layoutX="15.0" layoutY="2.0" text="View Employee">
@@ -526,39 +438,39 @@
                 <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="117.0" layoutY="330.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="add_emp_salary" layoutX="273.0" layoutY="44.0" prefHeight="507.0" prefWidth="722.0" visible="false">
+        <AnchorPane fx:id="add_emp_salary" layoutX="273.0" layoutY="44.0" prefHeight="507.0" prefWidth="722.0">
             <children>
-                <Label layoutX="14.0" layoutY="14.0" text="Add Employee Salary">
+                <Label layoutX="14.0" layoutY="14.0" text="Edit Profile">
                     <font>
                         <Font name="System Bold" size="36.0" />
                     </font>
                 </Label>
-                <Label layoutX="19.0" layoutY="105.0" styleClass="fieldlabel" text="Name">
+                <Label layoutX="366.0" layoutY="157.0" styleClass="fieldlabel" text="Gender">
                     <font>
                         <Font name="Arial" size="18.0" />
                     </font>
                 </Label>
-                <TextField fx:id="employee_sal_phone" layoutX="365.0" layoutY="130.0" prefHeight="35.0" prefWidth="340.0" promptText="Phone Number" styleClass="field" />
-                <Label layoutX="365.0" layoutY="105.0" styleClass="fieldlabel" text="Phone Number">
-                    <font>
-                        <Font name="Arial" size="18.0" />
-                    </font>
-                </Label>
-                <Label layoutX="19.0" layoutY="176.0" styleClass="fieldlabel" text="Email">
-                    <font>
-                        <Font name="Arial" size="18.0" />
-                    </font>
-                </Label>
-                <TextField fx:id="employee_sal_email" layoutX="18.0" layoutY="201.0" prefHeight="35.0" prefWidth="340.0" promptText="email" styleClass="field" />
-                <Button fx:id="add_employee_sal" layoutX="14.0" layoutY="445.0" mnemonicParsing="false" onAction="#addEmployeeSalAdd" prefHeight="35.0" prefWidth="240.0" styleClass="btn" text="Add Employee Salary" />
-                <TextField fx:id="employee_sal_salary" layoutX="365.0" layoutY="200.0" prefHeight="35.0" prefWidth="340.0" promptText="Salary" styleClass="field" />
-                <Label layoutX="365.0" layoutY="176.0" styleClass="fieldlabel" text="Salary">
-                    <font>
-                        <Font name="Arial" size="18.0" />
-                    </font>
-                </Label>
+                <Button fx:id="updateButton" layoutX="14.0" layoutY="445.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="240.0" styleClass="btn" text="Update Profile" />
                 <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="114.0" layoutY="65.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
-                <ComboBox fx:id="emp_sal_name" layoutX="18.0" layoutY="130.0" onAction="#addEmployeeName" onInputMethodTextChanged="#addEmployeeSalaryData" prefHeight="35.0" prefWidth="340.0" promptText="Select Name" styleClass="field" />
+                <ComboBox fx:id="emp_gender" layoutX="366.0" layoutY="181.0" onAction="#addEmployeeGender" prefHeight="35.0" prefWidth="340.0" promptText="Select Gender" styleClass="field" />
+            <TextField fx:id="emp_name" layoutX="14.0" layoutY="109.0" prefHeight="35.0" prefWidth="340.0" promptText="Name" styleClass="field" />
+            <Label layoutX="14.0" layoutY="85.0" styleClass="fieldlabel" text="Name">
+               <font>
+                  <Font name="Arial" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="emp_phone" layoutX="366.0" layoutY="109.0" prefHeight="35.0" prefWidth="340.0" promptText="Phone" styleClass="field" />
+            <Label layoutX="374.0" layoutY="85.0" styleClass="fieldlabel" text="Phone">
+               <font>
+                  <Font name="Arial" size="18.0" />
+               </font>
+            </Label>
+            <TextField fx:id="emp_email" layoutX="14.0" layoutY="181.0" prefHeight="35.0" prefWidth="340.0" promptText="Email" styleClass="field" />
+            <Label layoutX="14.0" layoutY="157.0" styleClass="fieldlabel" text="Email">
+               <font>
+                  <Font name="Arial" size="18.0" />
+               </font>
+            </Label>
             </children>
         </AnchorPane>
         <AnchorPane fx:id="emp_salary_list" layoutX="275.0" layoutY="48.0" prefHeight="507.0" prefWidth="722.0" visible="false">
@@ -582,7 +494,7 @@
                 <FontAwesomeIcon glyphName="SEARCH" layoutX="469.0" layoutY="46.0" size="1.3em" />
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="add_emp" layoutX="263.0" layoutY="34.0" prefHeight="507.0" prefWidth="722.0" styleClass="fieldlabel">
+        <AnchorPane fx:id="request_for_leave" layoutX="263.0" layoutY="34.0" prefHeight="507.0" prefWidth="722.0" styleClass="fieldlabel" visible="false">
             <children>
                 <Label layoutX="14.0" layoutY="14.0" text="Request For Leave">
                     <font>
@@ -594,47 +506,21 @@
                         <Font name="Arial" size="18.0" />
                     </font>
                 </Label>
-                <TextField fx:id="emp_name" layoutX="14.0" layoutY="240.0" prefHeight="35.0" prefWidth="340.0" promptText="Name" styleClass="field" />
-                <TextField fx:id="emp_phoneNo" layoutX="372.0" layoutY="305.0" prefHeight="35.0" prefWidth="340.0" promptText="Phone Number" styleClass="field" />
-                <Label layoutX="373.0" layoutY="284.0" styleClass="fieldlabel" text="Phone Number">
+                <Label layoutX="378.0" layoutY="72.0" styleClass="fieldlabel" text="Leave Date">
                     <font>
                         <Font name="Arial" size="18.0" />
                     </font>
                 </Label>
-                <Label layoutX="15.0" layoutY="143.0" styleClass="fieldlabel" text="Leave Date">
+                <ComboBox fx:id="emp_leave_type" layoutX="14.0" layoutY="93.0" onAction="#addLeaveType" prefHeight="35.0" prefWidth="340.0" promptText="Select Leave Type" styleClass="field" />
+                <Label layoutX="15.0" layoutY="135.0" styleClass="fieldlabel" text="Reason For Leave">
                     <font>
                         <Font name="Arial" size="18.0" />
                     </font>
                 </Label>
-                <TextField fx:id="emp_email" layoutX="14.0" layoutY="164.0" prefHeight="35.0" prefWidth="340.0" promptText="email" styleClass="field" />
-                <Label layoutX="17.0" layoutY="284.0" styleClass="fieldlabel" text="Gender">
-                    <font>
-                        <Font name="Arial" size="18.0" />
-                    </font>
-                </Label>
-                <ComboBox fx:id="emp_gender" layoutX="14.0" layoutY="305.0" onAction="#addEmployeeGender" prefHeight="35.0" prefWidth="340.0" promptText="Select Gender" styleClass="searchfield" />
-                <ComboBox fx:id="emp_position" layoutX="14.0" layoutY="93.0" onAction="#addEmployeePosition" prefHeight="35.0" prefWidth="340.0" promptText="Select Position" styleClass="field" />
-                <Label layoutX="15.0" layoutY="214.0" styleClass="fieldlabel" text="Reason For Leave">
-                    <font>
-                        <Font name="Arial" size="18.0" />
-                    </font>
-                </Label>
-                <AnchorPane fx:id="add_emp_image" layoutX="373.0" layoutY="85.0" prefHeight="191.0" prefWidth="340.0">
-                    <children>
-                        <Button fx:id="emp_upload_photo" layoutX="50.0" layoutY="145.0" mnemonicParsing="false" onMouseClicked="#addEmployeeInsertImage" prefHeight="35.0" prefWidth="240.0" styleClass="btn" text="Upload Photo" />
-                        <ImageView fx:id="add_emp_image_view" fitHeight="138.0" fitWidth="325.0" layoutX="8.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
-                            <effect>
-                                <InnerShadow>
-                                    <color>
-                                        <Color red="0.4912280738353729" green="0.04093567281961441" blue="0.04093567281961441" />
-                                    </color>
-                                </InnerShadow>
-                            </effect>
-                        </ImageView>
-                    </children>
-                </AnchorPane>
-                <Button fx:id="add_emp_btn" layoutX="14.0" layoutY="445.0" mnemonicParsing="false" onAction="#addEmployeeAdd" prefHeight="35.0" prefWidth="240.0" styleClass="btn" text="Request For Leave" />
+                <Button fx:id="emp_request_for_leave" layoutX="14.0" layoutY="445.0" mnemonicParsing="false" onAction="#requestForLeave" prefHeight="35.0" prefWidth="240.0" styleClass="btn" text="Request For Leave" />
                 <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="114.0" layoutY="66.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
+            <DatePicker fx:id="emp_leave_date" layoutX="378.0" layoutY="93.0" prefHeight="35.0" prefWidth="340.0" />
+            <TextArea fx:id="emp_reason_leave" layoutX="15.0" layoutY="164.0" prefHeight="115.0" prefWidth="702.0" promptText="Reason For Leave" />
             </children>
         </AnchorPane>
         <Button fx:id="minimizeBtn" layoutX="935.0" mnemonicParsing="false" onAction="#minimize" styleClass="close" stylesheets="@style/DashboardDesign.css">

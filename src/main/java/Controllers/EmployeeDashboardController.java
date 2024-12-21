@@ -12,22 +12,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javafx.scene.image.ImageView;
 //import java.lang.classfile.Label;
 import java.beans.Statement;
-import java.io.File;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 
 import static Model.database.connectDb;
@@ -43,8 +39,8 @@ public class EmployeeDashboardController implements Initializable {
     @FXML
     private AnchorPane add_emp;
 
-    @FXML
-    private Button add_emp_btn;
+//    @FXML
+//    private Button add_emp_btn;
 
     @FXML
     private AnchorPane add_emp_image;
@@ -65,6 +61,9 @@ public class EmployeeDashboardController implements Initializable {
     private Button dashboarbbtn;
 
     @FXML
+    private Button updateButton;
+
+    @FXML
     private Label dashboard_totalEmployee_Count;
 
     @FXML
@@ -78,6 +77,9 @@ public class EmployeeDashboardController implements Initializable {
 
     @FXML
     private TextField emp_email;
+
+    @FXML
+    private TextField emp_phone;
 
     @FXML
     private TableColumn<EmployeeData, String> emp_email_col;
@@ -101,7 +103,7 @@ public class EmployeeDashboardController implements Initializable {
     private TableColumn<EmployeeData, String> emp_phoneNumber_col;
 
     @FXML
-    private ComboBox<String> emp_position;
+    private ComboBox<String> emp_leave_type;
 
     @FXML
     private ComboBox<String> emp_sal_name;
@@ -205,6 +207,20 @@ public class EmployeeDashboardController implements Initializable {
     @FXML
     private Label emp_view_position;
 
+    @FXML
+    private DatePicker emp_leave_date;
+
+
+    @FXML
+    private TextArea emp_reason_leave;
+
+    @FXML
+    private Button emp_request_for_leave;
+
+    @FXML
+    private AnchorPane request_for_leave;
+
+
 
     private Image image;
 
@@ -214,131 +230,115 @@ public class EmployeeDashboardController implements Initializable {
     private ResultSet result;
 
 
-    private String[] positions = {"Manager", "Supervisor", "Employee"};
-    private String[] gender = {"male", "female"};
 
-    public void addEmployeePosition ()
+//    public void addEmployeeAdd() {
+//        String sql = "INSERT INTO employeesdata(name, email, phone, gender, position) VALUES(?,?,?,?,?)";
+//        connect = connectDb();
+//
+//        try {
+//            Alert alert;
+//
+//
+//                alert = new Alert(Alert.AlertType.ERROR);
+//                alert.setHeaderText("Error Message");
+//                alert.setContentText("Please fill in all fields");
+//                alert.showAndWait();
+//                return;
+//            }
+//
+//            String check = "SELECT * FROM employeesdata WHERE email = ?";
+//            PreparedStatement preparedStatement = connect.prepareStatement(check);
+//            preparedStatement.setString(1, emp_email.getText());
+//            ResultSet result = preparedStatement.executeQuery();
+//
+//            if (result.next()) {
+//                alert = new Alert(Alert.AlertType.ERROR);
+//                alert.setHeaderText("Error Message");
+//                alert.setContentText("Employee with email already exists");
+//                alert.showAndWait();
+//                return;
+//            }
+//
+//            // Saving the employee details
+//            prepare = connect.prepareStatement(sql);
+//            prepare.setString(1, emp_name.getText());
+//            prepare.setString(2, emp_email.getText());
+//            prepare.setString(3, emp_phoneNo.getText());
+//            prepare.setString(4, (String) emp_gender.getSelectionModel().getSelectedItem());
+//            prepare.setString(5, (String) emp_position.getSelectionModel().getSelectedItem());
+//            prepare.executeUpdate();
+//
+//            // Fetching the id of the employee
+//            sql = "SELECT id FROM employeesdata WHERE email = ?";
+//            prepare = connect.prepareStatement(sql);
+//            prepare.setString(1, emp_email.getText());
+//            result = prepare.executeQuery();
+//
+//            int id = 0;
+//            if (result.next()) {
+//                id = result.getInt("id");
+//            } else {
+//                throw new SQLException("Employee ID not found after insertion");
+//            }
+//
+//            // Saving the image of the employee
+//            String uri = getData.path.replace("\\", "\\\\");
+//            String imageSql = "INSERT INTO documents(belong_id, belong_name, original_file_link, belong_type) VALUES(?,?,?,?)";
+//            prepare = connect.prepareStatement(imageSql);
+//            prepare.setInt(1, id);
+//            prepare.setString(2, "employee");
+//            prepare.setString(3, uri);
+//            prepare.setString(4, "image");
+//            prepare.executeUpdate();
+//
+//            alert = new Alert(Alert.AlertType.INFORMATION);
+//            alert.setHeaderText("Information Message");
+//            alert.setContentText("Employee added successfully");
+//            alert.showAndWait();
+////            addEmployeeshowList();
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    private String[] leaveType = {"Annual Leave", "Sick Leave", "Casual Leave", "Maternity Leave", "Paternity Leave", "Study Leave", "Unpaid Leave", "Medical Leave","Compensatory Leave", "Other"};
+
+    public void addLeaveType ()
     {
         List<String> listP = new ArrayList<String>();
 
-        for(String text : positions)
+        for(String text : leaveType)
         {
             listP.add(text);
         }
         ObservableList<String> observableList = FXCollections.observableList(listP);
-        emp_position.setItems(observableList);
+        emp_leave_type.setItems(observableList);
     }
-
-    public void addEmployeeGender ()
-    {
-        List<String> listG = new ArrayList<String>();
-
-        for(String text : gender)
-        {
-            listG.add(text);
-        }
-        ObservableList<String> observableList = FXCollections.observableList(listG);
-        emp_gender.setItems(observableList);
-
-    }
-    public void addEmployeeAdd() {
-        String sql = "INSERT INTO employeesdata(name, email, phone, gender, position) VALUES(?,?,?,?,?)";
-        connect = connectDb();
-
-        try {
-            Alert alert;
-            if (emp_name.getText().isEmpty() || emp_email.getText().isEmpty() || emp_phoneNo.getText().isEmpty() ||
-                    emp_gender.getSelectionModel().getSelectedItem() == null || emp_position.getSelectionModel().getSelectedItem() == null) {
-
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText("Error Message");
-                alert.setContentText("Please fill in all fields");
-                alert.showAndWait();
-                return;
-            }
-
-            String check = "SELECT * FROM employeesdata WHERE email = ?";
-            PreparedStatement preparedStatement = connect.prepareStatement(check);
-            preparedStatement.setString(1, emp_email.getText());
-            ResultSet result = preparedStatement.executeQuery();
-
-            if (result.next()) {
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText("Error Message");
-                alert.setContentText("Employee with email already exists");
-                alert.showAndWait();
-                return;
-            }
-
-            // Saving the employee details
-            prepare = connect.prepareStatement(sql);
-            prepare.setString(1, emp_name.getText());
-            prepare.setString(2, emp_email.getText());
-            prepare.setString(3, emp_phoneNo.getText());
-            prepare.setString(4, (String) emp_gender.getSelectionModel().getSelectedItem());
-            prepare.setString(5, (String) emp_position.getSelectionModel().getSelectedItem());
-            prepare.executeUpdate();
-
-            // Fetching the id of the employee
-            sql = "SELECT id FROM employeesdata WHERE email = ?";
-            prepare = connect.prepareStatement(sql);
-            prepare.setString(1, emp_email.getText());
-            result = prepare.executeQuery();
-
-            int id = 0;
-            if (result.next()) {
-                id = result.getInt("id");
-            } else {
-                throw new SQLException("Employee ID not found after insertion");
-            }
-
-            // Saving the image of the employee
-            String uri = getData.path.replace("\\", "\\\\");
-            String imageSql = "INSERT INTO documents(belong_id, belong_name, original_file_link, belong_type) VALUES(?,?,?,?)";
-            prepare = connect.prepareStatement(imageSql);
-            prepare.setInt(1, id);
-            prepare.setString(2, "employee");
-            prepare.setString(3, uri);
-            prepare.setString(4, "image");
-            prepare.executeUpdate();
-
-            alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Information Message");
-            alert.setContentText("Employee added successfully");
-            alert.showAndWait();
-            addEmployeeshowList();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
     private ArrayList<String> name;
-    public void addEmployeeSalAdd() {
+    public void requestForLeave() {
         connect = connectDb();
+
         String selectQuery = "SELECT id FROM employeesdata WHERE name = ?";
-
         try {
-            // Ensure an employee name is selected
-            if (emp_sal_name.getSelectionModel().getSelectedItem() == null) {
-                showAlert(Alert.AlertType.ERROR, "Error Message", "Please select an employee name.");
+            // Debugging: Check if emp_leave_date is initialized
+            if (emp_leave_date == null) {
+                System.out.println("emp_leave_date is not initialized");
+                showAlert(Alert.AlertType.ERROR, "Error Message", "DatePicker is not properly connected.");
                 return;
             }
 
-            // Ensure all fields are filled
-            if (employee_sal_phone.getText().isEmpty() ||
-                    employee_sal_email.getText().isEmpty() ||
-                    employee_sal_salary.getText().isEmpty()) {
-
-                showAlert(Alert.AlertType.ERROR, "Error Message", "Please fill in all fields.");
+            // Check if DatePicker value is null
+            LocalDate leaveDate = emp_leave_date.getValue();
+            if (leaveDate == null) {
+                showAlert(Alert.AlertType.ERROR, "Error Message", "Please select a valid leave date.");
                 return;
             }
 
-            // Fetch employee ID based on the selected name
+            // Fetch employee ID
             PreparedStatement preparedStatement = connect.prepareStatement(selectQuery);
-            preparedStatement.setString(1, emp_sal_name.getSelectionModel().getSelectedItem().trim());
-            ResultSet result = preparedStatement.executeQuery();
+            preparedStatement.setString(1, getData.username.trim());
+            result = preparedStatement.executeQuery();
 
             if (!result.next()) {
                 showAlert(Alert.AlertType.ERROR, "Error Message", "Employee not found in the database.");
@@ -347,32 +347,35 @@ public class EmployeeDashboardController implements Initializable {
 
             String employeeId = result.getString("id");
 
-            // Check if salary for the employee already exists
-            String checkQuery = "SELECT * FROM salaries_and_taxes WHERE employee_id = ?";
-            preparedStatement = connect.prepareStatement(checkQuery);
-            preparedStatement.setString(1, employeeId);
-            ResultSet resultCheck = preparedStatement.executeQuery();
-
-            if (resultCheck.next()) {
-                showAlert(Alert.AlertType.ERROR, "Error Message", "Employee salary already exists.");
-                return;
-            }
-
-            // Insert salary and taxes for the employee
-            String salaryQuery = "INSERT INTO salaries_and_taxes(employee_id, salary) VALUES(?, ?)";
+            // Insert leave details
+            String salaryQuery = "INSERT INTO leaves (employee_id, leave_type, leave_date, reason) VALUES(?, ?, ?, ?)";
             preparedStatement = connect.prepareStatement(salaryQuery);
             preparedStatement.setString(1, employeeId);
-            preparedStatement.setString(2, employee_sal_salary.getText().trim());
+
+            // Check if leave type is selected
+            if (emp_leave_type.getSelectionModel().getSelectedItem() == null) {
+                showAlert(Alert.AlertType.ERROR, "Error Message", "Please select a leave type.");
+                return;
+            }
+            preparedStatement.setString(2, emp_leave_type.getSelectionModel().getSelectedItem().trim());
+
+            // Set leave date
+            preparedStatement.setString(3, leaveDate.toString());
+
+            // Check if reason is valid
+            String reason = emp_reason_leave.getText();
+            if (reason == null || reason.trim().isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Error Message", "Please provide a reason for the leave.");
+                return;
+            }
+            preparedStatement.setString(4, reason.trim());
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
-                showAlert(Alert.AlertType.INFORMATION, "Information Message", "Employee salary added successfully!");
+                showAlert(Alert.AlertType.INFORMATION, "Information Message", "Employee leave added successfully!");
             } else {
-                showAlert(Alert.AlertType.ERROR, "Error Message", "Failed to add employee salary.");
+                showAlert(Alert.AlertType.ERROR, "Error Message", "Failed to add employee leave.");
             }
-
-            // Refresh employee list
-            addEmployeeSalaryshowList();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -396,78 +399,123 @@ public class EmployeeDashboardController implements Initializable {
     }
 
 
-    public void addEmployeeInsertImage(){
-        FileChooser open = new FileChooser();
-        open.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Images", "*.jpg", "*.png"));
-        File file = open.showOpenDialog(mainForm.getScene().getWindow());
+    public void addEmployeeSearch() {
 
-        if(file != null){
-            getData.path = file.getAbsolutePath();
-            image = new Image(file.toURI().toString(), 100, 150, true, true);
-            add_emp_image_view.setImage(image);
+//        FilteredList<EmployeeData> filter = new FilteredList<>(addEmployeeList, e -> true);
+//        emp_sal_search1.textProperty().addListener((Observable, oldValue, newValue) -> {
+//
+//            filter.setPredicate(predicateEmployeeData -> {
+//
+//                if (newValue == null || newValue.isEmpty()) {
+//                    return true;
+//                }
+//
+//                String searchKey = newValue.toLowerCase();
+//
+//                if (predicateEmployeeData.getId().contains(searchKey)) {
+//                    System.out.println(predicateEmployeeData.getId());
+//
+//                    return true;
+//                } else if (predicateEmployeeData.getName().toLowerCase().contains(searchKey)) {
+//                    return true;
+//                } else if (predicateEmployeeData.getEmail().toLowerCase().contains(searchKey)) {
+//                    return true;
+//
+//                } else if (predicateEmployeeData.getPhone().toLowerCase().contains(searchKey)) {
+//                    return true;
+//                }else {
+//                    System.out.println("No match found");
+//                    return false;
+//
+//                }
+//            });
+//        });
+//        System.out.println(filter);
+//        filter.forEach(System.out::println);
+//
+//        SortedList<EmployeeData> sortList = new SortedList<>(filter);
+//
+//        sortList.comparatorProperty().bind(emp_tableview.comparatorProperty());
+//        emp_tableview.setItems(sortList);
+    }
+    private final String[] gender = {"male", "female"};
+    public void addEmployeeGender ()
+    {
+        List<String> listG = new ArrayList<String>();
+
+        for(String text : gender)
+        {
+            listG.add(text);
         }
+        ObservableList<String> observableList = FXCollections.observableList(listG);
+        emp_gender.setItems(observableList);
 
     }
-
-    public void addEmployeeName() {
-        ObservableList<String> name = FXCollections.observableArrayList();
+    public void updateProfile() {
+        connect = connectDb(); // Assuming `connectDb()` establishes the DB connection
 
         try {
-            String sql = "SELECT name FROM employeesdata";
-            connect = connectDb();
+            // Fetch the current user (assuming username is stored in `getData.username`)
+            String query = "SELECT * FROM employeesdata WHERE name = ?";
+            PreparedStatement preparedStatement = connect.prepareStatement(query);
+            preparedStatement.setString(1, getData.username.trim());
+            result = preparedStatement.executeQuery();
 
-            if (connect != null) {
-                prepare = connect.prepareStatement(sql);
-                result = prepare.executeQuery();
-
-                while (result.next()) {
-                    name.add(result.getString("name"));
-                    System.out.println("Fetched Name: " + result.getString("name")); // Debug log
-                }
-
-                // Bind the list to the ComboBox.
-                emp_sal_name.setItems(name);
-
-                // Add listener to ComboBox to handle selection changes
-                emp_sal_name.setOnAction(event -> {
-                    addEmployeeSalaryData();
-                });
+            if (result.next()) {
+                // Display the data in the form fields
+                emp_name.setText(result.getString("name")); // Assuming TextField for Name
+                emp_email.setText(result.getString("email")); // Assuming TextField for Email
+                emp_phone.setText(result.getString("phone")); // Assuming TextField for Phone
+                emp_gender.getSelectionModel().select(result.getString("gender")); // Assuming ComboBox for Gender
             } else {
-                System.err.println("Database connection failed.");
+                showAlert(Alert.AlertType.ERROR, "Error Message", "Employee not found.");
+                return;
             }
+
+            // Update logic
+            updateButton.setOnAction(event -> {
+                try {
+                    String updateQuery = "UPDATE employeesdata SET name = ?, email = ?, phone = ?, gender = ? WHERE name = ?";
+                    PreparedStatement updateStatement = connect.prepareStatement(updateQuery);
+
+                    // Get updated data from the form fields
+                    String updatedName = emp_name.getText().trim();
+                    String updatedEmail = emp_email.getText().trim();
+                    String updatedPhone = emp_phone.getText().trim();
+                    String updatedGender = emp_gender.getSelectionModel().getSelectedItem();
+
+                    // Validate inputs
+                    if (updatedName.isEmpty() || updatedEmail.isEmpty() || updatedPhone.isEmpty() || updatedGender == null) {
+                        showAlert(Alert.AlertType.ERROR, "Error Message", "All fields must be filled.");
+                        return;
+                    }
+
+                    // Bind parameters
+                    updateStatement.setString(1, updatedName);
+                    updateStatement.setString(2, updatedEmail);
+                    updateStatement.setString(3, updatedPhone);
+                    updateStatement.setString(4, updatedGender);
+                    updateStatement.setString(5, getData.username.trim()); // Match the original username
+
+                    int rowsUpdated = updateStatement.executeUpdate();
+                    if (rowsUpdated > 0) {
+                        showAlert(Alert.AlertType.INFORMATION, "Success", "Profile updated successfully.");
+                    } else {
+                        showAlert(Alert.AlertType.ERROR, "Error Message", "Failed to update profile.");
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    showAlert(Alert.AlertType.ERROR, "Error Message", "An error occurred: " + e.getMessage());
+                }
+            });
+
         } catch (Exception e) {
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error Message", "An error occurred: " + e.getMessage());
         } finally {
             try {
                 if (result != null) result.close();
-                if (prepare != null) prepare.close();
-                if (connect != null) connect.close();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    public void addEmployeeSalaryData() {
-        try {
-            connect = connectDb();
-            String selectQuery = "SELECT * FROM employeesdata WHERE name = ?";
-            PreparedStatement preparedStatement = connect.prepareStatement(selectQuery);
-            preparedStatement.setString(1, emp_sal_name.getSelectionModel().getSelectedItem()); // Selected name from ComboBox
-            ResultSet result = preparedStatement.executeQuery();
-
-            if (result.next()) {
-                employee_sal_phone.setText(result.getString("phone"));
-                employee_sal_email.setText(result.getString("email"));
-                employee_sal_email.setDisable(true);
-                employee_sal_phone.setDisable(true);
-            } else {
-//                showAlert(Alert.AlertType.ERROR, "Error Message", "Employee not found.");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
                 if (connect != null) connect.close();
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -490,7 +538,7 @@ public class EmployeeDashboardController implements Initializable {
 
     public void switchForm(ActionEvent event) {
         // Reset visibility for all sections
-        add_emp.setVisible(false);
+        request_for_leave.setVisible(false);
         add_emp_salary.setVisible(false);
         emp_salary_list.setVisible(false);
         view_emp.setVisible(false);
@@ -502,12 +550,12 @@ public class EmployeeDashboardController implements Initializable {
 
         // Switch visibility and activate the appropriate button
         if (event.getSource() == addEmployeeBtn) {
-            add_emp.setVisible(true);
+            request_for_leave.setVisible(true);
             activateButton(addEmployeeBtn);
 
-            addEmployeePosition();
+            addLeaveType();
             addEmployeeGender();
-            addEmployeeSearch();
+
 
 
         } else if (event.getSource() == employeeSalariesBtn) {
@@ -553,238 +601,6 @@ public class EmployeeDashboardController implements Initializable {
             button.getStyleClass().add("active");
         }
     }
-    private double x = 0;
-    private double y = 0;
-
-
-    public void displayUsername()
-    {
-        username.setText(getData.username);
-
-    }
-
-    public ObservableList<EmployeeData> addEmployeeSalListdata() {
-        ObservableList<EmployeeData> listData = FXCollections.observableArrayList();
-
-        // Correct SQL Query
-        String sql = "SELECT S.employee_id, S.salary, E.name, E.phone, E.position " +
-                "FROM salaries_and_taxes AS S " +
-                "LEFT JOIN employeesdata AS E ON S.employee_id = E.id";
-
-        connect = connectDb(); // Assuming connectDb() establishes the connection.
-
-        try {
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
-
-            int sno = 1; // Serial Number
-            while (result.next()) {
-                HashMap<String, String> employee = new HashMap<>();
-
-                // Format Employee ID
-                String empId = "";
-                String employeeId = result.getString("employee_id");
-                if (employeeId != null && !employeeId.isEmpty()) {
-                    empId = (Integer.parseInt(employeeId) < 10) ?
-                            "EMP-0" + employeeId :
-                            "EMP-" + employeeId;
-                }
-
-                // Populate Employee Data
-                employee.put("sno", String.valueOf(sno++));
-                employee.put("id", empId);
-                employee.put("name", result.getString("name") != null ? result.getString("name") : "N/A");
-                employee.put("phone", result.getString("phone") != null ? result.getString("phone") : "N/A");
-                employee.put("position", result.getString("position") != null ? result.getString("position") : "N/A");
-                employee.put("salary", String.format("%.2f", result.getDouble("salary")));
-
-                // Add to EmployeeData object
-                EmployeeData employeeD = new EmployeeData(employee);
-                listData.add(employeeD);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            // Close resources
-            try {
-                if (result != null) result.close();
-                if (prepare != null) prepare.close();
-                if (connect != null) connect.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return listData;
-    }
-
-    private ObservableList<EmployeeData> addEmployeeSalList = FXCollections.observableArrayList();
-    public void addEmployeeSalaryshowList() {
-        addEmployeeSalList = addEmployeeSalListdata();
-
-        emp_sal_sno_col.setCellValueFactory(new PropertyValueFactory<>("sno"));
-        emp_sal_employeeID_col.setCellValueFactory(new PropertyValueFactory<>("id"));
-        emp_sal_empName_col.setCellValueFactory(new PropertyValueFactory<>("name"));
-        emp_sal_phoneNumber_col.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        emp_sal_position_col.setCellValueFactory(new PropertyValueFactory<>("position"));
-        emp_sal_salary_col.setCellValueFactory(new PropertyValueFactory<>("salary"));
-
-
-
-
-        emp_sal_tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        emp_email_col.setPrefWidth(250);
-        emp_employeeID_col.setPrefWidth(50);
-        emp_sal_tableview.setItems(addEmployeeSalList);
-
-        System.out.println(addEmployeeList);
-    }
-
-    public ObservableList<EmployeeData> addEmployeeListdata() {
-        ObservableList<EmployeeData> listData = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM employeesdata";
-        connect = connectDb();
-
-        try {
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
-
-            int sno = 1;
-            String empId = "";
-            while (result.next()) {
-                HashMap<String, String> employee = new HashMap<>();
-                if(!(result.getString("id").isEmpty()))
-                {
-                    if (Integer.parseInt(result.getString("id")) < 10) {
-                        empId = "EMP-0" + result.getString("id");
-                    } else {
-                        empId = "EMP-"+result.getString("id");
-                    }
-                }
-
-                employee.put("sno", String.valueOf(sno++));
-                employee.put("id", result.getString("id"));
-                employee.put("name", result.getString("name"));
-                employee.put("email", result.getString("email"));
-                employee.put("phone", result.getString("phone"));
-                employee.put("position", result.getString("position"));
-                employee.put("gender", result.getString("gender"));
-                employee.put("action", "View");
-
-                EmployeeData employeeD = new EmployeeData(employee);
-                listData.add(employeeD);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (result != null) result.close();
-                if (prepare != null) prepare.close();
-                if (connect != null) connect.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return listData;
-    }
-    private ObservableList<EmployeeData> addEmployeeList = FXCollections.observableArrayList();
-    public void addEmployeeshowList() {
-        addEmployeeList = addEmployeeListdata();
-
-        emp_sno_col.setCellValueFactory(new PropertyValueFactory<>("sno"));
-        emp_employeeID_col.setCellValueFactory(new PropertyValueFactory<>("id"));
-        emp_empName_col.setCellValueFactory(new PropertyValueFactory<>("name"));
-        emp_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
-        emp_phoneNumber_col.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        emp_action_col.setCellFactory(tc -> new TableCell<EmployeeData, String>() {
-            private final Button btnView = new Button("View");
-            private final Button btnEdit = new Button("Edit");
-            private final Button btndelete = new Button("Delete");
-            private final HBox actionButtons = new HBox(12); // Adjust spacing between buttons
-
-            {
-                actionButtons.getChildren().addAll(btnView, btnEdit);
-            }
-
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    EmployeeData employee = getTableView().getItems().get(getIndex());
-
-                    btnView.setOnAction(e -> {
-                        System.out.println("View details for: " + employee.getName());
-                        emp_view_name.setText(employee.getName());
-                        emp_view_email.setText(employee.getEmail());
-                        emp_view_phone.setText(employee.getPhone());
-                        emp_view_position.setText(employee.getPosition());
-                        emp_view_gender.setText(employee.getGender());
-                        view_emp.setVisible(true);
-                        emp_list.setVisible(false);
-                    });
-
-                    btnEdit.setOnAction(e -> {
-                        System.out.println("Edit details for: " + employee.getName());
-                        // Add custom logic to edit employee details.
-                    });
-
-                    btnView.getStyleClass().add("view-button");
-                    btnEdit.getStyleClass().add("view-button");
-//                    btndelete.getStyleClass().add("view-button");
-
-                    setGraphic(actionButtons);
-                }
-            }
-        });
-
-
-        emp_tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        emp_tableview.setItems(addEmployeeSalList);
-
-        System.out.println(addEmployeeSalList);
-    }
-
-
-    public void addEmployeeSearch() {
-
-        FilteredList<EmployeeData> filter = new FilteredList<>(addEmployeeList, e -> true);
-        emp_sal_search1.textProperty().addListener((Observable, oldValue, newValue) -> {
-
-            filter.setPredicate(predicateEmployeeData -> {
-
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-
-                String searchKey = newValue.toLowerCase();
-
-                if (predicateEmployeeData.getId().contains(searchKey)) {
-                    System.out.println(predicateEmployeeData.getId());
-
-                    return true;
-                } else if (predicateEmployeeData.getName().toLowerCase().contains(searchKey)) {
-                    return true;
-                } else if (predicateEmployeeData.getEmail().toLowerCase().contains(searchKey)) {
-                    return true;
-
-                } else if (predicateEmployeeData.getPhone().toLowerCase().contains(searchKey)) {
-                    return true;
-                }else {
-                    System.out.println("No match found");
-                    return false;
-
-                }
-            });
-        });
-        System.out.println(filter);
-        filter.forEach(System.out::println);
-
-        SortedList<EmployeeData> sortList = new SortedList<>(filter);
-
-        sortList.comparatorProperty().bind(emp_tableview.comparatorProperty());
-        emp_tableview.setItems(sortList);
-    }
 
 
     public void logout()
@@ -815,13 +631,10 @@ public class EmployeeDashboardController implements Initializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        addEmployeeshowList();
-        displayUsername();
-        addEmployeePosition();
+        username.setText(getData.username);
+        addLeaveType();
         addEmployeeGender();
-        addEmployeeName();
-        addEmployeeSalAdd();
-        addEmployeeSalaryshowList();
+
 
     }
 
