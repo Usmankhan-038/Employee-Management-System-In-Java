@@ -43,6 +43,12 @@ public class DashboardController implements Initializable {
     private Button addEmployeeBtn;
 
     @FXML
+    private Button approve_request;
+
+    @FXML
+    private Button reject_request;
+
+    @FXML
     private AnchorPane add_emp;
 
     @FXML
@@ -65,6 +71,9 @@ public class DashboardController implements Initializable {
 
     @FXML
     private AnchorPane admin_dashboard;
+
+    @FXML
+    private AnchorPane view_leave_request;
 
     @FXML
     private Button dashboarbbtn;
@@ -226,6 +235,35 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Label emp_view_gender;
+
+    @FXML
+    private Label emp_leave_name;
+
+
+    @FXML
+    private Label emp_leave_email;
+
+    @FXML
+    private Label emp_leave_phone;
+
+    @FXML
+    private Label emp_leave_status;
+
+    @FXML
+    private Label emp_leave_gender;
+
+    @FXML
+    private Label emp_leave_position;
+
+    @FXML
+    private Label emp_leave_Type;
+
+    @FXML
+    private Label emp_leave_date;
+
+    @FXML
+    private Label emp_leave_reason;
+
 
     @FXML
     private Label emp_view_name;
@@ -528,7 +566,7 @@ public class DashboardController implements Initializable {
         admin_dashboard.setVisible(false);
         emp_list.setVisible(false);
         leave_request_screen.setVisible(false);
-
+        view_leave_request.setVisible(false);
 
         // Reset 'active' class for all buttons
         resetActiveClasses();
@@ -559,6 +597,7 @@ public class DashboardController implements Initializable {
         else if (event.getSource() == employeeListBtn) {
             emp_list.setVisible(true);
             activateButton(employeeListBtn);
+            addEmployeeshowList();
         } else if (event.getSource() == employeeSalariesBtn) {
             emp_salary_list.setVisible(true);
             activateButton(employeeSalariesBtn);
@@ -781,114 +820,11 @@ public class DashboardController implements Initializable {
     }
 
     // Leave Request Screen Function
-//    public ObservableList<EmployeeData> leaveRequest() {
-//        ObservableList<EmployeeData> listData = FXCollections.observableArrayList();
-//        String sql = "SELECT empdata.id AS employee_id, empdata.name AS employee_name, " +
-//                "leaves.id AS leave_id, leaves.leave_type, leaves.leave_date " +
-//                "FROM employeesdata AS empdata " +
-//                "LEFT JOIN leaves ON empdata.id = leaves.employee_id"; // Join employees and leaves
-//
-//        connect = connectDb();
-//
-//        try {
-//            prepare = connect.prepareStatement(sql);
-//            result = prepare.executeQuery();
-//            System.out.print(result);
-//            int sno = 1;
-//            while (result.next()) {
-//
-//
-//                // Extract data from the result set
-//                HashMap<String, String> employee = new HashMap<>();
-//                String leaveId = result.getString("leave_id");
-//                String employeeId = result.getString("employee_id");
-//                String employeeName = result.getString("employee_name");
-//                String leaveType = result.getString("leave_type");
-//                String leaveDate = result.getString("leave_date");
-//
-//                // Fill data into the HashMap
-//                employee.put("sno", String.valueOf(sno++));
-//                employee.put("employeeId", employeeId != null ? employeeId : "N/A");
-//                employee.put("leaveId", leaveId != null ? leaveId : "N/A");
-//                employee.put("name", employeeName != null ? employeeName : "N/A");
-//                employee.put("leaveType", leaveType != null ? leaveType : "N/A");
-//                employee.put("leaveDate", leaveDate != null ? leaveDate : "N/A");
-//                employee.put("action", "View");
-//
-//                // Convert HashMap to EmployeeData
-//                EmployeeData employeeData = new EmployeeData(employee);
-//                listData.add(employeeData);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                if (result != null) result.close();
-//                if (prepare != null) prepare.close();
-//                if (connect != null) connect.close();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return listData;
-//    }
-//
-//    private ObservableList<EmployeeData> leaveRequestList = FXCollections.observableArrayList();
-//
-//    public void addLeaveRequestList() {
-//        leaveRequestList = leaveRequest();
-//
-//        // Map TableView columns to data fields
-//        emp_sno_col.setCellValueFactory(new PropertyValueFactory<>("sno"));
-////        emp_empID_col.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
-//        emp_leaveID_col.setCellValueFactory(new PropertyValueFactory<>("leaveId"));
-//        emp_empName_col.setCellValueFactory(new PropertyValueFactory<>("name"));
-//        emp_leaveType_col.setCellValueFactory(new PropertyValueFactory<>("leaveType"));
-//        emp_leaveDate_col.setCellValueFactory(new PropertyValueFactory<>("leaveDate"));
-//
-//        // Set the Action column with a "View" button
-//        emp_action_col.setCellFactory(tc -> new TableCell<EmployeeData, String>() {
-//            private final Button btnView = new Button("View");
-//
-//            {
-//                btnView.getStyleClass().add("view-button"); // Optional CSS styling
-//            }
-//
-//            @Override
-//            protected void updateItem(String item, boolean empty) {
-//                super.updateItem(item, empty);
-//                if (empty) {
-//                    setGraphic(null);
-//                } else {
-//                    EmployeeData employee = getTableView().getItems().get(getIndex());
-//
-//                    // Action for the View button
-//                    btnView.setOnAction(e -> {
-//                        System.out.println("Viewing details for: " + employee.getName());
-//                        // Example: Show employee details in a separate panel
-//                        emp_view_name.setText(employee.getName());
-////                        emp_view_leaveType.setText(employee.getLeaveType());
-////                        emp_view_leaveDate.setText(employee.getLeaveDate());
-//                        view_emp.setVisible(true);
-//                        emp_list.setVisible(false);
-//                    });
-//
-//                    setGraphic(btnView); // Set the button in the Action column
-//                }
-//            }
-//        });
-//
-//        // Set the items in the TableView
-//        leave_request_tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-//        leave_request_tableview.setItems(leaveRequestList);
-//
-//        System.out.println(leaveRequestList); // Debugging log
-//    }
 
     public ObservableList<Leave> leaveRequest() {
         ObservableList<Leave> listData = FXCollections.observableArrayList();
-        String sql = "SELECT empdata.id AS employee_id, empdata.name AS employee_name," +
-                "leaves.id AS leave_id, leaves.leave_type, leaves.leave_date, leaves.reason " +
+        String sql = "SELECT empdata.id AS employee_id, empdata.name AS employee_name, empdata.phone, empdata.email, empdata.gender, empdata.position, " +
+                "leaves.id AS leave_id, leaves.leave_type, leaves.leave_date, leaves.reason, leaves.approved, leaves.reject " +
                 "FROM employeesdata AS empdata " +
                 "RIGHT JOIN leaves ON empdata.id = leaves.employee_id";
         connect = connectDb();
@@ -897,23 +833,31 @@ public class DashboardController implements Initializable {
             prepare = connect.prepareStatement(sql);
             result = prepare.executeQuery();
 
-            //System.out.println(result);
-
             int sno = 1;
             while (result.next()) {
                 HashMap<String, String> leaveData = new HashMap<>();
                 leaveData.put("sno", String.valueOf(sno++));
                 leaveData.put("leave_id", result.getString("leave_id"));
+                leaveData.put("emp_id", result.getString("employee_id"));
                 leaveData.put("emp_name", result.getString("employee_name"));
                 leaveData.put("leave_type", result.getString("leave_type"));
                 leaveData.put("leave_date", result.getString("leave_date"));
                 leaveData.put("reason", result.getString("reason"));
-                leaveData.put("action", "View");
+                leaveData.put("email", result.getString("email"));
+                leaveData.put("id", result.getString("employee_id"));
+                leaveData.put("phone", result.getString("phone"));
+                leaveData.put("gender", result.getString("gender"));
+                leaveData.put("position", result.getString("position"));
+                leaveData.put("isApproved", result.getString("approved"));
+                leaveData.put("isRejected", result.getString("reject"));
 
-                leaveData.forEach((key, value) -> System.out.println(key + ": " + value)); // Debug log
-                // Create Leave object using the hashmap
                 Leave leaveD = new Leave(leaveData);
                 listData.add(leaveD);
+
+
+
+
+                // Store or use empD as needed
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -956,10 +900,50 @@ public class DashboardController implements Initializable {
                     setGraphic(null);
                 } else {
                     Leave leave = getTableView().getItems().get(getIndex());
+                    approve_request.setDisable(false);
+                    reject_request.setDisable(false);
 
-                    // Set up button action
+                    if (leave.isApproved()) {
+                        approve_request.setDisable(true);
+                        reject_request.setDisable(true);
+                        emp_leave_status.setText("Approved");
+                        emp_leave_status.setStyle("-fx-text-fill: green;");
+                    } else if (leave.isRejected()) {
+                        approve_request.setDisable(true);
+                        reject_request.setDisable(true);
+                        emp_leave_status.setText("Rejected");
+                        emp_leave_status.setStyle("-fx-text-fill: red;");
+                    } else {
+                        emp_leave_status.setText("Pending");
+                        emp_leave_status.setStyle("-fx-text-fill: black;");
+                    }
                     btnView.setOnAction(e -> {
-                        // Add logic to display or handle leave request details
+                        // Dynamically bind approve and reject actions to the specific Leave object
+                        approve_request.setOnAction(approveEvent -> {
+                            approveLeave(leave.getLeaveId());
+                            refreshLeaveRequestList(); // Refresh the list to reflect changes
+                        });
+
+                        reject_request.setOnAction(rejectEvent -> {
+                            rejectLeave(leave.getLeaveId());
+                            refreshLeaveRequestList(); // Refresh the list to reflect changes
+                        });
+
+                        System.out.println("Viewing details for: " + leave.getEmployeeName());
+
+                        // Display leave details in the corresponding UI fields
+                        emp_leave_name.setText(leave.getEmployeeName());
+                        emp_leave_email.setText(leave.getEmail());
+                        emp_leave_phone.setText(leave.getPhone());
+                        emp_leave_gender.setText(leave.getGender());
+                        emp_leave_position.setText(leave.getPosition());
+                        emp_leave_Type.setText(leave.getLeaveType());
+                        emp_leave_date.setText(leave.getLeaveDate());
+                        emp_leave_reason.setText(leave.getLeaveReason());
+
+                        // Show and hide panels
+                        view_leave_request.setVisible(true);
+                        leave_request_screen.setVisible(false);
                     });
 
                     // Optional: Style buttons
@@ -976,6 +960,78 @@ public class DashboardController implements Initializable {
         System.out.println("Leave Request List: " + leaveRequestList);
     }
 
+
+    private void approveLeave(String leaveId) {
+        String sql = "UPDATE leaves SET approved = 1 WHERE id = ?";
+        try {
+            connect = connectDb();
+            prepare = connect.prepareStatement(sql);
+            prepare.setString(1, leaveId);
+            int rowsAffected = prepare.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Leave ID " + leaveId + " approved successfully.");
+                // Disable the buttons after approval
+                approve_request.setDisable(true);
+                reject_request.setDisable(true);
+
+                // Optionally, show a status message
+                emp_leave_status.setText("Approved");
+                emp_leave_status.setStyle("-fx-text-fill: green;"); // Change text color to green for approval
+            } else {
+                System.out.println("Failed to approve leave ID " + leaveId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (prepare != null) prepare.close();
+                if (connect != null) connect.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
+    private void rejectLeave(String leaveId) {
+        String sql = "UPDATE leaves SET rejected = 1 WHERE id = ?";
+        try {
+            connect = connectDb();
+            prepare = connect.prepareStatement(sql);
+            prepare.setString(1, leaveId);
+            int rowsAffected = prepare.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Leave ID " + leaveId + " rejected successfully.");
+                // Disable the buttons after rejection
+                approve_request.setDisable(true);
+                reject_request.setDisable(true);
+
+                // Optionally, show a status message
+                emp_leave_status.setText("Rejected");
+                emp_leave_status.setStyle("-fx-text-fill: red;"); // Change text color to red for rejection
+            } else {
+                System.out.println("Failed to reject leave ID " + leaveId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (prepare != null) prepare.close();
+                if (connect != null) connect.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private void refreshLeaveRequestList() {
+        leaveRequestList.clear();
+        leaveRequestList.addAll(leaveRequest());
+        leave_request_tableview.refresh();
+    }
 
     public void addEmployeeSearch() {
 

@@ -167,7 +167,7 @@
                   <String fx:value="sidebarmenubtn" />
                </styleClass>
             </Button>
-            <Button id="sidebardashboardbtn" fx:id="taskLListBtn" layoutX="29.0" layoutY="409.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Task List" textFill="WHITE">
+            <Button id="sidebardashboardbtn" fx:id="taskLListBtn" layoutX="29.0" layoutY="409.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Payroll " textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
@@ -297,6 +297,39 @@
                </styleClass>
             </Button>
             <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="238.0" />
+            <Button id="sidebardashboardbtn" fx:id="taskLListBtn1" layoutX="30.0" layoutY="459.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Attendence" textFill="WHITE">
+               <font>
+                  <Font name="Arial Bold" size="18.0" />
+               </font>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+               <graphic>
+                  <FontAwesomeIcon fill="WHITE" glyphName="TASKS" size="1.5em">
+                     <selectionFill>
+                        <LinearGradient endX="1.0" endY="1.0">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="1.0" green="1.0" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </LinearGradient>
+                     </selectionFill>
+                  </FontAwesomeIcon>
+               </graphic>
+               <styleClass>
+                  <String fx:value="taskList" />
+                  <String fx:value="sidebarmenubtn" />
+               </styleClass>
+            </Button>
+            <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="490.0" />
 
          </children>
       </AnchorPane>
@@ -649,7 +682,7 @@
             </FontAwesomeIcon>
          </graphic>
       </Button>
-      <AnchorPane fx:id="leave_request_screen" layoutX="285.0" layoutY="58.0" prefHeight="507.0" prefWidth="722.0">
+      <AnchorPane fx:id="leave_request_screen" layoutX="285.0" layoutY="58.0" prefHeight="507.0" prefWidth="722.0" visible="false">
          <children>
             <TableView fx:id="leave_request_tableview" layoutX="13.0" layoutY="74.0" prefHeight="421.0" prefWidth="688.0">
                <columns>
@@ -668,6 +701,128 @@
             </Label>
             <TextField fx:id="emp_sal_search2" layoutX="464.0" layoutY="28.0" prefHeight="25.0" prefWidth="234.0" promptText="Search" style="-fx-padding: 5 10 5 25;" styleClass="searchfield" />
             <FontAwesomeIcon glyphName="SEARCH" layoutX="469.0" layoutY="46.0" size="1.3em" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="view_leave_request" layoutX="273.0" layoutY="48.0" prefHeight="507.0" prefWidth="722.0">
+         <children>
+            <Label graphicTextGap="0.0" layoutX="15.0" layoutY="2.0" text="View Leave Request">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+            <AnchorPane layoutX="13.0" layoutY="127.0" prefHeight="160.0" prefWidth="695.0" style="-fx-font-size: 15;" styleClass="viewcard" stylesheets="@style/DashboardDesign.css">
+               <children>
+                  <Label layoutX="15.0" layoutY="26.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Name" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="emp_leave_name" layoutX="15.0" layoutY="46.0" style="fx-font-size: 16;" text="M Usman Ali">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="174.0" layoutY="25.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Email" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="emp_leave_email" layoutX="174.0" layoutY="45.0" style="fx-font-size: 16;" text="fk514955@gmail.com">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="389.0" layoutY="25.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Phone" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="emp_leave_phone" layoutX="389.0" layoutY="45.0" style="fx-font-size: 16;" text="0301 5215234">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="561.0" layoutY="25.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Gender" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="emp_leave_gender" layoutX="561.0" layoutY="45.0" style="fx-font-size: 16;" text="Male">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="15.0" layoutY="98.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Position" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="emp_leave_position" layoutX="15.0" layoutY="118.0" style="fx-font-size: 16;" text="Backend Developer">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="13.0" layoutY="337.0" prefHeight="98.0" prefWidth="695.0" style="-fx-font-size: 15;" styleClass="viewcard" stylesheets="@style/DashboardDesign.css">
+               <children>
+                  <Label layoutX="26.0" layoutY="16.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Leave Type" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="emp_leave_Type" layoutX="26.0" layoutY="36.0" style="fx-font-size: 16;" text="Rs 75,000">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="183.0" layoutY="16.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Leave Date" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="emp_leave_date" layoutX="183.0" layoutY="36.0" style="fx-font-size: 16;" text="1">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="333.0" layoutY="16.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Reason" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="emp_leave_reason" layoutX="333.0" layoutY="36.0" style="fx-font-size: 16;" text="No Reason">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="562.0" layoutY="13.0" style="fx-font-size: 17; -fx-text-fill: #70489b;" text="Status" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="emp_leave_status" layoutX="562.0" layoutY="33.0" style="fx-font-size: 16;" text="Pending">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <Label layoutX="15.0" layoutY="84.0" text="Employee Detail">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="16.0" layoutY="295.0" text="Leave Detail">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="119.0" layoutY="52.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
+            <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="116.0" layoutY="116.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
+            <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="117.0" layoutY="330.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
+            <Button fx:id="approve_request" layoutX="78.0" layoutY="451.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="240.0" styleClass="btn" text="Approve" />
+            <Button fx:id="reject_request" layoutX="361.0" layoutY="451.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="240.0" styleClass="btn" text="Reject" />
          </children>
       </AnchorPane>
    </children>
