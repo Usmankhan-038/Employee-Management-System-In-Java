@@ -13,6 +13,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -30,12 +32,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 
 import static Model.database.connectDb;
 import static java.lang.Integer.parseInt;
 
 public class DashboardController implements Initializable {
+
+    @FXML
+    private TextArea attend_comments;
+
+    @FXML
+    private DatePicker attend_date;
+
     @FXML
     private Button EmployeeHolidaysBtn;
 
@@ -46,7 +56,14 @@ public class DashboardController implements Initializable {
     private Button approve_request;
 
     @FXML
+    private Button attendence;
+
+
+    @FXML
     private Button reject_request;
+
+    @FXML
+    private Button markAttendenceBtn;
 
     @FXML
     private AnchorPane add_emp;
@@ -60,8 +77,16 @@ public class DashboardController implements Initializable {
     @FXML
     private AnchorPane leave_request_screen;
 
+
+
+    @FXML
+    private AnchorPane mark_attendence;
+
     @FXML
     private AnchorPane add_emp_image;
+
+    @FXML
+    private AnchorPane mark_attendence_list;
 
     @FXML
     private ImageView add_emp_image_view;
@@ -77,6 +102,9 @@ public class DashboardController implements Initializable {
 
     @FXML
     private AnchorPane admin_dashboard;
+
+    @FXML
+    private BarChart<?, ?> admin_dashboard_cart;
 
     @FXML
     private AnchorPane view_leave_request;
@@ -109,6 +137,23 @@ public class DashboardController implements Initializable {
     private TableColumn<EmployeeData, String> emp_employeeID_col;
 
 
+    @FXML
+    private TableColumn<Attendence, String> attend_sno;
+
+    @FXML
+    private TableColumn<Attendence, String> attend_empID;
+
+    @FXML
+    private TableColumn<Attendence, String> attend_emp_name;
+
+    @FXML
+    private TableColumn<Attendence, String> attend_emp_phone;
+
+    @FXML
+    private TableColumn<Attendence, String> attend_onLeave;
+
+    @FXML
+    private TableColumn<Attendence, String> emp_action_col1;
 
     @FXML
     private TableColumn<Leave, String> leave_request_action;
@@ -173,6 +218,8 @@ public class DashboardController implements Initializable {
     @FXML
     private TableView<EmployeeData> emp_sal_tableview;
 
+    @FXML
+    private TableView<Attendence> attendanceTableView;
 
     @FXML
     private TableView<Leave> leave_request_tableview;
@@ -269,6 +316,15 @@ public class DashboardController implements Initializable {
     @FXML
     private Label emp_leave_reason;
 
+    @FXML
+    private Label total_leave_rejected;
+
+    @FXML
+    private Label total_leave_approved;
+
+    @FXML
+    private Label total_employee;
+
 
     @FXML
     private Label emp_view_name;
@@ -293,6 +349,15 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Label emp_view_email1;
+
+    @FXML
+    private AnchorPane emp_pane;
+
+    @FXML
+    private AnchorPane total_leave_pane;
+
+    @FXML
+    private AnchorPane total_reject_pane;
 
 
     private Image image;
@@ -579,15 +644,7 @@ public class DashboardController implements Initializable {
 
     public void switchForm(ActionEvent event) {
         // Reset visibility for all sections
-        add_emp.setVisible(false);
-        add_emp_salary.setVisible(false);
-        emp_salary_list.setVisible(false);
-        view_emp.setVisible(false);
-        admin_dashboard.setVisible(false);
-        emp_list.setVisible(false);
-        leave_request_screen.setVisible(false);
-        view_leave_request.setVisible(false);
-        view_profile.setVisible(false);
+        resetSectionVisibility();
 
         // Reset 'active' class for all buttons
         resetActiveClasses();
@@ -596,11 +653,9 @@ public class DashboardController implements Initializable {
         if (event.getSource() == addEmployeeBtn) {
             add_emp.setVisible(true);
             activateButton(addEmployeeBtn);
-
             addEmployeePosition();
             addEmployeeGender();
             addEmployeeSearch();
-
         } else if (event.getSource() == employeeSalariesBtn) {
             add_emp_salary.setVisible(true);
             activateButton(employeeSalariesBtn);
@@ -614,9 +669,6 @@ public class DashboardController implements Initializable {
             emp_list.setVisible(true);
             activateButton(employeeListBtn);
             addEmployeeshowList();
-        } else if (event.getSource() == employeeSalariesBtn) {
-            emp_salary_list.setVisible(true);
-            activateButton(employeeSalariesBtn);
         } else if (event.getSource() == EmployeeHolidaysBtn) {
             leave_request_screen.setVisible(true);
             activateButton(EmployeeHolidaysBtn);
@@ -626,7 +678,28 @@ public class DashboardController implements Initializable {
             view_profile.setVisible(true);
             activateButton(viewProfileBtn);
             profile();
+        } else if (event.getSource() == attendence) {
+            mark_attendence.setVisible(true);
+            activateButton(attendence);
+            markAttendenceList();
+            // Uncomment if markAttendenceList() is needed
+            // markAttendenceList();
         }
+    }
+
+    // Helper Method: Reset visibility for all sections
+    private void resetSectionVisibility() {
+        add_emp.setVisible(false);
+        add_emp_salary.setVisible(false);
+        emp_salary_list.setVisible(false);
+        view_emp.setVisible(false);
+        admin_dashboard.setVisible(false);
+        emp_list.setVisible(false);
+        leave_request_screen.setVisible(false);
+        view_leave_request.setVisible(false);
+        view_profile.setVisible(false);
+        mark_attendence.setVisible(false);
+        mark_attendence_list.setVisible(false);
     }
 
     // Helper Method: Reset 'active' classes for all buttons
@@ -638,7 +711,12 @@ public class DashboardController implements Initializable {
         employeeListBtn.getStyleClass().remove("active");
         employeeSalariesBtn.getStyleClass().remove("active");
         viewProfileBtn.getStyleClass().remove("active");
+        attendence.getStyleClass().remove("active");
     }
+
+    // Helper Method: Activate a button
+
+
 
 
     // Helper Method: Activate a specific button
@@ -1164,18 +1242,272 @@ public class DashboardController implements Initializable {
 
     }
 
-    private String[] attendenceType = {"Online", "Supervisor", "Employee"};
-    public void addAttendencType ()
-    {
-        List<String> listG = new ArrayList<String>();
 
-        for(String text : gender)
-        {
-            listG.add(text);
+
+//    private ArrayList<String> name;
+public void markAttendence() {
+    connect = connectDb();
+
+    try {
+        // Check if the date already exists in the database
+        String checkQuery = "SELECT COUNT(*) FROM attendence WHERE date = ?";
+        PreparedStatement checkStatement = connect.prepareStatement(checkQuery);
+        checkStatement.setString(1, attend_date.getValue().toString());
+        ResultSet result = checkStatement.executeQuery();
+
+        if (result.next() && result.getInt(1) > 0) {
+            // Attendance for the given date already exists
+            showAlert(Alert.AlertType.WARNING, "Warning Message", "Attendance for this date is already marked.");
+        } else {
+            // Insert new attendance record
+            String insertQuery = "INSERT INTO attendence (date, comments) VALUES(?, ?)";
+            PreparedStatement insertStatement = connect.prepareStatement(insertQuery);
+            insertStatement.setString(1, attend_date.getValue().toString());
+            insertStatement.setString(2, attend_comments.getText().trim());
+
+            int rowsInserted = insertStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                showAlert(Alert.AlertType.INFORMATION, "Information Message", "Attendance marked successfully!");
+
+                // Perform UI updates
+                mark_attendence.setVisible(false);
+                resetActiveClasses();
+                mark_attendence_list.setVisible(true);
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Error Message", "Failed to mark attendance.");
+            }
+
+            insertStatement.close();
         }
-//        ObservableList<String> observableList = FXCollections.observableList(listG);
-//        emp_gender.setItems(observableList);
 
+        checkStatement.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+        showAlert(Alert.AlertType.ERROR, "Error Message", "An error occurred: " + e.getMessage());
+    } finally {
+        try {
+            if (connect != null) connect.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+
+
+
+    public ObservableList<Attendence> addMarkAttendence() {
+        ObservableList<Attendence> listData = FXCollections.observableArrayList();
+
+        // Correct SQL Queries
+        String sql = "SELECT * FROM attendence ORDER BY id DESC LIMIT 1";
+        String sql2 = "SELECT emp.id AS emp_id, emp.name AS emp_name, emp.phone AS emp_phone, " +
+                "l.leave_date AS leave_date, l.approved, l.reject " +
+                "FROM employeesdata emp " +
+                "LEFT JOIN ( " +
+                "    SELECT employee_id, MAX(id) AS max_leave_id " +
+                "    FROM leaves " +
+                "    GROUP BY employee_id " +
+                ") lm ON emp.id = lm.employee_id " +
+                "LEFT JOIN leaves l ON lm.max_leave_id = l.id " +
+                "ORDER BY emp.id";
+
+
+        connect = connectDb(); // Assuming connectDb() establishes the connection.
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            // Check if the 'attendence' table has data
+            String attendanceDate = null;
+            if (result.next()) {
+                attendanceDate = result.getString("date");
+            }
+
+            prepare = connect.prepareStatement(sql2);
+            ResultSet result2 = prepare.executeQuery();
+
+            int sno = 1; // Serial Number
+            while (result2.next()) {
+                boolean onLeave = attendanceDate != null && (attendanceDate.equals(result2.getString("leave_date"))&& (result2.getString("approved") == "1"));
+
+                System.out.println("ID: " + result2.getString("emp_id"));
+                System.out.println("Name: " + result2.getString("emp_name"));
+                System.out.println("Phone: " + result2.getString("emp_phone"));
+                System.out.println("On Leave: " + onLeave);
+
+                HashMap<String, String> attendance = new HashMap<>();
+                attendance.put("sno", String.valueOf(sno++));
+                attendance.put("id", result2.getString("emp_id"));
+                attendance.put("attendenceId", result.getString("id"));
+                attendance.put("name", result2.getString("emp_name"));
+                attendance.put("phone", result2.getString("emp_phone") != null ? result2.getString("emp_phone") : "N/A");
+                attendance.put("onLeave", onLeave ? "Yes" :  "No");
+                attendance.put("action", "Present");
+
+                Attendence attendence1 = new Attendence(attendance);
+                listData.add(attendence1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources
+            try {
+                if (result != null) result.close();
+                if (prepare != null) prepare.close();
+                if (connect != null) connect.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return listData;
+    }
+
+    private ObservableList<Attendence> attendenceList = FXCollections.observableArrayList();
+    public void markAttendenceList() {
+        attendenceList = addMarkAttendence();
+
+        attend_sno.setCellValueFactory(new PropertyValueFactory<>("sno"));
+        attend_empID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        attend_emp_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        attend_emp_phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        attend_onLeave.setCellValueFactory(new PropertyValueFactory<>("onLeave"));
+        emp_action_col1.setCellFactory(tc -> new TableCell<Attendence, String>() {
+//            Attendence attendence = getTableView().getItems().get(getIndex());
+            private final Button presentBtn = new Button("Present");
+//            if(attendence.getOnLeave().equals("Yes"))
+//            {
+//                presentBtn.setDisable(true);
+//            }
+            private final HBox actionButtons = new HBox(12); // Adjust spacing between buttons
+
+            {
+                actionButtons.getChildren().addAll(presentBtn);
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+
+
+                    presentBtn.setOnAction(e -> {
+                        String updateSql = "INSERT INTO employees_attendence(employee_id, attendence_id, status, on_leave) VALUES(?, ?, ?, ?)";
+                        connect = connectDb();
+
+                        try {
+                            // Prepare the SQL statement
+                            prepare = connect.prepareStatement(updateSql);
+
+                            // Set parameters
+                            prepare.setString(1, getTableView().getItems().get(getIndex()).getId());
+                            prepare.setString(2, getTableView().getItems().get(getIndex()).getAttendenceId());
+                            prepare.setString(3, "1"); // Status set to "1"
+                            prepare.setString(4, getTableView().getItems().get(getIndex()).getOnLeave().equals("Yes") ? "1" : "0");
+
+                            // Execute the update
+                            int rowsAffected = prepare.executeUpdate();
+
+                            String updateSql2 = "INSERT INTO notifications(employee_id, alerts) VALUES(?, ?)";
+                            prepare = connect.prepareStatement(updateSql2);
+
+                            prepare.setString(1, getTableView().getItems().get(getIndex()).getId());
+                            prepare.setString(2, "Your Attendence For "+attend_date.getValue().toString()+" has been marked");
+                            int rowsAffected2 = prepare.executeUpdate();
+                            if(rowsAffected > 0 && rowsAffected2 > 0) {
+                                presentBtn.setDisable(true);
+                                presentBtn.setStyle("-fx-background-color: grey; -fx-text-fill: white;");
+                            } else {
+                                System.out.println("No rows affected");
+                            }
+                            System.out.println("Rows affected: " + rowsAffected);
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                            throw new RuntimeException("Error inserting into employees_attendence", ex);
+                        } finally {
+                            // Close resources
+                            try {
+                                if (prepare != null) prepare.close();
+                                if (connect != null) connect.close();
+                            } catch (SQLException ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+
+
+
+
+                    });
+
+
+
+                    presentBtn.getStyleClass().add("view-button");
+
+
+                    setGraphic(actionButtons);
+                }
+            }
+        });
+
+
+
+
+        attendanceTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        attendanceTableView.setItems(attendenceList);
+
+        System.out.println(addEmployeeList);
+    }
+
+    public void dashboard()
+    {
+        connect = connectDb();
+        try {
+            String sql = "SELECT COUNT(*) FROM employeesdata";
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            int totalEmployees;
+            if (result.next()) {
+                totalEmployees = result.getInt(1);
+                dashboard_totalEmployee_Count.setText(result.getString(1));
+            } else {
+                totalEmployees = 0;
+            }
+
+            sql = "SELECT COUNT(*) FROM leaves  WHERE approved = 1";
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                dashboard_totalPresent_Count.setText(result.getString(1));
+            }
+
+            sql = "SELECT COUNT(*) FROM leaves WHERE reject = 1";
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                dashboard_totalInactiveEmpolyee_Count.setText(result.getString(1));
+            }
+//
+//            emp_pane.setOnMouseClicked(event -> {
+//                admin_dashboard_cart.getData().clear();
+//                XYChart.Series<String, Number> series = new XYChart.Series<>();
+//                series.setName("Employees");
+//                series.getData().add(new XYChart.Data<>("Total Employees", totalEmployees));
+//
+//                admin_dashboard_cart.getData().add(series);
+//            });
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -1188,6 +1520,8 @@ public class DashboardController implements Initializable {
         addEmployeeSalaryshowList();
         addLeaveRequestList();
         profile();
+        markAttendenceList();
+        dashboard();
 
     }
 
