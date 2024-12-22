@@ -78,6 +78,14 @@ public class Attendence extends EmployeeData {
         return attendanceData.get("onLeave");
     }
 
+    public String getIsPresent() {
+        return attendanceData.get("isPresent");
+    }
+
+    public String getDate(){
+        return attendanceData.get("date");
+    }
+
     @Override
     public String toString() {
         return "Attendence{" +

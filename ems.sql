@@ -18,9 +18,8 @@ DROP TABLE IF EXISTS `attendence`;
 
 CREATE TABLE `attendence` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `employee_id` int(11) NOT NULL,
-  `on_leave` tinyint(1) NOT NULL DEFAULT 0,
-  `status` tinyint(1) NOT NULL DEFAULT 0,
+  `date` varchar(11) DEFAULT NULL,
+  `comments` text DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
@@ -46,6 +45,23 @@ CREATE TABLE `documents` (
 /*Data for the table `documents` */
 
 insert  into `documents`(`id`,`belong_id`,`belong_name`,`original_file_link`,`belong_type`,`created_at`,`updated_at`) values (1,6,'employee','G:\\\\My Drive\\\\RGB PICS\\\\Font Effects\\\\2-luminous-lines-style-font-effect-180187_720x.jpg','image','2024-12-01 00:31:07','2024-12-01 00:31:07'),(2,7,'employee','G:\\\\My Drive\\\\RGB PICS\\\\Font Bundle\\\\970-fonts-for-designers-bundle-1-785392_720x.jpg','image','2024-12-02 01:47:51','2024-12-02 01:47:51'),(3,8,'employee','G:\\\\My Drive\\\\RGB PICS\\\\Font Bundle\\\\970-fonts-for-designers-bundle-1-785392_720x.jpg','image','2024-12-02 20:30:37','2024-12-02 20:30:37'),(4,9,'employee','G:\\\\My Drive\\\\RGB PICS\\\\Font Bundle\\\\970-fonts-for-designers-bundle-1-785392_720x.jpg','image','2024-12-03 01:10:51','2024-12-03 01:10:51');
+
+/*Table structure for table `employees_attendence` */
+
+DROP TABLE IF EXISTS `employees_attendence`;
+
+CREATE TABLE `employees_attendence` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `employee_id` int(11) NOT NULL,
+  `attendence_id` int(11) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 0,
+  `on_leave` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `employees_attendence` */
 
 /*Table structure for table `employeesdata` */
 

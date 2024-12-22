@@ -10,6 +10,7 @@ public class EmployeeData {
         this.employeeData = new HashMap<>(employeeData); // Create a new instance to avoid overwriting
     }
 
+
     // Getters for the fields
     public String getSno() {
         return employeeData.get("sno");

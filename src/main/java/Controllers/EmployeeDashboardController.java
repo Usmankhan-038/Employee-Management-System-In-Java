@@ -1,10 +1,9 @@
 package Controllers;
 
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,19 +11,29 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import javafx.scene.image.ImageView;
 //import java.lang.classfile.Label;
+import java.awt.*;
 import java.beans.Statement;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.List;
 
 import static Model.database.connectDb;
 import static java.lang.Integer.parseInt;
@@ -38,6 +47,11 @@ public class EmployeeDashboardController implements Initializable {
 
     @FXML
     private AnchorPane add_emp;
+
+
+
+    @FXML
+    private TableView<Attendence> view_attend;
 
 //    @FXML
 //    private Button add_emp_btn;
@@ -137,6 +151,11 @@ public class EmployeeDashboardController implements Initializable {
 
     @FXML
     private TableView<EmployeeData> emp_tableview;
+
+
+    @FXML
+    private ScrollPane notification_bar;
+
 
     @FXML
     private AnchorPane emp_salary_list;
@@ -247,6 +266,18 @@ public class EmployeeDashboardController implements Initializable {
 
     @FXML
     private Button viewProfileBtn;
+
+    @FXML
+    private TableColumn<?, ?> attend_comment;
+
+    @FXML
+    private TableColumn<?, ?> attend_date;
+
+    @FXML
+    private TableColumn<?, ?> attend_sno;
+
+    @FXML
+    private TableColumn<?, ?> attend_status;
 
 
     private Image image;
@@ -608,7 +639,6 @@ public class EmployeeDashboardController implements Initializable {
         request_for_leave_screen.setVisible(false);
         view_profile_screen.setVisible(false);
         edit_profile_screen.setVisible(false);
-        view_task_screen.setVisible(false);
         employee_dashboard.setVisible(false);
         request_for_leave_screen.setVisible(false);
 
@@ -629,9 +659,6 @@ public class EmployeeDashboardController implements Initializable {
         } else if (event.getSource() == dashboarbbtn) {
             employee_dashboard.setVisible(true);
             activateButton(dashboarbbtn);
-        } else if (event.getSource() == viewTaskBtn) {
-            view_task_screen.setVisible(true);
-            activateButton(viewTaskBtn);
         } else if (event.getSource() == editProfileBtn) {
             edit_profile_screen.setVisible(true);
             activateButton(editProfileBtn);
@@ -646,7 +673,6 @@ public class EmployeeDashboardController implements Initializable {
     private void resetActiveClasses() {
         dashboarbbtn.getStyleClass().remove("active");
         viewAttendence.getStyleClass().remove("active");
-        viewTaskBtn.getStyleClass().remove("active");
         requestForLeaveBtn.getStyleClass().remove("active");
         editProfileBtn.getStyleClass().remove("active");
         viewProfileBtn.getStyleClass().remove("active");
@@ -687,6 +713,159 @@ public class EmployeeDashboardController implements Initializable {
         }
 
     }
+
+    public ObservableList<Attendence> addMarkAttendence(String username) {
+        ObservableList<Attendence> listData = FXCollections.observableArrayList();
+
+        // SQL Queries
+        String sqlAttendance = "SELECT * FROM attendence";
+        String sqlEmployeeAttendance = "SELECT * FROM employees_attendence WHERE employee_id = ?";
+        String sqlEmployee = "SELECT * FROM employeesdata WHERE username = ?";
+
+        connect = connectDb(); // Assuming connectDb() establishes the connection.
+
+        try {
+            // Fetch employee details based on the current username
+            prepare = connect.prepareStatement(sqlEmployee);
+            prepare.setString(1, username);
+            ResultSet resultEmployee = prepare.executeQuery();
+            String employeeId = null;
+
+            if (resultEmployee.next()) {
+                employeeId = resultEmployee.getString("id");
+            }
+
+            if (employeeId == null) {
+                System.out.println("Employee not found!");
+                return listData; // Return an empty list if the employee is not found
+            }
+
+            // Fetch all attendance records
+            prepare = connect.prepareStatement(sqlAttendance);
+            result = prepare.executeQuery();
+
+            // Iterate through attendance records
+            int sno = 1; // Serial Number
+            while (result.next()) {
+                String attendanceId = result.getString("id");
+                String attendanceDate = result.getString("date");
+
+                // Check if the employee is present on this date
+                prepare = connect.prepareStatement(sqlEmployeeAttendance);
+                prepare.setString(1, employeeId);
+                ResultSet resultEmpAttendance = prepare.executeQuery();
+
+                boolean isPresent = false;
+                while (resultEmpAttendance.next()) {
+                    if (attendanceId.equals(resultEmpAttendance.getString("attendence_id"))) {
+                        isPresent = true;
+                        break;
+                    }
+                }
+
+                HashMap<String, String> attendance = new HashMap<>();
+                attendance.put("sno", String.valueOf(sno++));
+                attendance.put("id", attendanceId);
+                attendance.put("name", result.getString("name")); // Assuming 'name' exists in the attendance table
+                attendance.put("date", attendanceDate);
+                attendance.put("status", isPresent ? "Present" : "Absent");
+
+                Attendence attendence = new Attendence(attendance);
+                listData.add(attendence);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources
+            try {
+                if (result != null) result.close();
+                if (prepare != null) prepare.close();
+                if (connect != null) connect.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return listData;
+    }
+
+    private ObservableList<Attendence> attendenceList = FXCollections.observableArrayList();
+
+    public void markAttendenceList(String username) {
+        attendenceList = addMarkAttendence(username);
+
+        attend_sno.setCellValueFactory(new PropertyValueFactory<>("sno"));
+        attend_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        attend_comment.setCellValueFactory(new PropertyValueFactory<>("name"));
+        attend_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        view_attend.setItems(attendenceList);
+    }
+
+    public List<String> fetchNotifications(String employeeId) {
+        List<String> notifications = new ArrayList<>();
+        String sql = "SELECT alerts FROM notifications WHERE employee_id = ? ORDER BY created_at DESC";
+        connect = connectDb();
+        try {
+             PreparedStatement prepare = connect.prepareStatement(sql) ;
+                prepare.setString(1, employeeId);
+            ResultSet result = prepare.executeQuery();
+
+            while (result.next()) {
+                notifications.add(result.getString("message"));
+            }
+            return notifications;
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+//    @FXML
+//    private ScrollPane notification_bar;
+
+    @FXML
+    public void displayNotifications(String employeeId) {
+        // Fetch notifications for the current employee
+        List<String> notifications = fetchNotifications(employeeId);
+
+        // Create a VBox to hold the notifications
+        VBox notificationContainer = new VBox();
+        notificationContainer.setSpacing(10); // Add spacing between notifications
+//        notificationContainer.setPadding(new Insets(10)); // Add padding around the container
+
+        // Create a Label for each notification and add it to the VBox
+        for (String notification : notifications) {
+            Label notificationLabel = new Label(notification);
+            notificationLabel.setWrapText(true); // Allow text wrapping for long notifications
+            notificationLabel.setStyle("-fx-background-color: #f0f0f0; -fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5;");
+
+            notificationContainer.getChildren().add(notificationLabel);
+        }
+
+        // Set the VBox as the content of the ScrollPane
+        notification_bar.setContent(notificationContainer);
+
+        // Debug: Print number of notifications fetched
+        System.out.println("Notifications displayed: " + notifications.size());
+    }
+
+    @FXML
+    private FontAwesomeIcon notificationBtn;
+
+    public void notification(){
+        notification_bar.setVisible(false);
+        notificationBtn.setOnMouseClicked(e -> {
+            if (notification_bar.isVisible()) {
+                notification_bar.setVisible(false);
+            } else {
+                notification_bar.setVisible(true);
+            }
+        });
+    }
+
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         username.setText(getData.username);
@@ -694,7 +873,9 @@ public class EmployeeDashboardController implements Initializable {
         addEmployeeGender();
         updateProfile();
         profile();
-
+        markAttendenceList(getData.username);
+        displayNotifications(getData.username);
+        notification();
 
     }
 
