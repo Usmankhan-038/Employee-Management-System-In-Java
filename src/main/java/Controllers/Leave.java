@@ -13,10 +13,20 @@ public class Leave extends EmployeeData{
         this.leaveData = new HashMap<>(employeeData); // Create a new instance to avoid overwriting
     }
 
+
+    //setters for the fields
+    public void setApproved(boolean isApproved) {
+        leaveData.put("isApproved", isApproved ? "1" : "0");
+    }
+
+    public void setRejected(boolean isRejected) {
+        leaveData.put("isRejected", isRejected ? "1" : "0");
+    }
     // Getters for the fields
     public String getSno() {
         return leaveData.get("sno");
     }
+
     public String getLeaveId() {
         return leaveData.get("leave_id");
     }

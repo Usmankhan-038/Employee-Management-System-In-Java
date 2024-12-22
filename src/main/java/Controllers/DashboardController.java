@@ -52,6 +52,9 @@ public class DashboardController implements Initializable {
     private AnchorPane add_emp;
 
     @FXML
+    private AnchorPane view_profile;
+
+    @FXML
     private Button add_emp_btn;
 
     @FXML
@@ -68,6 +71,9 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Button add_employee_sal;
+
+    @FXML
+    private Button viewProfileBtn;
 
     @FXML
     private AnchorPane admin_dashboard;
@@ -212,8 +218,7 @@ public class DashboardController implements Initializable {
     @FXML
     private TextField employee_sal_salary;
 
-    @FXML
-    private Button taskLListBtn;
+
 
     @FXML
     private AnchorPane view_emp;
@@ -273,6 +278,21 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Label emp_view_position;
+
+    @FXML
+    private Label emp_view_name1;
+
+    @FXML
+    private Label emp_view_phone1;
+
+    @FXML
+    private Label emp_view_position1;
+
+    @FXML
+    private Label emp_view_gender1;
+
+    @FXML
+    private Label emp_view_email1;
 
 
     private Image image;
@@ -567,6 +587,7 @@ public class DashboardController implements Initializable {
         emp_list.setVisible(false);
         leave_request_screen.setVisible(false);
         view_leave_request.setVisible(false);
+        view_profile.setVisible(false);
 
         // Reset 'active' class for all buttons
         resetActiveClasses();
@@ -580,33 +601,31 @@ public class DashboardController implements Initializable {
             addEmployeeGender();
             addEmployeeSearch();
 
-
         } else if (event.getSource() == employeeSalariesBtn) {
             add_emp_salary.setVisible(true);
             activateButton(employeeSalariesBtn);
         } else if (event.getSource() == dashboarbbtn) {
             admin_dashboard.setVisible(true);
             activateButton(dashboarbbtn);
-        } else if (event.getSource() == employeesalListBtn)
-        {
+        } else if (event.getSource() == employeesalListBtn) {
             emp_salary_list.setVisible(true);
             activateButton(employeesalListBtn);
-
-
-        }
-        else if (event.getSource() == employeeListBtn) {
+        } else if (event.getSource() == employeeListBtn) {
             emp_list.setVisible(true);
             activateButton(employeeListBtn);
             addEmployeeshowList();
         } else if (event.getSource() == employeeSalariesBtn) {
             emp_salary_list.setVisible(true);
             activateButton(employeeSalariesBtn);
-        } else if (event.getSource() == taskLListBtn) {
-            activateButton(taskLListBtn);
         } else if (event.getSource() == EmployeeHolidaysBtn) {
             leave_request_screen.setVisible(true);
             activateButton(EmployeeHolidaysBtn);
             addLeaveRequestList();
+        } else if (event.getSource() == viewProfileBtn) {
+            System.out.println("View Profile button clicked"); // Debug statement
+            view_profile.setVisible(true);
+            activateButton(viewProfileBtn);
+            profile();
         }
     }
 
@@ -618,8 +637,9 @@ public class DashboardController implements Initializable {
         employeesalListBtn.getStyleClass().remove("active");
         employeeListBtn.getStyleClass().remove("active");
         employeeSalariesBtn.getStyleClass().remove("active");
-        taskLListBtn.getStyleClass().remove("active");
+        viewProfileBtn.getStyleClass().remove("active");
     }
+
 
     // Helper Method: Activate a specific button
     private void activateButton(Button button) {
@@ -896,6 +916,10 @@ public class DashboardController implements Initializable {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
+//                approve_request.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+//                reject_request.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
+
+
                 if (empty) {
                     setGraphic(null);
                 } else {
@@ -915,7 +939,7 @@ public class DashboardController implements Initializable {
                         emp_leave_status.setStyle("-fx-text-fill: red;");
                     } else {
                         emp_leave_status.setText("Pending");
-                        emp_leave_status.setStyle("-fx-text-fill: black;");
+                        emp_leave_status.setStyle("-fx-text-fill: Orange;");
                     }
                     btnView.setOnAction(e -> {
                         // Dynamically bind approve and reject actions to the specific Leave object
@@ -994,10 +1018,49 @@ public class DashboardController implements Initializable {
     }
 
 
+    public void profile()
+    {
+        connect = connectDb(); // Establish DB connection
+
+        try {
+            // Fetch the current user (assuming username is stored in `getData.username`)
+            String query = "SELECT * FROM employeesdata WHERE name = ?";
+            PreparedStatement preparedStatement = connect.prepareStatement(query);
+            preparedStatement.setString(1, getData.username.trim());
+            result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                // Display the data in the form fields
+                emp_view_name1.setText(result.getString("name"));
+                emp_view_email1.setText(result.getString("email"));
+                emp_view_phone1.setText(result.getString("phone"));
+                emp_view_gender1.setText(result.getString("gender"));
+                emp_view_position1.setText(result.getString("position"));
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Error Message", "Employee not found.");
+                return;
+            }
+
+            // Update logic
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error Message", "An error occurred: " + e.getMessage());
+        } finally {
+            try {
+                if (result != null) result.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            // Do NOT close `connect` here as it's needed for the update action
+        }
+    }
 
 
     private void rejectLeave(String leaveId) {
-        String sql = "UPDATE leaves SET rejected = 1 WHERE id = ?";
+        String sql = "UPDATE leaves SET reject" +
+                " = 1 WHERE id = ?";
         try {
             connect = connectDb();
             prepare = connect.prepareStatement(sql);
@@ -1100,6 +1163,20 @@ public class DashboardController implements Initializable {
         }
 
     }
+
+    private String[] attendenceType = {"Online", "Supervisor", "Employee"};
+    public void addAttendencType ()
+    {
+        List<String> listG = new ArrayList<String>();
+
+        for(String text : gender)
+        {
+            listG.add(text);
+        }
+//        ObservableList<String> observableList = FXCollections.observableList(listG);
+//        emp_gender.setItems(observableList);
+
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addEmployeeshowList();
@@ -1110,6 +1187,7 @@ public class DashboardController implements Initializable {
         addEmployeeSalAdd();
         addEmployeeSalaryshowList();
         addLeaveRequestList();
+        profile();
 
     }
 
