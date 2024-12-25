@@ -4,9 +4,6 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -17,6 +14,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
@@ -203,7 +201,7 @@
 
             </children>
         </AnchorPane>
-        <Button fx:id="closeBtn" layoutX="965.0" mnemonicParsing="false" onAction="#close" styleClass="close" stylesheets="@style/DashboardDesign.css">
+        <Button fx:id="closeBtn" layoutX="973.0" minWidth="45.0" mnemonicParsing="false" onAction="#close" prefHeight="27.0" prefWidth="37.0" styleClass="close" stylesheets="@style/DashboardDesign.css">
             <font>
                 <Font size="14.0" />
             </font>
@@ -222,53 +220,30 @@
                         <Font name="System Bold" size="36.0" />
                     </font>
                 </Label>
-                <AnchorPane layoutX="5.0" layoutY="72.0" prefHeight="145.0" prefWidth="209.0" styleClass="card">
+                <AnchorPane layoutX="88.0" layoutY="65.0" prefHeight="184.0" prefWidth="273.0" styleClass="card">
                     <children>
-                        <FontAwesomeIcon fill="WHITE" glyphName="USERS" layoutX="10.0" layoutY="83.33333333333334" size="3em" text="" AnchorPane.bottomAnchor="49.333333333333314" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="159.33333333333334" AnchorPane.topAnchor="46.33333333333334" />
-                        <Label layoutX="54.0" layoutY="98.0" style="-fx-text-fill: White;" text="Total Employee" AnchorPane.bottomAnchor="15.333333333333343">
+                        <FontAwesomeIcon glyphName="USERS" layoutX="10.0" layoutY="83.33333333333334" size="3em" text="" AnchorPane.bottomAnchor="49.333333333333314" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="159.33333333333334" AnchorPane.topAnchor="46.33333333333334" />
+                        <Label layoutX="94.0" layoutY="150.0" style="-fx-text-fill: Black;" text="Total Leaves" AnchorPane.bottomAnchor="14.0">
                             <font>
                                 <Font name="Arial Bold" size="16.0" />
                             </font>
                         </Label>
-                        <Label fx:id="dashboard_totalEmployee_Count" layoutX="183.0" layoutY="7.0" style="-fx-text-fill: white;" text="0" AnchorPane.topAnchor="7.0">
+                        <Label fx:id="dashboard_totalLeave_Count" layoutX="245.0" layoutY="14.0" style="-fx-text-fill: Black;" text="0" AnchorPane.topAnchor="14.0">
                             <font>
                                 <Font name="Arial Bold" size="24.0" />
                             </font>
                         </Label>
                     </children>
                 </AnchorPane>
-                <AnchorPane layoutX="474.0" layoutY="72.0" prefHeight="145.0" prefWidth="209.0" styleClass="card" AnchorPane.leftAnchor="474.0">
+                <AnchorPane layoutX="392.0" layoutY="65.0" prefHeight="184.0" prefWidth="273.0" styleClass="card">
                     <children>
-                        <FontAwesomeIcon fill="WHITE" glyphName="USER_MINUS" layoutX="9.0" layoutY="83.0" size="3em" text="" AnchorPane.bottomAnchor="46.619046529134124" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="48.666666666666686" />
-                        <Label layoutX="8.0" layoutY="103.33333333333333" style="-fx-text-fill: White;" text="Total Inactive Employee" AnchorPane.bottomAnchor="15.333333333333329">
+                        <FontAwesomeIcon glyphName="USERS" layoutX="10.0" layoutY="83.33333333333334" size="3em" text="" AnchorPane.bottomAnchor="49.333333333333314" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="159.33333333333334" AnchorPane.topAnchor="46.33333333333334" />
+                        <Label layoutX="51.0" layoutY="150.0" style="-fx-text-fill: Black;" text="Leave Reqest Pending" AnchorPane.bottomAnchor="14.0">
                             <font>
                                 <Font name="Arial Bold" size="16.0" />
                             </font>
                         </Label>
-                        <Label fx:id="dashboard_totalInactiveEmpolyee_Count" layoutX="182.0" layoutY="9.0" style="-fx-text-fill: white;" text="0" AnchorPane.rightAnchor="11.333333333333343" AnchorPane.topAnchor="7.0">
-                            <font>
-                                <Font name="Arial Bold" size="24.0" />
-                            </font>
-                        </Label>
-                    </children>
-                </AnchorPane>
-                <BarChart layoutY="240.0" prefHeight="275.0" prefWidth="688.0" title="Employee Salaries">
-                    <xAxis>
-                        <CategoryAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                        <NumberAxis side="LEFT" />
-                    </yAxis>
-                </BarChart>
-                <AnchorPane layoutX="240.0" layoutY="72.0" prefHeight="145.0" prefWidth="209.0" styleClass="card">
-                    <children>
-                        <FontAwesomeIcon fill="WHITE" glyphName="USERS" layoutX="10.0" layoutY="83.33333333333334" size="3em" text="" AnchorPane.bottomAnchor="49.333333333333314" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="159.33333333333334" AnchorPane.topAnchor="46.33333333333334" />
-                        <Label layoutX="54.0" layoutY="98.0" style="-fx-text-fill: White;" text="Total Present" AnchorPane.bottomAnchor="15.333333333333343">
-                            <font>
-                                <Font name="Arial Bold" size="16.0" />
-                            </font>
-                        </Label>
-                        <Label fx:id="dashboard_totalPresent_Count" layoutX="183.0" layoutY="7.0" style="-fx-text-fill: white;" text="0" AnchorPane.topAnchor="7.0">
+                        <Label fx:id="dashboard_totalpendingRequestCount" layoutX="245.0" layoutY="14.0" style="-fx-text-fill: Black;" text="0" AnchorPane.topAnchor="14.0">
                             <font>
                                 <Font name="Arial Bold" size="24.0" />
                             </font>
@@ -276,6 +251,36 @@
                     </children>
                 </AnchorPane>
                 <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="111.0" layoutY="45.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
+            <AnchorPane layoutX="88.0" layoutY="290.0" prefHeight="184.0" prefWidth="273.0" styleClass="card">
+               <children>
+                  <FontAwesomeIcon glyphName="USERS" layoutX="10.0" layoutY="83.33333333333334" size="3em" text="" AnchorPane.bottomAnchor="49.333333333333314" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="159.33333333333334" AnchorPane.topAnchor="46.33333333333334" />
+                  <Label layoutX="94.0" layoutY="150.0" style="-fx-text-fill: Black;" text="Leave Approved" AnchorPane.bottomAnchor="14.0">
+                     <font>
+                        <Font name="Arial Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="dashboard_totalLeaveApproved_Count1" layoutX="239.0" layoutY="14.0" style="-fx-text-fill: Black;" text="0" AnchorPane.topAnchor="14.0">
+                     <font>
+                        <Font name="Arial Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="392.0" layoutY="290.0" prefHeight="184.0" prefWidth="273.0" styleClass="card">
+               <children>
+                  <FontAwesomeIcon glyphName="USERS" layoutX="10.0" layoutY="83.33333333333334" size="3em" text="" AnchorPane.bottomAnchor="49.333333333333314" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="159.33333333333334" AnchorPane.topAnchor="46.33333333333334" />
+                  <Label layoutX="94.0" layoutY="150.0" style="-fx-text-fill: Black;" text="Leave Rejected" AnchorPane.bottomAnchor="14.0">
+                     <font>
+                        <Font name="Arial Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="dashboard_totalLeaveRejected_Count2" layoutX="245.0" layoutY="14.0" style="-fx-text-fill: Black;" text="0" AnchorPane.topAnchor="14.0">
+                     <font>
+                        <Font name="Arial Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
             </children>
         </AnchorPane>
         <AnchorPane fx:id="view_profile_screen" layoutX="263.0" layoutY="38.0" prefHeight="507.0" prefWidth="722.0" visible="false">
@@ -431,7 +436,7 @@
             <TextArea fx:id="emp_reason_leave" layoutX="15.0" layoutY="164.0" prefHeight="115.0" prefWidth="702.0" promptText="Reason For Leave" />
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="emp_salary_list" layoutX="275.0" layoutY="48.0" prefHeight="507.0" prefWidth="722.0">
+        <AnchorPane fx:id="view_attendence" layoutX="275.0" layoutY="48.0" prefHeight="507.0" prefWidth="722.0">
             <children>
                 <TableView fx:id="view_attend" layoutX="13.0" layoutY="74.0" prefHeight="421.0" prefWidth="688.0">
                     <columns>
@@ -450,7 +455,7 @@
                 <FontAwesomeIcon glyphName="SEARCH" layoutX="469.0" layoutY="46.0" size="1.3em" />
             </children>
         </AnchorPane>
-        <Button fx:id="minimizeBtn" layoutX="935.0" mnemonicParsing="false" onAction="#minimize" styleClass="close" stylesheets="@style/DashboardDesign.css">
+        <Button fx:id="minimizeBtn" layoutX="922.0" minWidth="45.0" mnemonicParsing="false" onAction="#minimize" prefHeight="27.0" prefWidth="45.0" styleClass="close" stylesheets="@style/DashboardDesign.css">
             <font>
                 <Font size="14.0" />
             </font>
@@ -462,11 +467,14 @@
                 </FontAwesomeIcon>
             </graphic>
         </Button>
-      <ScrollPane fx:id="notification_bar" hbarPolicy="NEVER" layoutX="755.0" layoutY="69.0" pannable="true" prefHeight="153.0" prefWidth="200.0" visible="false">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" visible="false" />
-        </content>
-      </ScrollPane>
-      <FontAwesomeIcon fx:id="notificationBtn" glyphName="BELL" layoutX="942.0" layoutY="59.0" onMouseClicked="#notification" />
+        <ScrollPane fx:id="notification_bar" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutX="651.0" layoutY="65.0" nodeOrientation="LEFT_TO_RIGHT" pannable="false" prefHeight="184.0" prefWidth="273.0" vbarPolicy="NEVER" visible="false">
+            <content>
+                <VBox fx:id="notificationContainer" spacing="5">
+                    <!-- Cards will be dynamically added here -->
+                </VBox>
+            </content>
+        </ScrollPane>
+
+        <FontAwesomeIcon fx:id="notificationBtn" glyphName="BELL" layoutX="908.0" layoutY="59.0" onMouseClicked="#notification" />
     </children>
 </AnchorPane>
