@@ -213,3 +213,21 @@
     /*-fx-start-margin: 10;*/
     -fx-font: 8;
 }
+
+.view-profile {
+    -fx-background-color: transparent; /* No background */
+    -fx-text-fill: #F5F5F5; /* Set the text color */
+    -fx-font-family: "Arial"; /* Use Arial font */
+    -fx-cursor: hand; /* Hand cursor for clickable elements */
+    -fx-alignment: TOP_LEFT; /* Align text to the top left */
+    -fx-padding: 5 10 5 10; /* Add padding for better spacing */
+    -fx-font-size: 12px; /* Adjust the font size */
+    -fx-underline: true; /* Make text look like a link */
+    -fx-border-width: 0; /* No border */
+}
+
+/* Hover effect */
+.view-profile:hover {
+    -fx-text-fill: #FFFFFF; /* Change text color on hover */
+    -fx-underline: false; /* Remove underline on hover */
+}
