@@ -898,6 +898,34 @@ public class EmployeeDashboardController implements Initializable {
                             "-fx-background-radius: 5;"
             );
 
+            // Add hover effect for the card
+            notificationCard.setOnMouseEntered(event -> {
+                notificationCard.setStyle(
+                        "-fx-background-color: #e6e6e6;" + // Lighter background on hover
+                                "-fx-padding: 10;" +
+                                "-fx-border-color: #999;" + // Darker border on hover
+                                "-fx-border-radius: 5;" +
+                                "-fx-background-radius: 5;"
+                );
+            });
+
+            notificationCard.setOnMouseExited(event -> {
+                notificationCard.setStyle(
+                        "-fx-background-color: #f0f0f0;" +
+                                "-fx-padding: 10;" +
+                                "-fx-border-color: #ccc;" +
+                                "-fx-border-radius: 5;" +
+                                "-fx-background-radius: 5;"
+                );
+            });
+
+            // Add click event for the card (e.g., mark as read or open details)
+            notificationCard.setOnMouseClicked(event -> {
+                System.out.println("Notification clicked: " + notification);
+                // Add your custom action here, like marking the notification as read
+//                markNotificationAsRead(notification);
+            });
+
             // Create text with proper wrapping
             Text notificationText = new Text(notification);
             notificationText.setWrappingWidth(380); // Slightly less than container to account for padding

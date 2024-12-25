@@ -57,7 +57,17 @@
     -fx-text-fill: white;
     -fx-background-color: red;
 }
+.minus {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-font-family: 'Arial';
+    -fx-font-size: 17;
 
+}
+.minus:hover {
+    -fx-text-fill: white;
+    -fx-background-color: grey;
+}
 .viewProfile {
     -fx-background-color: transparent;
     -fx-cursor: hand;
@@ -228,6 +238,38 @@
 
 /* Hover effect */
 .view-profile:hover {
-    -fx-text-fill: #FFFFFF; /* Change text color on hover */
-    -fx-underline: false; /* Remove underline on hover */
+    -fx-text-fill: #F5F5F5; /* Change text color on hover */
+    -fx-underline: true; /* Remove underline on hover */
 }
+
+/* Style for the main notification bar container */
+.notificationBarContainer {
+    -fx-background-color: #5b2d8e; /* White background */
+    -fx-border-color: #5b2d8e; /* Light gray border */
+    -fx-border-width: 1; /* Border thickness */
+    -fx-padding: 10; /* Padding around the container */
+    -fx-spacing: 10; /* Space between children */
+    -fx-background-radius: 8; /* Rounded corners */
+    -fx-border-radius: 8; /* Rounded border corners */
+}
+
+/* Style for individual notifications inside the container */
+.notification-item {
+    -fx-background-color: #F9F9F9; /* Light gray background for notifications */
+    -fx-border-color: #E0E0E0; /* Slightly darker border */
+    -fx-border-width: 0.5; /* Thin border */
+    -fx-padding: 8; /* Padding inside each notification */
+    -fx-text-fill: #333333; /* Dark text color */
+    -fx-font-size: 14px; /* Font size for text */
+    -fx-background-radius: 6; /* Rounded corners for notifications */
+    -fx-border-radius: 6; /* Rounded border corners */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 2); /* Subtle shadow effect */
+}
+
+/* Hover effect for notifications */
+.notification-item:hover {
+    -fx-background-color: #9983b2; /* Slightly darker background on hover */
+    -fx-border-color: #9983b2; /* Darker border on hover */
+    -fx-cursor: hand; /* Change cursor to hand */
+}
+

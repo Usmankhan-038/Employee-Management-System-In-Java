@@ -13,11 +13,10 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.paint.Color?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
@@ -31,7 +30,6 @@
                   <Font name="Arial Bold" size="15.0" />
                </font>
             </Label>
-            <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="39.0" layoutY="62.0" size="1.8em" styleClass="userlogo" text="" />
             <Button id="sidebardashboardbtn" fx:id="dashboarbbtn" layoutX="30.0" layoutY="93.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Dashboard" textFill="WHITE">
                <font>
                   <Font name="Arial Bold" size="18.0" />
@@ -39,31 +37,18 @@
                <padding>
                   <Insets left="20.0" right="20.0" />
                </padding>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="DASHBOARD" size="1.5em" text="">
-                     <selectionFill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </selectionFill>
-                  </FontAwesomeIcon>
-               </graphic>
                <styleClass>
                   <String fx:value="dashboard" />
                   <String fx:value="sidebarmenubtn" />
                   <String fx:value="active" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../assets/images/speedometer.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="124.0" />
             <Button id="sidebardashboardbtn" fx:id="employeeListBtn" layoutX="29.0" layoutY="241.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Employee List" textFill="WHITE">
@@ -73,30 +58,17 @@
                <padding>
                   <Insets left="20.0" right="20.0" />
                </padding>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="USERS" size="1.5em">
-                     <selectionFill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </selectionFill>
-                  </FontAwesomeIcon>
-               </graphic>
                <styleClass>
                   <String fx:value="empList" />
                   <String fx:value="sidebarmenubtn" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../assets/images/list.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button id="sidebardashboardbtn" fx:id="employeesalListBtn" layoutX="29.0" layoutY="293.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Employees Salaries List" textFill="WHITE">
                <font>
@@ -105,30 +77,17 @@
                <padding>
                   <Insets left="20.0" right="20.0" />
                </padding>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="SUITCASE" size="1.5em" text="">
-                     <selectionFill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </selectionFill>
-                  </FontAwesomeIcon>
-               </graphic>
                <styleClass>
                   <String fx:value="empJob" />
                   <String fx:value="sidebarmenubtn" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../assets/images/to-do-list.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <Button id="sidebardashboardbtn" fx:id="EmployeeHolidaysBtn" layoutX="28.0" layoutY="342.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Leave Request" textFill="WHITE">
                <font>
@@ -137,30 +96,17 @@
                <padding>
                   <Insets left="20.0" right="20.0" />
                </padding>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="CALENDAR_ALT" size="1.5em" text="">
-                     <selectionFill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </selectionFill>
-                  </FontAwesomeIcon>
-               </graphic>
                <styleClass>
                   <String fx:value="empHolidays" />
                   <String fx:value="sidebarmenubtn" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../assets/images/leave.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="270.0" />
             <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="322.0" />
@@ -173,24 +119,11 @@
                   <Insets left="20.0" right="20.0" />
                </padding>
                <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="DASHBOARD" size="1.5em" text="">
-                     <selectionFill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </selectionFill>
-                  </FontAwesomeIcon>
+                  <ImageView fitHeight="28.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../assets/images/logout.png" />
+                     </image>
+                  </ImageView>
                </graphic>
             </Button>
             <Button id="sidebardashboardbtn" fx:id="addEmployeeBtn" layoutX="30.0" layoutY="142.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Add Employee" textFill="WHITE">
@@ -200,30 +133,17 @@
                <padding>
                   <Insets left="20.0" right="20.0" />
                </padding>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="USERS" size="1.5em" text="">
-                     <selectionFill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </selectionFill>
-                  </FontAwesomeIcon>
-               </graphic>
                <styleClass>
                   <String fx:value="empList" />
                   <String fx:value="sidebarmenubtn" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../assets/images/employees.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="248.0" layoutY="171.0" />
             <Button id="sidebardashboardbtn" fx:id="employeeSalariesBtn" layoutX="29.0" layoutY="191.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Employee Salaries" textFill="WHITE">
@@ -233,30 +153,17 @@
                <padding>
                   <Insets left="20.0" right="20.0" />
                </padding>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="USERS" size="1.5em" text="">
-                     <selectionFill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </selectionFill>
-                  </FontAwesomeIcon>
-               </graphic>
                <styleClass>
                   <String fx:value="empList" />
                   <String fx:value="sidebarmenubtn" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../assets/images/salary.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="220.0" />
             <Button id="sidebardashboardbtn" fx:id="attendence" layoutX="30.0" layoutY="392.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="50.0" prefWidth="240.0" stylesheets="@style/DashboardDesign.css" text="Attendence" textFill="WHITE">
@@ -266,30 +173,17 @@
                <padding>
                   <Insets left="20.0" right="20.0" />
                </padding>
-               <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="TASKS" size="1.5em">
-                     <selectionFill>
-                        <LinearGradient endX="1.0" endY="1.0">
-                           <stops>
-                              <Stop>
-                                 <color>
-                                    <Color />
-                                 </color>
-                              </Stop>
-                              <Stop offset="1.0">
-                                 <color>
-                                    <Color red="1.0" green="1.0" blue="1.0" />
-                                 </color>
-                              </Stop>
-                           </stops>
-                        </LinearGradient>
-                     </selectionFill>
-                  </FontAwesomeIcon>
-               </graphic>
                <styleClass>
                   <String fx:value="taskList" />
                   <String fx:value="sidebarmenubtn" />
                </styleClass>
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../assets/images/calendar.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
             <FontAwesomeIcon fill="WHITE" glyphName="ARROW_RIGHT" layoutX="247.0" layoutY="423.0" />
             <Button fx:id="viewProfileBtn" layoutX="58.0" layoutY="53.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="17.0" prefWidth="82.0" style="-fx-font-size: 10;" styleClass="view-profile" stylesheets="@style/DashboardDesign.css" text="View Profile">
@@ -297,10 +191,15 @@
                   <Font size="8.0" />
                </font>
             </Button>
+            <ImageView fitHeight="28.0" fitWidth="30.0" layoutX="34.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../assets/images/user.png" />
+               </image>
+            </ImageView>
 
          </children>
       </AnchorPane>
-      <Button fx:id="closeBtn" layoutX="965.0" mnemonicParsing="false" onAction="#close" styleClass="close" stylesheets="@style/DashboardDesign.css">
+      <Button fx:id="closeBtn" layoutX="965.0" mnemonicParsing="false" onAction="#close" prefHeight="35.0" prefWidth="54.0" styleClass="close" stylesheets="@style/DashboardDesign.css">
          <font>
             <Font size="14.0" />
          </font>
@@ -321,63 +220,79 @@
             </Label>
             <AnchorPane fx:id="emp_pane" layoutX="75.0" layoutY="65.0" prefHeight="191.0" prefWidth="286.0" styleClass="card">
                <children>
-                  <FontAwesomeIcon glyphName="USERS" layoutX="10.0" layoutY="83.33333333333334" size="5em" text="" AnchorPane.bottomAnchor="49.333333333333314" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="159.33333333333334" AnchorPane.topAnchor="46.33333333333334" />
                   <Label fx:id="total_employee" layoutX="84.0" layoutY="151.0" style="-fx-text-fill: Black;" text="Total Employee" AnchorPane.bottomAnchor="20.333333333333343">
                      <font>
                         <Font name="Arial Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="dashboard_totalEmployee_Count" layoutX="252.0" layoutY="14.0" style="-fx-text-fill: Black;" text="0" AnchorPane.topAnchor="14.0">
+                  <Label fx:id="dashboard_totalEmployee_Count" layoutX="239.0" layoutY="15.0" style="-fx-text-fill: Black;" text="0" AnchorPane.topAnchor="15.0">
                      <font>
-                        <Font name="Arial Bold" size="24.0" />
+                        <Font name="Arial Bold" size="37.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="82.0" fitWidth="84.0" layoutX="14.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../assets/images/employees%20(1).png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="total_reject_pane" layoutX="75.0" layoutY="271.0" prefHeight="191.0" prefWidth="286.0" styleClass="card" AnchorPane.leftAnchor="75.0">
                <children>
-                  <FontAwesomeIcon glyphName="USER_MINUS" layoutX="12.666666666666668" layoutY="82.19047673543295" size="5em" text="" wrappingWidth="60.66666666666663" AnchorPane.bottomAnchor="66.0" AnchorPane.leftAnchor="11.0" AnchorPane.topAnchor="50.0" />
                   <Label fx:id="total_leave_rejected" layoutX="81.0" layoutY="157.0" style="-fx-text-fill: Black;" text="Total Rejected" AnchorPane.bottomAnchor="14.333333333333343">
                      <font>
                         <Font name="Arial Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="dashboard_totalInactiveEmpolyee_Count" layoutX="182.0" layoutY="9.0" style="-fx-text-fill: Black;" text="0" AnchorPane.rightAnchor="11.333333333333343" AnchorPane.topAnchor="7.0">
+                  <Label fx:id="dashboard_totalInactiveEmpolyee_Count" layoutX="241.0" layoutY="18.0" style="-fx-text-fill: Black;" text="0" AnchorPane.rightAnchor="24.333333333333314" AnchorPane.topAnchor="18.0">
                      <font>
-                        <Font name="Arial Bold" size="24.0" />
+                        <Font name="Arial Bold" size="37.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="98.0" fitWidth="82.0" layoutX="12.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../assets/images/rejected.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="total_leave_pane" layoutX="380.0" layoutY="65.0" prefHeight="191.0" prefWidth="286.0" styleClass="card">
                <children>
-                  <FontAwesomeIcon glyphName="USERS" layoutX="10.0" layoutY="83.33333333333334" size="5em" text="" AnchorPane.bottomAnchor="49.333333333333314" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="159.33333333333334" AnchorPane.topAnchor="46.33333333333334" />
                   <Label fx:id="total_leave_approved" layoutX="65.0" layoutY="157.0" style="-fx-text-fill: Black;" text="Total Leave Pending" AnchorPane.bottomAnchor="14.333333333333343">
                      <font>
                         <Font name="Arial Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="dashboard_totalPendingRequest_Count" layoutX="264.0" layoutY="14.0" style="-fx-text-fill: Black;" text="0" AnchorPane.topAnchor="14.0">
+                  <Label fx:id="dashboard_totalPendingRequest_Count" layoutX="251.0" layoutY="19.0" style="-fx-text-fill: Black;" text="0" AnchorPane.topAnchor="19.0">
                      <font>
-                        <Font name="Arial Bold" size="24.0" />
+                        <Font name="Arial Bold" size="37.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="87.0" fitWidth="82.0" layoutX="12.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../assets/images/wall-clock.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="111.0" layoutY="45.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
             <AnchorPane layoutX="380.0" layoutY="271.0" prefHeight="191.0" prefWidth="286.0" styleClass="card">
                <children>
-                  <FontAwesomeIcon glyphName="USER_MINUS" layoutX="9.0" layoutY="83.0" size="5em" text="" AnchorPane.bottomAnchor="46.619046529134124" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="48.666666666666686" />
                   <Label fx:id="total_leave_rejected1" layoutX="65.0" layoutY="157.0" style="-fx-text-fill: Black;" text="Total Leave Approved" AnchorPane.bottomAnchor="14.333333333333343">
                      <font>
                         <Font name="Arial Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="dashboard_totalPresent_Count1" layoutX="182.0" layoutY="9.0" style="-fx-text-fill: Black;" text="0" AnchorPane.rightAnchor="11.333333333333343" AnchorPane.topAnchor="7.0">
+                  <Label fx:id="dashboard_totalPresent_Count1" layoutX="251.0" layoutY="19.0" style="-fx-text-fill: Black;" text="0" AnchorPane.rightAnchor="14.333333333333314" AnchorPane.topAnchor="19.0">
                      <font>
-                        <Font name="Arial Bold" size="24.0" />
+                        <Font name="Arial Bold" size="37.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="98.0" fitWidth="101.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../assets/images/approve.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
          </children>
@@ -656,16 +571,16 @@
             <Line endX="-8.666656494140625" endY="-7.62939453125E-6" fill="#fff7f7" layoutX="114.0" layoutY="66.0" startX="-100.0" stroke="#70489b" strokeDashOffset="1.0" strokeLineCap="BUTT" strokeWidth="3.0" styleClass="titleLine" />
          </children>
       </AnchorPane>
-      <Button fx:id="minimizeBtn" layoutX="935.0" mnemonicParsing="false" onAction="#minimize" styleClass="close" stylesheets="@style/DashboardDesign.css">
+      <Button fx:id="minimizeBtn" layoutX="924.0" mnemonicParsing="false" onAction="#minimize" styleClass="minus" stylesheets="@style/DashboardDesign.css">
          <font>
             <Font size="14.0" />
          </font>
          <graphic>
-            <FontAwesomeIcon glyphName="CLOSE" size="1.3em" text="">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </FontAwesomeIcon>
+            <ImageView fitHeight="28.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../assets/images/minus.png" />
+               </image>
+            </ImageView>
          </graphic>
       </Button>
       <AnchorPane fx:id="leave_request_screen" layoutX="285.0" layoutY="58.0" prefHeight="507.0" prefWidth="722.0" visible="false">
