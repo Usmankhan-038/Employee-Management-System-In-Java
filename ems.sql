@@ -79,7 +79,7 @@ CREATE TABLE `employeesdata` (
   `phone` varchar(50) DEFAULT NULL,
   `gender` enum('male','female') DEFAULT NULL,
   `position` varchar(50) DEFAULT NULL,
-  `sent_email` int(1) DEFAULT 0,
+  `total_leave_count` int(11) DEFAULT 0,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
@@ -87,7 +87,7 @@ CREATE TABLE `employeesdata` (
 
 /*Data for the table `employeesdata` */
 
-insert  into `employeesdata`(`id`,`user_id`,`name`,`email`,`phone`,`gender`,`position`,`sent_email`,`created_at`,`updated_at`) values (8,2,'Adil Shahzad','adil2@gmail.com','0302 60000006','male','Supervisor',0,'2024-12-02 20:30:37','2024-12-02 20:30:37'),(9,1,'Usman','usman@gmail.com','03022103233','male','Supervisor',0,'2024-12-03 01:10:51','2024-12-03 01:10:51'),(10,3,'Faizan','Faizan@mailinator.com','02343432435','male','Manager',0,'2024-12-21 22:48:16','2024-12-21 22:48:16');
+insert  into `employeesdata`(`id`,`user_id`,`name`,`email`,`phone`,`gender`,`position`,`total_leave_count`,`created_at`,`updated_at`) values (8,2,'Adil Shahzad','adil2@gmail.com','0302 60000006','male','Supervisor',1,'2024-12-02 20:30:37','2024-12-02 20:30:37'),(9,1,'Usman','usman@gmail.com','03022103233','male','Supervisor',0,'2024-12-03 01:10:51','2024-12-03 01:10:51'),(10,3,'Faizan','Faizan@mailinator.com','02343432435','male','Manager',0,'2024-12-21 22:48:16','2024-12-21 22:48:16');
 
 /*Table structure for table `leaves` */
 
@@ -108,7 +108,7 @@ CREATE TABLE `leaves` (
 
 /*Data for the table `leaves` */
 
-insert  into `leaves`(`id`,`employee_id`,`leave_type`,`leave_date`,`reason`,`approved`,`reject`,`created_at`,`updated_at`) values (1,8,'Medical Leave','2024-12-17','asdfgb',1,1,'2024-12-21 12:13:08','2024-12-21 12:13:08'),(2,10,'Casual Leave','2024-12-24','This is the reason for leave',0,1,'2024-12-21 22:49:30','2024-12-21 22:49:30'),(3,8,'Study Leave','2024-12-31','xsdfghjkjhgfdsa',0,1,'2024-12-22 13:14:01','2024-12-22 13:14:01'),(4,8,'Sick Leave','2024-12-31','For Doctor Appoitment',0,0,'2024-12-22 20:07:15','2024-12-22 20:07:15');
+insert  into `leaves`(`id`,`employee_id`,`leave_type`,`leave_date`,`reason`,`approved`,`reject`,`created_at`,`updated_at`) values (1,8,'Medical Leave','2024-12-17','asdfgb',1,0,'2024-12-21 12:13:08','2024-12-21 12:13:08'),(2,10,'Casual Leave','2024-12-24','This is the reason for leave',0,1,'2024-12-21 22:49:30','2024-12-21 22:49:30'),(3,8,'Study Leave','2024-12-31','xsdfghjkjhgfdsa',0,0,'2024-12-22 13:14:01','2024-12-22 13:14:01'),(4,8,'Sick Leave','2024-12-31','For Doctor Appoitment',1,0,'2024-12-22 20:07:15','2024-12-22 20:07:15');
 
 /*Table structure for table `notifications` */
 
@@ -121,11 +121,11 @@ CREATE TABLE `notifications` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 /*Data for the table `notifications` */
 
-insert  into `notifications`(`id`,`employee_id`,`alerts`,`created_at`,`updated_at`) values (4,9,'Your Attendence For 2025-01-14 has been marked','2024-12-22 20:05:29','2024-12-22 20:05:29'),(5,8,'Your Attendence For 2025-01-14 has been marked','2024-12-22 20:05:40','2024-12-22 20:05:40'),(6,10,'Your Attendence For 2024-12-26 has been marked','2024-12-24 10:34:27','2024-12-24 10:34:27'),(7,8,'Your Attendence For 2024-12-26 has been marked','2024-12-24 10:34:29','2024-12-24 10:34:29');
+insert  into `notifications`(`id`,`employee_id`,`alerts`,`created_at`,`updated_at`) values (4,8,'Your Attendence For 2025-01-14 has been marked','2024-12-22 20:05:29','2024-12-22 20:05:29'),(5,8,'Your Attendence For 2025-01-14 has been marked','2024-12-22 20:05:40','2024-12-22 20:05:40'),(6,8,'Your Attendence For 2024-12-26 has been marked','2024-12-24 10:34:27','2024-12-24 10:34:27'),(7,8,'Your Attendence For 2024-12-26 has been marked','2024-12-24 10:34:29','2024-12-24 10:34:29'),(8,8,'Your leave request (ID: LR-4) has been rejected.','2024-12-25 11:39:00','2024-12-25 11:39:00'),(9,8,'Your leave request (ID: LR-3) has been approved.','2024-12-25 11:39:14','2024-12-25 11:39:14'),(10,10,'Your leave request (ID: LR-2) has been rejected.','2024-12-25 11:40:16','2024-12-25 11:40:16'),(11,8,'Your leave request (ID: LR-1) for Date: 2024-12-17 has been approved.','2024-12-25 11:47:38','2024-12-25 11:47:38');
 
 /*Table structure for table `roles` */
 
