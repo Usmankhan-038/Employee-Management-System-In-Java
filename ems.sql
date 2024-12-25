@@ -108,7 +108,7 @@ CREATE TABLE `leaves` (
 
 /*Data for the table `leaves` */
 
-insert  into `leaves`(`id`,`employee_id`,`leave_type`,`leave_date`,`reason`,`approved`,`reject`,`created_at`,`updated_at`) values (1,8,'Medical Leave','2024-12-17','asdfgb',1,0,'2024-12-21 12:13:08','2024-12-21 12:13:08'),(2,10,'Casual Leave','2024-12-24','This is the reason for leave',0,1,'2024-12-21 22:49:30','2024-12-21 22:49:30'),(3,8,'Study Leave','2024-12-31','xsdfghjkjhgfdsa',0,0,'2024-12-22 13:14:01','2024-12-22 13:14:01'),(4,8,'Sick Leave','2024-12-31','For Doctor Appoitment',1,0,'2024-12-22 20:07:15','2024-12-22 20:07:15');
+insert  into `leaves`(`id`,`employee_id`,`leave_type`,`leave_date`,`reason`,`approved`,`reject`,`created_at`,`updated_at`) values (1,8,'Medical Leave','2024-12-17','This is the reason for leave',1,0,'2024-12-21 12:13:08','2024-12-21 12:13:08'),(2,10,'Casual Leave','2024-12-24','This is the reason for leave',0,1,'2024-12-21 22:49:30','2024-12-21 22:49:30'),(3,8,'Study Leave','2024-12-31','This is the reason for leave',0,0,'2024-12-22 13:14:01','2024-12-22 13:14:01'),(4,8,'Sick Leave','2024-12-31','For Doctor Appoitment',1,0,'2024-12-22 20:07:15','2024-12-22 20:07:15');
 
 /*Table structure for table `notifications` */
 
@@ -154,14 +154,15 @@ CREATE TABLE `salaries_and_taxes` (
   `salary_increment` int(11) NOT NULL DEFAULT 0,
   `leave_charges` int(11) NOT NULL DEFAULT 0,
   `tax_deduction` int(11) NOT NULL DEFAULT 0,
+  `medical_allowance` int(11) NOT NULL DEFAULT 0,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `salaries_and_taxes` */
 
-insert  into `salaries_and_taxes`(`id`,`employee_id`,`salary`,`salary_increment`,`leave_charges`,`tax_deduction`,`created_at`,`updated_at`) values (1,8,12,0,0,0,'2024-12-03 00:15:58','2024-12-03 00:15:58'),(3,9,30000,0,0,0,'2024-12-22 13:17:25','2024-12-22 13:17:25');
+insert  into `salaries_and_taxes`(`id`,`employee_id`,`salary`,`salary_increment`,`leave_charges`,`tax_deduction`,`medical_allowance`,`created_at`,`updated_at`) values (1,8,12,0,0,0,0,'2024-12-03 00:15:58','2024-12-03 00:15:58'),(3,9,30000,0,0,0,0,'2024-12-22 13:17:25','2024-12-22 13:17:25'),(4,10,2,0,0,2,2,'2024-12-25 12:43:03','2024-12-25 12:43:03');
 
 /*Table structure for table `users` */
 
