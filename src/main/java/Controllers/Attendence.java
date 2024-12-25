@@ -86,6 +86,14 @@ public class Attendence extends EmployeeData {
         return attendanceData.get("date");
     }
 
+    public String getComments(){
+        return attendanceData.get("comments");
+    }
+
+    public String getStatus(){
+      return attendanceData.get("status");
+    }
+
     @Override
     public String toString() {
         return "Attendence{" +

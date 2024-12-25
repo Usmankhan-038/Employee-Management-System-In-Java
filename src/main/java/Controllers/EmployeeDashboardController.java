@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx. geometry. Insets;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -21,6 +22,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import javafx.scene.image.ImageView;
 //import java.lang.classfile.Label;
@@ -156,6 +159,8 @@ public class EmployeeDashboardController implements Initializable {
     @FXML
     private ScrollPane notification_bar;
 
+    @FXML
+    private VBox notificationContainer;
 
     @FXML
     private AnchorPane emp_salary_list;
@@ -196,8 +201,9 @@ public class EmployeeDashboardController implements Initializable {
     @FXML
     private Button taskLListBtn;
 
+
     @FXML
-    private AnchorPane view_emp;
+    private AnchorPane view_attendence;
 
     @FXML
     private Button closeBtn;
@@ -225,6 +231,22 @@ public class EmployeeDashboardController implements Initializable {
 
     @FXML
     private Label emp_view_position;
+
+
+    @FXML
+    private Label dashboard_totalLeaveApproved_Count1;
+
+
+    @FXML
+    private Label dashboard_totalLeave_Count;
+
+
+    @FXML
+    private Label dashboard_totalLeaveRejected_Count2;
+
+
+    @FXML
+    private Label dashboard_totalpendingRequestCount;
 
     @FXML
     private DatePicker emp_leave_date;
@@ -641,6 +663,7 @@ public class EmployeeDashboardController implements Initializable {
         edit_profile_screen.setVisible(false);
         employee_dashboard.setVisible(false);
         request_for_leave_screen.setVisible(false);
+        view_attendence.setVisible(false);
 
         // Reset 'active' class for all buttons
         resetActiveClasses();
@@ -654,7 +677,7 @@ public class EmployeeDashboardController implements Initializable {
             addEmployeeGender();
 
         } else if (event.getSource() == viewAttendence) {
-//            add_emp_salary.setVisible(true);
+             view_attendence.setVisible(true);
             activateButton(viewAttendence);
         } else if (event.getSource() == dashboarbbtn) {
             employee_dashboard.setVisible(true);
@@ -667,6 +690,7 @@ public class EmployeeDashboardController implements Initializable {
             activateButton(viewProfileBtn);
         }
 
+
     }
 
     // Helper Method: Reset 'active' classes for all buttons
@@ -676,6 +700,7 @@ public class EmployeeDashboardController implements Initializable {
         requestForLeaveBtn.getStyleClass().remove("active");
         editProfileBtn.getStyleClass().remove("active");
         viewProfileBtn.getStyleClass().remove("active");
+
 //        taskLListBtn.getStyleClass().remove("active");
     }
 
@@ -718,59 +743,61 @@ public class EmployeeDashboardController implements Initializable {
         ObservableList<Attendence> listData = FXCollections.observableArrayList();
 
         // SQL Queries
-        String sqlAttendance = "SELECT * FROM attendence";
-        String sqlEmployeeAttendance = "SELECT * FROM employees_attendence WHERE employee_id = ?";
-        String sqlEmployee = "SELECT * FROM employeesdata WHERE username = ?";
+        String sqlAttendance = "SELECT id, date, comments FROM attendence ORDER BY date ASC"; // Order by date
+        String sqlEmployeeAttendance = "SELECT attendence_id FROM employees_attendence WHERE employee_id = ? AND attendence_id = ?";
+        String sqlEmployee = "SELECT id FROM employeesdata WHERE name = ?";
 
-        connect = connectDb(); // Assuming connectDb() establishes the connection.
+        Connection connect = connectDb(); // Assuming connectDb() establishes the connection
+        PreparedStatement prepare = null;
+        ResultSet result = null;
 
         try {
             // Fetch employee details based on the current username
             prepare = connect.prepareStatement(sqlEmployee);
             prepare.setString(1, username);
             ResultSet resultEmployee = prepare.executeQuery();
+
             String employeeId = null;
 
             if (resultEmployee.next()) {
                 employeeId = resultEmployee.getString("id");
-            }
-
-            if (employeeId == null) {
+            } else {
                 System.out.println("Employee not found!");
                 return listData; // Return an empty list if the employee is not found
             }
+            resultEmployee.close(); // Close the ResultSet
 
             // Fetch all attendance records
             prepare = connect.prepareStatement(sqlAttendance);
             result = prepare.executeQuery();
 
-            // Iterate through attendance records
             int sno = 1; // Serial Number
             while (result.next()) {
                 String attendanceId = result.getString("id");
                 String attendanceDate = result.getString("date");
+                String attendanceComments = result.getString("comments");
 
                 // Check if the employee is present on this date
-                prepare = connect.prepareStatement(sqlEmployeeAttendance);
-                prepare.setString(1, employeeId);
-                ResultSet resultEmpAttendance = prepare.executeQuery();
-
                 boolean isPresent = false;
-                while (resultEmpAttendance.next()) {
-                    if (attendanceId.equals(resultEmpAttendance.getString("attendence_id"))) {
-                        isPresent = true;
-                        break;
+                try (PreparedStatement checkAttendance = connect.prepareStatement(sqlEmployeeAttendance)) {
+                    checkAttendance.setString(1, employeeId);
+                    checkAttendance.setString(2, attendanceId);
+
+                    try (ResultSet resultEmpAttendance = checkAttendance.executeQuery()) {
+                        isPresent = resultEmpAttendance.next(); // True if record exists
                     }
                 }
 
+                // Create a HashMap for attendance
                 HashMap<String, String> attendance = new HashMap<>();
                 attendance.put("sno", String.valueOf(sno++));
                 attendance.put("id", attendanceId);
-                attendance.put("name", result.getString("name")); // Assuming 'name' exists in the attendance table
                 attendance.put("date", attendanceDate);
+                attendance.put("comments", attendanceComments); // Avoid null comments
                 attendance.put("status", isPresent ? "Present" : "Absent");
 
-                Attendence attendence = new Attendence(attendance);
+                // Create an Attendence object
+                Attendence attendence = new Attendence(attendance); // Assuming Attendence constructor accepts HashMap
                 listData.add(attendence);
             }
         } catch (Exception e) {
@@ -795,60 +822,106 @@ public class EmployeeDashboardController implements Initializable {
 
         attend_sno.setCellValueFactory(new PropertyValueFactory<>("sno"));
         attend_date.setCellValueFactory(new PropertyValueFactory<>("date"));
-        attend_comment.setCellValueFactory(new PropertyValueFactory<>("name"));
+        attend_comment.setCellValueFactory(new PropertyValueFactory<>("comments"));
         attend_status.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         view_attend.setItems(attendenceList);
     }
 
-    public List<String> fetchNotifications(String employeeId) {
+
+    public List<String> fetchNotifications(String employeename) {
         List<String> notifications = new ArrayList<>();
-        String sql = "SELECT alerts FROM notifications WHERE employee_id = ? ORDER BY created_at DESC";
-        connect = connectDb();
+        String employeeId = null;
+
+        // Query to fetch employee_id from employeesdata based on employeename
+        String fetchEmployeeIdSql = "SELECT id FROM employeesdata WHERE name = ?";
+
+        // Query to fetch alerts from notifications based on employee_id
+        String fetchNotificationsSql = "SELECT alerts FROM notifications WHERE employee_id = ? ORDER BY created_at DESC";
+
+        connect = connectDb(); // Assuming connectDb() establishes the database connection
+
         try {
-             PreparedStatement prepare = connect.prepareStatement(sql) ;
-                prepare.setString(1, employeeId);
-            ResultSet result = prepare.executeQuery();
+            // Fetch the employee_id based on employeename
+            PreparedStatement fetchIdStatement = connect.prepareStatement(fetchEmployeeIdSql);
+            fetchIdStatement.setString(1, employeename);
+            ResultSet idResult = fetchIdStatement.executeQuery();
 
-            while (result.next()) {
-                notifications.add(result.getString("message"));
+            if (idResult.next()) {
+                employeeId = idResult.getString("id");
             }
-            return notifications;
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
+            if (employeeId == null) {
+                System.out.println("No employee found with the name: " + employeename);
+                return notifications; // Return empty list if no employee_id is found
+            }
+
+            // Fetch notifications using the employee_id
+            PreparedStatement fetchNotificationsStatement = connect.prepareStatement(fetchNotificationsSql);
+            fetchNotificationsStatement.setString(1, employeeId);
+            ResultSet notificationsResult = fetchNotificationsStatement.executeQuery();
+
+            while (notificationsResult.next()) {
+                notifications.add(notificationsResult.getString("alerts")); // Use the correct column name
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching notifications: " + e.getMessage(), e);
+        } finally {
+            try {
+                if (connect != null) connect.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return notifications;
     }
+
 
 //    @FXML
 //    private ScrollPane notification_bar;
 
-    @FXML
-    public void displayNotifications(String employeeId) {
-        // Fetch notifications for the current employee
-        List<String> notifications = fetchNotifications(employeeId);
+    public void populateNotificationBar(String employeename) {
+        // Clear existing notifications
+        notificationContainer.getChildren().clear();
 
-        // Create a VBox to hold the notifications
-        VBox notificationContainer = new VBox();
-        notificationContainer.setSpacing(10); // Add spacing between notifications
-//        notificationContainer.setPadding(new Insets(10)); // Add padding around the container
+        // Fetch notifications from the database
+        List<String> notifications = fetchNotifications(employeename);
 
-        // Create a Label for each notification and add it to the VBox
+        // Add each notification as a card
         for (String notification : notifications) {
-            Label notificationLabel = new Label(notification);
-            notificationLabel.setWrapText(true); // Allow text wrapping for long notifications
-            notificationLabel.setStyle("-fx-background-color: #f0f0f0; -fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5;");
+            // Create a VBox to hold the text
+            VBox notificationCard = new VBox();
+            notificationCard.setStyle(
+                    "-fx-background-color: #f0f0f0;" +
+                            "-fx-padding: 10;" +
+                            "-fx-border-color: #ccc;" +
+                            "-fx-border-radius: 5;" +
+                            "-fx-background-radius: 5;"
+            );
 
-            notificationContainer.getChildren().add(notificationLabel);
+            // Create text with proper wrapping
+            Text notificationText = new Text(notification);
+            notificationText.setWrappingWidth(380); // Slightly less than container to account for padding
+
+            // Create a text flow to handle the text wrapping
+            TextFlow textFlow = new TextFlow(notificationText);
+            textFlow.setLineSpacing(1.5); // Add some line spacing for better readability
+
+            // Add the text flow to the card
+            notificationCard.getChildren().add(textFlow);
+
+            // Set the preferred width for the card
+            notificationCard.setPrefWidth(400);
+
+            // Add margin around the card
+            VBox.setMargin(notificationCard, new Insets(5));
+
+            // Add the card to the notification container
+            notificationContainer.getChildren().add(notificationCard);
         }
-
-        // Set the VBox as the content of the ScrollPane
-        notification_bar.setContent(notificationContainer);
-
-        // Debug: Print number of notifications fetched
-        System.out.println("Notifications displayed: " + notifications.size());
     }
+
+
 
     @FXML
     private FontAwesomeIcon notificationBtn;
@@ -864,6 +937,74 @@ public class EmployeeDashboardController implements Initializable {
         });
     }
 
+    public void dashboard() {
+        connect = connectDb(); // Establish the database connection
+        try {
+            // Query for total leave count in employeesdata
+            String query = "SELECT total_leave_count FROM employeesdata WHERE name = ?";
+            PreparedStatement preparedStatement = connect.prepareStatement(query);
+            preparedStatement.setString(1, getData.username); // Set the username parameter
+            ResultSet result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                dashboard_totalLeave_Count.setText(result.getString("total_leave_count"));
+            }
+
+            // Query for total approved leaves of the current user
+            query = "SELECT COUNT(leaves.id) AS approved " +
+                    "FROM leaves " +
+                    "JOIN employeesdata ON leaves.employee_id = employeesdata.id " +
+                    "WHERE employeesdata.name = ? AND leaves.approved = 1";
+            preparedStatement = connect.prepareStatement(query);
+            preparedStatement.setString(1, getData.username);
+            result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                dashboard_totalLeaveApproved_Count1.setText(result.getString("approved"));
+            }
+
+            // Query for total rejected leaves of the current user
+            query = "SELECT COUNT(leaves.id) AS rejected " +
+                    "FROM leaves " +
+                    "JOIN employeesdata ON leaves.employee_id = employeesdata.id " +
+                    "WHERE employeesdata.name = ? AND leaves.approved = 0";
+            preparedStatement = connect.prepareStatement(query);
+            preparedStatement.setString(1, getData.username);
+            result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                dashboard_totalLeaveRejected_Count2.setText(result.getString("rejected"));
+            }
+
+            // Query for total pending leaves of the current user
+            query = "SELECT COUNT(leaves.id) AS pending " +
+                    "FROM leaves " +
+                    "JOIN employeesdata ON leaves.employee_id = employeesdata.id " +
+                    "WHERE employeesdata.name = ? AND leaves.approved = 0 AND leaves.reject=0";
+            preparedStatement = connect.prepareStatement(query);
+            preparedStatement.setString(1, getData.username);
+            result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                dashboard_totalpendingRequestCount.setText(result.getString("pending"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace(); // Handle any SQL or connection errors
+        } finally {
+            try {
+                if (connect != null) {
+                    connect.close(); // Ensure the connection is closed
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
 
 
     @Override
@@ -874,8 +1015,9 @@ public class EmployeeDashboardController implements Initializable {
         updateProfile();
         profile();
         markAttendenceList(getData.username);
-        displayNotifications(getData.username);
+        populateNotificationBar(getData.username);
         notification();
+        dashboard();
 
     }
 

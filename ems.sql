@@ -23,9 +23,11 @@ CREATE TABLE `attendence` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 /*Data for the table `attendence` */
+
+insert  into `attendence`(`id`,`date`,`comments`,`created_at`,`updated_at`) values (12,'2025-01-03','dfghjk,.kjhngbfvdcsxaz','2024-12-22 20:05:02','2024-12-22 20:05:02'),(13,'2025-01-14','dfghjk,.kjhngbfvdcsxaz','2024-12-22 20:05:12','2024-12-22 20:05:12'),(14,'2024-12-26','xcvbnmnbv c','2024-12-24 10:34:09','2024-12-24 10:34:09');
 
 /*Table structure for table `documents` */
 
@@ -59,9 +61,11 @@ CREATE TABLE `employees_attendence` (
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 /*Data for the table `employees_attendence` */
+
+insert  into `employees_attendence`(`id`,`employee_id`,`attendence_id`,`status`,`on_leave`,`created_at`,`updated_at`) values (17,9,12,1,0,'2024-12-22 20:05:29','2024-12-22 20:05:29'),(18,8,12,1,0,'2024-12-22 20:05:40','2024-12-22 20:05:40'),(19,10,13,1,0,'2024-12-24 10:34:27','2024-12-24 10:34:27'),(20,8,13,1,0,'2024-12-24 10:34:29','2024-12-24 10:34:29');
 
 /*Table structure for table `employeesdata` */
 
@@ -100,11 +104,11 @@ CREATE TABLE `leaves` (
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `leaves` */
 
-insert  into `leaves`(`id`,`employee_id`,`leave_type`,`leave_date`,`reason`,`approved`,`reject`,`created_at`,`updated_at`) values (1,8,'Medical Leave','2024-12-17','asdfgb',1,1,'2024-12-21 12:13:08','2024-12-21 12:13:08'),(2,10,'Casual Leave','2024-12-24','This is the reason for leave',0,1,'2024-12-21 22:49:30','2024-12-21 22:49:30'),(3,8,'Study Leave','2024-12-31','xsdfghjkjhgfdsa',0,0,'2024-12-22 13:14:01','2024-12-22 13:14:01');
+insert  into `leaves`(`id`,`employee_id`,`leave_type`,`leave_date`,`reason`,`approved`,`reject`,`created_at`,`updated_at`) values (1,8,'Medical Leave','2024-12-17','asdfgb',1,1,'2024-12-21 12:13:08','2024-12-21 12:13:08'),(2,10,'Casual Leave','2024-12-24','This is the reason for leave',0,1,'2024-12-21 22:49:30','2024-12-21 22:49:30'),(3,8,'Study Leave','2024-12-31','xsdfghjkjhgfdsa',0,1,'2024-12-22 13:14:01','2024-12-22 13:14:01'),(4,8,'Sick Leave','2024-12-31','For Doctor Appoitment',0,0,'2024-12-22 20:07:15','2024-12-22 20:07:15');
 
 /*Table structure for table `notifications` */
 
@@ -117,9 +121,11 @@ CREATE TABLE `notifications` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 /*Data for the table `notifications` */
+
+insert  into `notifications`(`id`,`employee_id`,`alerts`,`created_at`,`updated_at`) values (4,9,'Your Attendence For 2025-01-14 has been marked','2024-12-22 20:05:29','2024-12-22 20:05:29'),(5,8,'Your Attendence For 2025-01-14 has been marked','2024-12-22 20:05:40','2024-12-22 20:05:40'),(6,10,'Your Attendence For 2024-12-26 has been marked','2024-12-24 10:34:27','2024-12-24 10:34:27'),(7,8,'Your Attendence For 2024-12-26 has been marked','2024-12-24 10:34:29','2024-12-24 10:34:29');
 
 /*Table structure for table `roles` */
 

@@ -27,8 +27,8 @@ public class Leave extends EmployeeData{
         return leaveData.get("sno");
     }
 
-    public String getLeaveId() {
-        return leaveData.get("leave_id");
+    public Integer getLeaveId() {
+        return Integer.parseInt(leaveData.get("leave_id"));
     }
 
     public String getEmployeeName() {

@@ -379,8 +379,8 @@ public class DashboardController implements Initializable {
         {
             listP.add(text);
         }
-//        ObservableList<String> observableList = FXCollections.observableList(listP);
-//        emp_position.setItems(observableList);
+       ObservableList<String> observableList = FXCollections.observableList(listP);
+       emp_position.setItems(observableList);
     }
 
     public void addEmployeeGender ()
@@ -391,8 +391,8 @@ public class DashboardController implements Initializable {
         {
             listG.add(text);
         }
-//        ObservableList<String> observableList = FXCollections.observableList(listG);
-//        emp_gender.setItems(observableList);
+        ObservableList<String> observableList = FXCollections.observableList(listG);
+        emp_gender.setItems(observableList);
 
     }
     public void addEmployeeAdd() {
@@ -994,9 +994,6 @@ public class DashboardController implements Initializable {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-//                approve_request.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-//                reject_request.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
-
 
                 if (empty) {
                     setGraphic(null);
@@ -1005,30 +1002,62 @@ public class DashboardController implements Initializable {
                     approve_request.setDisable(false);
                     reject_request.setDisable(false);
 
-                    if (leave.isApproved()) {
-                        approve_request.setDisable(true);
-                        reject_request.setDisable(true);
-                        emp_leave_status.setText("Approved");
-                        emp_leave_status.setStyle("-fx-text-fill: green;");
-                    } else if (leave.isRejected()) {
-                        approve_request.setDisable(true);
-                        reject_request.setDisable(true);
-                        emp_leave_status.setText("Rejected");
-                        emp_leave_status.setStyle("-fx-text-fill: red;");
-                    } else {
-                        emp_leave_status.setText("Pending");
-                        emp_leave_status.setStyle("-fx-text-fill: Orange;");
-                    }
+
                     btnView.setOnAction(e -> {
-                        // Dynamically bind approve and reject actions to the specific Leave object
+
+                        String sqlQuery = "SELECT empdata.id AS employee_id, empdata.name AS employee_name, empdata.phone, empdata.email, empdata.gender, empdata.position, " +
+                                "leaves.id AS leave_id, leaves.leave_type, leaves.leave_date, leaves.reason, leaves.approved, leaves.reject " +
+                                "FROM employeesdata AS empdata " +
+                                "RIGHT JOIN leaves ON empdata.id = leaves.employee_id WHERE leaves.id = ?";
+                        connect = connectDb();
+
+                        try {
+                            prepare = connect.prepareStatement(sqlQuery);
+                            prepare.setInt(1, leave.getLeaveId()); // Use parameterized query to prevent SQL injection
+                            result = prepare.executeQuery();
+
+                            if (result.next()) { // Check if a record is returned
+                                // Set status based on "approved" and "rejected" fields
+                                String approved = result.getString("approved");
+                                String rejected = result.getString("reject");
+
+                                if ("1".equals(approved)) {
+                                    approve_request.setDisable(true);
+                                    reject_request.setDisable(true);
+                                    emp_leave_status.setText("Approved");
+                                    emp_leave_status.setStyle("-fx-text-fill: green;");
+                                } else if ("1".equals(rejected)) {
+                                    approve_request.setDisable(true);
+                                    reject_request.setDisable(true);
+                                    emp_leave_status.setText("Rejected");
+                                    emp_leave_status.setStyle("-fx-text-fill: red;");
+                                } else {
+                                    emp_leave_status.setText("Pending");
+                                    emp_leave_status.setStyle("-fx-text-fill: orange;");
+                                }
+                            } else {
+                                System.out.println("No record found for leave ID: " + leave.getLeaveId());
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        } finally {
+                            try {
+                                if (result != null) result.close();
+                                if (prepare != null) prepare.close();
+                                if (connect != null) connect.close();
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                        // Bind approve and reject actions dynamically
                         approve_request.setOnAction(approveEvent -> {
                             approveLeave(leave.getLeaveId());
-                            refreshLeaveRequestList(); // Refresh the list to reflect changes
+                            refreshLeaveRequestList(); // Refresh the table view after updating
                         });
 
                         reject_request.setOnAction(rejectEvent -> {
                             rejectLeave(leave.getLeaveId());
-                            refreshLeaveRequestList(); // Refresh the list to reflect changes
+                            refreshLeaveRequestList(); // Refresh the table view after updating
                         });
 
                         System.out.println("Viewing details for: " + leave.getEmployeeName());
@@ -1063,36 +1092,102 @@ public class DashboardController implements Initializable {
     }
 
 
-    private void approveLeave(String leaveId) {
-        String sql = "UPDATE leaves SET approved = 1 WHERE id = ?";
+    // Update the status of a leave to "approved"
+    public void approveLeave(int leaveId) {
+        String updateQuery = "UPDATE leaves SET approved = 1, reject = 0 WHERE id = ?";
+        String idQuery = "SELECT employee_id,leave_date FROM leaves WHERE id = ?";
+        String notificationQuery = "INSERT INTO notifications (employee_id, alerts) VALUES (?, ?)";
+        connect = connectDb();
+
         try {
-            connect = connectDb();
-            prepare = connect.prepareStatement(sql);
-            prepare.setString(1, leaveId);
-            int rowsAffected = prepare.executeUpdate();
+            // Get employee_id associated with the leave
+            PreparedStatement idStatement = connect.prepareStatement(idQuery);
+            idStatement.setInt(1, leaveId);
+            ResultSet resultSet = idStatement.executeQuery();
 
-            if (rowsAffected > 0) {
-                System.out.println("Leave ID " + leaveId + " approved successfully.");
-                // Disable the buttons after approval
-                approve_request.setDisable(true);
-                reject_request.setDisable(true);
+            if (resultSet.next()) {
+                int employeeId = resultSet.getInt("employee_id");
 
-                // Optionally, show a status message
-                emp_leave_status.setText("Approved");
-                emp_leave_status.setStyle("-fx-text-fill: green;"); // Change text color to green for approval
+                // Update leave status
+                PreparedStatement updateStatement = connect.prepareStatement(updateQuery);
+                updateStatement.setInt(1, leaveId);
+                updateStatement.executeUpdate();
+
+                // Insert notification
+                PreparedStatement notificationStatement = connect.prepareStatement(notificationQuery);
+                notificationStatement.setInt(1, employeeId);
+                notificationStatement.setString(2, "Your leave request (ID: LR-" + leaveId + ") for Date: "+resultSet.getString("leave_date")+" has been approved.");
+                notificationStatement.executeUpdate();
+                showAlert(Alert.AlertType.INFORMATION, "Request Approved", "Request Approved Successfully!");
+                view_leave_request.setVisible(false);
+                leave_request_screen.setVisible(true);
+                System.out.println("Leave approved and notification added.");
             } else {
-                System.out.println("Failed to approve leave ID " + leaveId);
+                System.out.println("No employee found for the given leave ID: " + leaveId);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
-                if (prepare != null) prepare.close();
                 if (connect != null) connect.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+
+    // Update the status of a leave to "rejected"
+    public void rejectLeave(int leaveId) {
+        String updateQuery = "UPDATE leaves SET approved = 0, reject = 1 WHERE id = ?";
+        String idQuery = "SELECT employee_id,leave_date FROM leaves WHERE id = ?";
+        String notificationQuery = "INSERT INTO notifications (employee_id, alerts) VALUES (?, ?)";
+        connect = connectDb();
+
+        try {
+            // Get employee_id associated with the leave
+            PreparedStatement idStatement = connect.prepareStatement(idQuery);
+            idStatement.setInt(1, leaveId);
+            ResultSet resultSet = idStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int employeeId = resultSet.getInt("employee_id");
+
+                // Update leave status
+                PreparedStatement updateStatement = connect.prepareStatement(updateQuery);
+                updateStatement.setInt(1, leaveId);
+                updateStatement.executeUpdate();
+
+                // Insert notification
+                PreparedStatement notificationStatement = connect.prepareStatement(notificationQuery);
+                notificationStatement.setInt(1, employeeId);
+                notificationStatement.setString(2, "Your leave request (ID: LR-" + leaveId + ") for Date: "+resultSet.getString("leave_date")+" has been rejected.");
+                notificationStatement.executeUpdate();
+                showAlert(Alert.AlertType.INFORMATION, "Request Rejected", "Request Rejected Successfully!");
+                view_leave_request.setVisible(false);
+                leave_request_screen.setVisible(true);
+                System.out.println("Leave rejected and notification added.");
+            } else {
+                System.out.println("No employee found for the given leave ID: " + leaveId);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connect != null) connect.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Refresh the leave request list
+    public void refreshLeaveRequestList() {
+        leaveRequestList.clear(); // Clear the current list
+        leaveRequestList.addAll(leaveRequest()); // Add the updated data to the existing list
+        leave_request_tableview.refresh(); // Refresh the TableView to reflect changes
     }
 
 
@@ -1168,11 +1263,7 @@ public class DashboardController implements Initializable {
             }
         }
     }
-    private void refreshLeaveRequestList() {
-        leaveRequestList.clear();
-        leaveRequestList.addAll(leaveRequest());
-        leave_request_tableview.refresh();
-    }
+
 
     public void addEmployeeSearch() {
 
