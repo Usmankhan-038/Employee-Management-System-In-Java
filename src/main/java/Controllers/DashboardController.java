@@ -1,8 +1,6 @@
 package Controllers;
 
 
-import Model.database;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -14,7 +12,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -32,7 +29,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
 
 import static Model.database.connectDb;
@@ -379,6 +375,88 @@ public class DashboardController implements Initializable {
     private ResultSet result;
 
 
+
+    //Help us to switch pages through side bar
+    public void switchForm(ActionEvent event) {
+        // Reset visibility for all sections
+        resetSectionVisibility();
+
+        // Reset 'active' class for all buttons
+        resetActiveClasses();
+
+        // Switch visibility and activate the appropriate button
+        if (event.getSource() == addEmployeeBtn) {
+            add_emp.setVisible(true);
+            activateButton(addEmployeeBtn);
+            addEmployeePosition();
+            addEmployeeGender();
+            addEmployeeSearch();
+        } else if (event.getSource() == employeeSalariesBtn) {
+            add_emp_salary.setVisible(true);
+            activateButton(employeeSalariesBtn);
+        } else if (event.getSource() == dashboarbbtn) {
+            admin_dashboard.setVisible(true);
+            activateButton(dashboarbbtn);
+        } else if (event.getSource() == employeesalListBtn) {
+            emp_salary_list.setVisible(true);
+            activateButton(employeesalListBtn);
+        } else if (event.getSource() == employeeListBtn) {
+            emp_list.setVisible(true);
+            activateButton(employeeListBtn);
+            addEmployeeshowList();
+        } else if (event.getSource() == EmployeeHolidaysBtn) {
+            leave_request_screen.setVisible(true);
+            activateButton(EmployeeHolidaysBtn);
+            addLeaveRequestList();
+        } else if (event.getSource() == viewProfileBtn) {
+            System.out.println("View Profile button clicked"); // Debug statement
+            view_profile.setVisible(true);
+            activateButton(viewProfileBtn);
+            profile();
+        } else if (event.getSource() == attendence) {
+            mark_attendence.setVisible(true);
+            activateButton(attendence);
+            markAttendenceList();
+            // Uncomment if markAttendenceList() is needed
+            // markAttendenceList();
+        }
+        addEmployeeListdata();
+    }
+
+
+    // Helper Method: Reset visibility for all sections
+    private void resetSectionVisibility() {
+        add_emp.setVisible(false);
+        add_emp_salary.setVisible(false);
+        emp_salary_list.setVisible(false);
+        view_emp.setVisible(false);
+        admin_dashboard.setVisible(false);
+        emp_list.setVisible(false);
+        leave_request_screen.setVisible(false);
+        view_leave_request.setVisible(false);
+        view_profile.setVisible(false);
+        mark_attendence.setVisible(false);
+        mark_attendence_list.setVisible(false);
+    }
+
+    // Helper Method: Reset 'active' classes for all buttons
+    private void resetActiveClasses() {
+        dashboarbbtn.getStyleClass().remove("active");
+        addEmployeeBtn.getStyleClass().remove("active");
+        EmployeeHolidaysBtn.getStyleClass().remove("active");
+        employeesalListBtn.getStyleClass().remove("active");
+        employeeListBtn.getStyleClass().remove("active");
+        employeeSalariesBtn.getStyleClass().remove("active");
+        viewProfileBtn.getStyleClass().remove("active");
+        attendence.getStyleClass().remove("active");
+    }
+
+    // Helper Method: Activate a specific button
+    private void activateButton(Button button) {
+        if (!button.getStyleClass().contains("active")) {
+            button.getStyleClass().add("active");
+        }
+    }
     private String[] positions = {"Manager", "Supervisor", "Employee"};
     private String[] gender = {"male", "female"};
 
@@ -458,7 +536,7 @@ public class DashboardController implements Initializable {
             }
 
             // Saving the image of the employee
-            String uri = getData.path.replace("\\", "\\\\");
+            String uri = user.getPath().replace("\\", "\\\\");
             String imageSql = "INSERT INTO documents(belong_id, belong_name, original_file_link, belong_type) VALUES(?,?,?,?)";
             prepare = connect.prepareStatement(imageSql);
             prepare.setInt(1, id);
@@ -569,7 +647,7 @@ public class DashboardController implements Initializable {
         File file = open.showOpenDialog(mainForm.getScene().getWindow());
 
         if(file != null){
-            getData.path = file.getAbsolutePath();
+            user.setPath(file.getAbsolutePath());
             image = new Image(file.toURI().toString(), 100, 150, true, true);
             add_emp_image_view.setImage(image);
         }
@@ -655,99 +733,17 @@ public class DashboardController implements Initializable {
         stage.setIconified(true);
     }
 
-    public void switchForm(ActionEvent event) {
-        // Reset visibility for all sections
-        resetSectionVisibility();
 
-        // Reset 'active' class for all buttons
-        resetActiveClasses();
-
-        // Switch visibility and activate the appropriate button
-        if (event.getSource() == addEmployeeBtn) {
-            add_emp.setVisible(true);
-            activateButton(addEmployeeBtn);
-            addEmployeePosition();
-            addEmployeeGender();
-            addEmployeeSearch();
-        } else if (event.getSource() == employeeSalariesBtn) {
-            add_emp_salary.setVisible(true);
-            activateButton(employeeSalariesBtn);
-        } else if (event.getSource() == dashboarbbtn) {
-            admin_dashboard.setVisible(true);
-            activateButton(dashboarbbtn);
-        } else if (event.getSource() == employeesalListBtn) {
-            emp_salary_list.setVisible(true);
-            activateButton(employeesalListBtn);
-        } else if (event.getSource() == employeeListBtn) {
-            emp_list.setVisible(true);
-            activateButton(employeeListBtn);
-            addEmployeeshowList();
-        } else if (event.getSource() == EmployeeHolidaysBtn) {
-            leave_request_screen.setVisible(true);
-            activateButton(EmployeeHolidaysBtn);
-            addLeaveRequestList();
-        } else if (event.getSource() == viewProfileBtn) {
-            System.out.println("View Profile button clicked"); // Debug statement
-            view_profile.setVisible(true);
-            activateButton(viewProfileBtn);
-            profile();
-        } else if (event.getSource() == attendence) {
-            mark_attendence.setVisible(true);
-            activateButton(attendence);
-            markAttendenceList();
-            // Uncomment if markAttendenceList() is needed
-            // markAttendenceList();
-        }
-    }
-
-    // Helper Method: Reset visibility for all sections
-    private void resetSectionVisibility() {
-        add_emp.setVisible(false);
-        add_emp_salary.setVisible(false);
-        emp_salary_list.setVisible(false);
-        view_emp.setVisible(false);
-        admin_dashboard.setVisible(false);
-        emp_list.setVisible(false);
-        leave_request_screen.setVisible(false);
-        view_leave_request.setVisible(false);
-        view_profile.setVisible(false);
-        mark_attendence.setVisible(false);
-        mark_attendence_list.setVisible(false);
-    }
-
-    // Helper Method: Reset 'active' classes for all buttons
-    private void resetActiveClasses() {
-        dashboarbbtn.getStyleClass().remove("active");
-        addEmployeeBtn.getStyleClass().remove("active");
-        EmployeeHolidaysBtn.getStyleClass().remove("active");
-        employeesalListBtn.getStyleClass().remove("active");
-        employeeListBtn.getStyleClass().remove("active");
-        employeeSalariesBtn.getStyleClass().remove("active");
-        viewProfileBtn.getStyleClass().remove("active");
-        attendence.getStyleClass().remove("active");
-    }
-
-    // Helper Method: Activate a button
-
-
-
-
-    // Helper Method: Activate a specific button
-    private void activateButton(Button button) {
-        if (!button.getStyleClass().contains("active")) {
-            button.getStyleClass().add("active");
-        }
-    }
     private double x = 0;
     private double y = 0;
 
 
     public void displayUsername()
     {
-        username.setText(getData.username);
+        username.setText(user.getUsername());
 
     }
-
+    // Salary List
     public ObservableList<EmployeeData> addEmployeeSalListdata() {
         ObservableList<EmployeeData> listData = FXCollections.observableArrayList();
 
@@ -813,10 +809,6 @@ public class DashboardController implements Initializable {
         emp_sal_phoneNumber_col.setCellValueFactory(new PropertyValueFactory<>("phone"));
         emp_sal_position_col.setCellValueFactory(new PropertyValueFactory<>("position"));
         emp_sal_salary_col.setCellValueFactory(new PropertyValueFactory<>("salary"));
-
-
-
-
         emp_sal_tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         emp_email_col.setPrefWidth(250);
         emp_employeeID_col.setPrefWidth(50);
@@ -824,7 +816,7 @@ public class DashboardController implements Initializable {
 
         System.out.println(addEmployeeList);
     }
-
+    //Employee List
     public ObservableList<EmployeeData> addEmployeeListdata() {
         ObservableList<EmployeeData> listData = FXCollections.observableArrayList();
         String sql = "SELECT * FROM employeesdata";
@@ -883,12 +875,12 @@ public class DashboardController implements Initializable {
         emp_phoneNumber_col.setCellValueFactory(new PropertyValueFactory<>("phone"));
         emp_action_col.setCellFactory(tc -> new TableCell<EmployeeData, String>() {
             private final Button btnView = new Button("View");
-            private final Button btnEdit = new Button("Edit");
+//            private final Button btnEdit = new Button("Edit");
             private final Button btndelete = new Button("Delete");
             private final HBox actionButtons = new HBox(12); // Adjust spacing between buttons
 
             {
-                actionButtons.getChildren().addAll(btnView, btnEdit);
+                actionButtons.getChildren().addAll(btnView);
             }
 
             @Override
@@ -910,13 +902,13 @@ public class DashboardController implements Initializable {
                         emp_list.setVisible(false);
                     });
 
-                    btnEdit.setOnAction(e -> {
-                        System.out.println("Edit details for: " + employee.getName());
-                        // Add custom logic to edit employee details.
-                    });
+//                    btnEdit.setOnAction(e -> {
+//                        System.out.println("Edit details for: " + employee.getName());
+//                        // Add custom logic to edit employee details.
+//                    });
 
                     btnView.getStyleClass().add("view-button");
-                    btnEdit.getStyleClass().add("view-button");
+//                    btnEdit.getStyleClass().add("view-button");
 //                    btndelete.getStyleClass().add("view-button");
 
                     setGraphic(actionButtons);
@@ -1213,7 +1205,7 @@ public class DashboardController implements Initializable {
             // Fetch the current user (assuming username is stored in `getData.username`)
             String query = "SELECT * FROM employeesdata WHERE name = ?";
             PreparedStatement preparedStatement = connect.prepareStatement(query);
-            preparedStatement.setString(1, getData.username.trim());
+            preparedStatement.setString(1, user.getUsername().trim());
             result = preparedStatement.executeQuery();
 
             if (result.next()) {
@@ -1245,38 +1237,38 @@ public class DashboardController implements Initializable {
     }
 
 
-    private void rejectLeave(String leaveId) {
-        String sql = "UPDATE leaves SET reject" +
-                " = 1 WHERE id = ?";
-        try {
-            connect = connectDb();
-            prepare = connect.prepareStatement(sql);
-            prepare.setString(1, leaveId);
-            int rowsAffected = prepare.executeUpdate();
-
-            if (rowsAffected > 0) {
-                System.out.println("Leave ID " + leaveId + " rejected successfully.");
-                // Disable the buttons after rejection
-                approve_request.setDisable(true);
-                reject_request.setDisable(true);
-
-                // Optionally, show a status message
-                emp_leave_status.setText("Rejected");
-                emp_leave_status.setStyle("-fx-text-fill: red;"); // Change text color to red for rejection
-            } else {
-                System.out.println("Failed to reject leave ID " + leaveId);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (prepare != null) prepare.close();
-                if (connect != null) connect.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    private void rejectLeave(String leaveId) {
+//        String sql = "UPDATE leaves SET reject" +
+//                " = 1 WHERE id = ?";
+//        try {
+//            connect = connectDb();
+//            prepare = connect.prepareStatement(sql);
+//            prepare.setString(1, leaveId);
+//            int rowsAffected = prepare.executeUpdate();
+//
+//            if (rowsAffected > 0) {
+//                System.out.println("Leave ID " + leaveId + " rejected successfully.");
+//                // Disable the buttons after rejection
+//                approve_request.setDisable(true);
+//                reject_request.setDisable(true);
+//
+//                // Optionally, show a status message
+//                emp_leave_status.setText("Rejected");
+//                emp_leave_status.setStyle("-fx-text-fill: red;"); // Change text color to red for rejection
+//            } else {
+//                System.out.println("Failed to reject leave ID " + leaveId);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            try {
+//                if (prepare != null) prepare.close();
+//                if (connect != null) connect.close();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
 
     public void addEmployeeSearch() {

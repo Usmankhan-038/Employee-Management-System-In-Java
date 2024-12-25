@@ -9,7 +9,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -32,8 +31,8 @@ public class LoginController {
     private Connection con;
     private PreparedStatement prepare;
     private ResultSet result;
-    private double x = 0;
-    private double y = 0;
+//    private double x = 0;
+//    private double y = 0;
 
     // Database connection method
     public static Connection connectDb() {
@@ -179,7 +178,7 @@ public class LoginController {
                     return;
                 }
 
-                getData.username = name;
+                user.setUsername(name);
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText("Success Message");

@@ -27,7 +27,6 @@ import javafx.scene.text.TextFlow;
 
 import javafx.scene.image.ImageView;
 //import java.lang.classfile.Label;
-import java.awt.*;
 import java.beans.Statement;
 import java.net.URL;
 import java.sql.Connection;
@@ -417,7 +416,7 @@ public class EmployeeDashboardController implements Initializable {
 
             // Fetch employee ID
             PreparedStatement preparedStatement = connect.prepareStatement(selectQuery);
-            preparedStatement.setString(1, getData.username.trim());
+            preparedStatement.setString(1, user.getUsername().trim());
             result = preparedStatement.executeQuery();
 
             if (!result.next()) {
@@ -486,7 +485,7 @@ public class EmployeeDashboardController implements Initializable {
             // Fetch the current user (assuming username is stored in `getData.username`)
             String query = "SELECT * FROM employeesdata WHERE name = ?";
             PreparedStatement preparedStatement = connect.prepareStatement(query);
-            preparedStatement.setString(1, getData.username.trim());
+            preparedStatement.setString(1, user.getUsername().trim());
             result = preparedStatement.executeQuery();
 
             if (result.next()) {
@@ -577,7 +576,7 @@ public class EmployeeDashboardController implements Initializable {
             // Fetch the current user (assuming username is stored in `getData.username`)
             String query = "SELECT * FROM employeesdata WHERE name = ?";
             PreparedStatement preparedStatement = connect.prepareStatement(query);
-            preparedStatement.setString(1, getData.username.trim());
+            preparedStatement.setString(1, user.getUsername().trim());
             result = preparedStatement.executeQuery();
 
             if (result.next()) {
@@ -613,7 +612,7 @@ public class EmployeeDashboardController implements Initializable {
                     updateStatement.setString(2, updatedEmail);
                     updateStatement.setString(3, updatedPhone);
                     updateStatement.setString(4, updatedGender);
-                    updateStatement.setString(5, getData.username.trim()); // Match the original username
+                    updateStatement.setString(5, user.getUsername().trim()); // Match the original username
 
                     int rowsUpdated = updateStatement.executeUpdate();
                     if (rowsUpdated > 0) {
@@ -943,7 +942,7 @@ public class EmployeeDashboardController implements Initializable {
             // Query for total leave count in employeesdata
             String query = "SELECT total_leave_count FROM employeesdata WHERE name = ?";
             PreparedStatement preparedStatement = connect.prepareStatement(query);
-            preparedStatement.setString(1, getData.username); // Set the username parameter
+            preparedStatement.setString(1, user.getUsername()); // Set the username parameter
             ResultSet result = preparedStatement.executeQuery();
 
             if (result.next()) {
@@ -956,7 +955,7 @@ public class EmployeeDashboardController implements Initializable {
                     "JOIN employeesdata ON leaves.employee_id = employeesdata.id " +
                     "WHERE employeesdata.name = ? AND leaves.approved = 1";
             preparedStatement = connect.prepareStatement(query);
-            preparedStatement.setString(1, getData.username);
+            preparedStatement.setString(1, user.getUsername());
             result = preparedStatement.executeQuery();
 
             if (result.next()) {
@@ -969,7 +968,7 @@ public class EmployeeDashboardController implements Initializable {
                     "JOIN employeesdata ON leaves.employee_id = employeesdata.id " +
                     "WHERE employeesdata.name = ? AND leaves.approved = 0";
             preparedStatement = connect.prepareStatement(query);
-            preparedStatement.setString(1, getData.username);
+            preparedStatement.setString(1, user.getUsername());
             result = preparedStatement.executeQuery();
 
             if (result.next()) {
@@ -982,7 +981,7 @@ public class EmployeeDashboardController implements Initializable {
                     "JOIN employeesdata ON leaves.employee_id = employeesdata.id " +
                     "WHERE employeesdata.name = ? AND leaves.approved = 0 AND leaves.reject=0";
             preparedStatement = connect.prepareStatement(query);
-            preparedStatement.setString(1, getData.username);
+            preparedStatement.setString(1, user.getUsername());
             result = preparedStatement.executeQuery();
 
             if (result.next()) {
@@ -1009,13 +1008,13 @@ public class EmployeeDashboardController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        username.setText(getData.username);
+        username.setText(user.getUsername());
         addLeaveType();
         addEmployeeGender();
         updateProfile();
         profile();
-        markAttendenceList(getData.username);
-        populateNotificationBar(getData.username);
+        markAttendenceList(user.getUsername());
+        populateNotificationBar(user.getUsername());
         notification();
         dashboard();
 
