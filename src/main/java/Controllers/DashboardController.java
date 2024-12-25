@@ -119,7 +119,12 @@ public class DashboardController implements Initializable {
     private Label dashboard_totalInactiveEmpolyee_Count;
 
     @FXML
-    private Label dashboard_totalPresent_Count;
+    private Label dashboard_totalPresent_Count1;
+
+    @FXML
+    private Label dashboard_totalPendingRequest_Count;
+
+
 
     @FXML
     private TableColumn<EmployeeData, String> emp_action_col;
@@ -255,6 +260,12 @@ public class DashboardController implements Initializable {
 
     @FXML
     private TextField employee_sal_email;
+
+    @FXML
+    private TextField medical_allownace;
+
+    @FXML
+    private TextField tax;
 
     @FXML
     private TextField employee_sal_name;
@@ -513,10 +524,12 @@ public class DashboardController implements Initializable {
             }
 
             // Insert salary and taxes for the employee
-            String salaryQuery = "INSERT INTO salaries_and_taxes(employee_id, salary) VALUES(?, ?)";
+            String salaryQuery = "INSERT INTO salaries_and_taxes(employee_id, salary,tax_deduction,medical_allowance) VALUES(?, ?,?, ?)";
             preparedStatement = connect.prepareStatement(salaryQuery);
             preparedStatement.setString(1, employeeId);
             preparedStatement.setString(2, employee_sal_salary.getText().trim());
+            preparedStatement.setString(3, tax.getText().trim() != null ? tax.getText().trim() : "0");
+            preparedStatement.setString(4, medical_allownace.getText().trim() != null ? medical_allownace.getText().trim() : "0");
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
@@ -530,7 +543,7 @@ public class DashboardController implements Initializable {
 
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error Message", "An error occurred: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error Message", "Please Fill All the Fields ");
         } finally {
             try {
                 if (result != null) result.close();
@@ -769,6 +782,7 @@ public class DashboardController implements Initializable {
                 employee.put("phone", result.getString("phone") != null ? result.getString("phone") : "N/A");
                 employee.put("position", result.getString("position") != null ? result.getString("position") : "N/A");
                 employee.put("salary", String.format("%.2f", result.getDouble("salary")));
+
 
                 // Add to EmployeeData object
                 EmployeeData employeeD = new EmployeeData(employee);
@@ -1571,10 +1585,10 @@ public void markAttendence() {
             sql = "SELECT COUNT(*) FROM leaves  WHERE approved = 1";
             prepare = connect.prepareStatement(sql);
             result = prepare.executeQuery();
-
             if (result.next()) {
-                dashboard_totalPresent_Count.setText(result.getString(1));
+                dashboard_totalPresent_Count1.setText(result.getString(1));
             }
+
 
             sql = "SELECT COUNT(*) FROM leaves WHERE reject = 1";
             prepare = connect.prepareStatement(sql);
@@ -1582,6 +1596,15 @@ public void markAttendence() {
 
             if (result.next()) {
                 dashboard_totalInactiveEmpolyee_Count.setText(result.getString(1));
+            }
+
+
+            sql = "SELECT COUNT(*) FROM leaves WHERE approved = 0 AND reject = 0";
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                dashboard_totalPendingRequest_Count.setText(result.getString(1));
             }
 //
 //            emp_pane.setOnMouseClicked(event -> {

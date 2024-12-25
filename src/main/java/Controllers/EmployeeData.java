@@ -39,9 +39,22 @@ public class EmployeeData {
         return employeeData.get("gender");
     }
 
+
     public String getSalary() {
         return employeeData.get("salary");
     }
+
+    //    public String getSalary() {
+//
+//        int salary = Integer.parseInt(employeeData.get("salary"));
+//        int taxPercentage = Integer.parseInt(employeeData.get("tax"))/100;
+//        int medical_allowance = Integer.parseInt(employeeData.get("medical_allowance"));
+//        int leave_charges = Integer.parseInt(employeeData.get("charges"));
+//        int netSalary = Integer.parseInt(employeeData.get("netSalary"));
+//
+//        netSalary = (salary - (salary * taxPercentage) + medical_allowance) - leave_charges;
+//        return String.valueOf(netSalary);
+//    }
 
     // Method to display employee data (optional, for debugging)
     public static void showEmployeeData(EmployeeData employee) {
