@@ -44,6 +44,9 @@ public class EmployeeData {
         return employeeData.get("salary");
     }
 
+    public String getData(String key) {
+        return employeeData.getOrDefault(key, "");
+    }
     //    public String getSalary() {
 //
 //        int salary = Integer.parseInt(employeeData.get("salary"));

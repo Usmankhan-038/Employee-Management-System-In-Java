@@ -88,6 +88,9 @@ public class DashboardController implements Initializable {
     private ImageView add_emp_image_view;
 
     @FXML
+    private ImageView add_emp_image_view1;
+
+    @FXML
     private AnchorPane add_emp_salary;
 
     @FXML
@@ -261,6 +264,21 @@ public class DashboardController implements Initializable {
     private TextField medical_allownace;
 
     @FXML
+    private TextField emp_name1;
+
+    @FXML
+    private TextField emp_email1;
+
+    @FXML
+    private TextField emp_phoneNo1;
+
+    @FXML
+    private ComboBox<String> emp_position1;
+
+    @FXML
+    private ComboBox<String> emp_gender1;
+
+    @FXML
     private TextField tax;
 
     @FXML
@@ -285,6 +303,9 @@ public class DashboardController implements Initializable {
 
     @FXML
     private AnchorPane mainForm;
+
+    @FXML
+    private AnchorPane update_emp;
 
     @FXML
     private Label username;
@@ -400,6 +421,7 @@ public class DashboardController implements Initializable {
         } else if (event.getSource() == employeesalListBtn) {
             emp_salary_list.setVisible(true);
             activateButton(employeesalListBtn);
+            addEmployeeSalaryshowList();
         } else if (event.getSource() == employeeListBtn) {
             emp_list.setVisible(true);
             activateButton(employeeListBtn);
@@ -437,6 +459,7 @@ public class DashboardController implements Initializable {
         view_profile.setVisible(false);
         mark_attendence.setVisible(false);
         mark_attendence_list.setVisible(false);
+        update_emp.setVisible(false);
     }
 
     // Helper Method: Reset 'active' classes for all buttons
@@ -550,11 +573,83 @@ public class DashboardController implements Initializable {
             alert.setContentText("Employee added successfully");
             alert.showAndWait();
             addEmployeeshowList();
+            add_emp.setVisible(false);
+            emp_list.setVisible(true);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public void updateEmployeeData() {
+        addEmployeePosition();
+        addEmployeeGender();
+        String sql = "UPDATE employeesdata SET name = ?, email = ?, phone = ?, gender = ?, position = ? WHERE id = ?";
+        connect = connectDb();
+
+        try {
+            Alert alert;
+            // Validate only name, email, and phone fields
+            if (emp_name1.getText().trim().isEmpty() || emp_email1.getText().trim().isEmpty() || emp_phoneNo1.getText().trim().isEmpty()) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Error Message");
+                alert.setContentText("Name, Email, and Phone fields cannot be empty");
+                alert.showAndWait();
+                return;
+            }
+
+            // Check if an employee exists with the same name, email, or phone
+            String check = "SELECT * FROM employeesdata WHERE (email = ? OR phone = ? OR name = ?)";
+            PreparedStatement preparedStatement = connect.prepareStatement(check);
+            preparedStatement.setString(1, emp_email1.getText().trim());
+            preparedStatement.setString(2, emp_phoneNo1.getText().trim());
+            preparedStatement.setString(3, emp_name1.getText().trim());
+            ResultSet result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                int id = result.getInt("id");
+
+                // Update the employee details
+                prepare = connect.prepareStatement(sql);
+                prepare.setString(1, emp_name1.getText().trim());
+                prepare.setString(2, emp_email1.getText().trim());
+                prepare.setString(3, emp_phoneNo1.getText().trim());
+                prepare.setString(4, emp_gender1.getSelectionModel().getSelectedItem() == null ? "" : emp_gender.getSelectionModel().getSelectedItem());
+                prepare.setString(5, emp_position1.getSelectionModel().getSelectedItem() == null ? "" : emp_position.getSelectionModel().getSelectedItem());
+                prepare.setInt(6, id);
+                prepare.executeUpdate();
+
+                // Update the image if provided
+                if (user.getPath() != null) { // Assuming 'user' contains the selected image file details
+                    String uri = user.getPath().replace("\\", "\\\\");
+                    String imageSql = "UPDATE documents SET original_file_link = ? WHERE belong_id = ? AND belong_name = 'employee'";
+                    prepare = connect.prepareStatement(imageSql);
+                    prepare.setString(1, uri);
+                    prepare.setInt(2, id);
+                    prepare.executeUpdate();
+                }
+
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Information Message");
+                alert.setContentText("Employee updated successfully");
+                alert.showAndWait();
+                addEmployeeshowList();
+                update_emp.setVisible(false);
+                emp_list.setVisible(true);
+
+            } else {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Error Message");
+                alert.setContentText("No matching employee found to update");
+                alert.showAndWait();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 
     private ArrayList<String> name;
@@ -612,6 +707,8 @@ public class DashboardController implements Initializable {
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
                 showAlert(Alert.AlertType.INFORMATION, "Information Message", "Employee salary added successfully!");
+                add_emp_salary.setVisible(false);
+                emp_salary_list.setVisible(true);
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error Message", "Failed to add employee salary.");
             }
@@ -748,7 +845,7 @@ public class DashboardController implements Initializable {
         ObservableList<EmployeeData> listData = FXCollections.observableArrayList();
 
         // Correct SQL Query
-        String sql = "SELECT S.employee_id, S.salary, E.name, E.phone, E.position " +
+        String sql = "SELECT S.employee_id, S.salary, S.tax_deduction, S.leave_charges, S.medical_allowance, E.name, E.phone, E.position " +
                 "FROM salaries_and_taxes AS S " +
                 "LEFT JOIN employeesdata AS E ON S.employee_id = E.id";
 
@@ -771,19 +868,32 @@ public class DashboardController implements Initializable {
                             "EMP-" + employeeId;
                 }
 
+                // Fetch and parse values
+                int tax = result.getInt("tax_deduction"); // Changed to getInt for better parsing
+                int leaveCharges = result.getInt("leave_charges");
+                int medicalAllowance = result.getInt("medical_allowance");
+                int salary = result.getInt("salary");
+
+                // Correct tax calculation (calculate as a percentage of salary)
+                double taxAmount = (tax / 100.0) * salary;
+                int netSalary = (int) (salary - taxAmount + medicalAllowance - leaveCharges); // Convert to int for storage
+
                 // Populate Employee Data
                 employee.put("sno", String.valueOf(sno++));
                 employee.put("id", empId);
                 employee.put("name", result.getString("name") != null ? result.getString("name") : "N/A");
                 employee.put("phone", result.getString("phone") != null ? result.getString("phone") : "N/A");
                 employee.put("position", result.getString("position") != null ? result.getString("position") : "N/A");
-                employee.put("salary", String.format("%.2f", result.getDouble("salary")));
-
+                employee.put("salary", String.format("%.2f", (double) netSalary)); // Use String.format correctly for decimals
+                employee.put("tax", String.valueOf(tax));
+                employee.put("medical_allowance", String.valueOf(medicalAllowance));
+                employee.put("charges", String.valueOf(leaveCharges));
 
                 // Add to EmployeeData object
                 EmployeeData employeeD = new EmployeeData(employee);
                 listData.add(employeeD);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -816,10 +926,28 @@ public class DashboardController implements Initializable {
 
         System.out.println(addEmployeeList);
     }
+
+
     //Employee List
     public ObservableList<EmployeeData> addEmployeeListdata() {
         ObservableList<EmployeeData> listData = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM employeesdata";
+        String sql = """
+    SELECT e.*, d.original_file_link 
+    FROM employeesdata e
+    LEFT JOIN (
+        SELECT belong_id, original_file_link
+        FROM documents
+        WHERE belong_name = 'employee' AND belong_type = 'image'
+        AND id IN (
+            SELECT MAX(id) 
+            FROM documents 
+            WHERE belong_name = 'employee' AND belong_type = 'image'
+            GROUP BY belong_id
+        )
+    ) d ON e.id = d.belong_id
+""";
+
+
         connect = connectDb();
 
         try {
@@ -827,27 +955,24 @@ public class DashboardController implements Initializable {
             result = prepare.executeQuery();
 
             int sno = 1;
-            String empId = "";
             while (result.next()) {
                 HashMap<String, String> employee = new HashMap<>();
-                if(!(result.getString("id").isEmpty()))
-                {
-                    if (Integer.parseInt(result.getString("id")) < 10) {
-                        empId = "EMP-0" + result.getString("id");
-                    } else {
-                        empId = "EMP-"+result.getString("id");
-                    }
-                }
 
+                String id = result.getString("id");
+                String empId = (id != null && !id.isEmpty() && Integer.parseInt(id) < 10) ? "EMP-0" + id : "EMP-" + id;
+
+                // Fill the HashMap with values
                 employee.put("sno", String.valueOf(sno++));
-                employee.put("id", result.getString("id"));
+                employee.put("id", empId);
                 employee.put("name", result.getString("name"));
                 employee.put("email", result.getString("email"));
                 employee.put("phone", result.getString("phone"));
                 employee.put("position", result.getString("position"));
                 employee.put("gender", result.getString("gender"));
+                employee.put("doc", result.getString("original_file_link")); // Ensure this field is valid
                 employee.put("action", "View");
 
+                // Create EmployeeData and add to list
                 EmployeeData employeeD = new EmployeeData(employee);
                 listData.add(employeeD);
             }
@@ -864,23 +989,27 @@ public class DashboardController implements Initializable {
         }
         return listData;
     }
+
     private ObservableList<EmployeeData> addEmployeeList = FXCollections.observableArrayList();
+
     public void addEmployeeshowList() {
         addEmployeeList = addEmployeeListdata();
 
+        // Bind columns to EmployeeData HashMap keys
         emp_sno_col.setCellValueFactory(new PropertyValueFactory<>("sno"));
         emp_employeeID_col.setCellValueFactory(new PropertyValueFactory<>("id"));
         emp_empName_col.setCellValueFactory(new PropertyValueFactory<>("name"));
         emp_email_col.setCellValueFactory(new PropertyValueFactory<>("email"));
         emp_phoneNumber_col.setCellValueFactory(new PropertyValueFactory<>("phone"));
+
+        // Custom cell factory for the action column
         emp_action_col.setCellFactory(tc -> new TableCell<EmployeeData, String>() {
             private final Button btnView = new Button("View");
-//            private final Button btnEdit = new Button("Edit");
-            private final Button btndelete = new Button("Delete");
+            private final Button btnEdit = new Button("Edit");
             private final HBox actionButtons = new HBox(12); // Adjust spacing between buttons
 
             {
-                actionButtons.getChildren().addAll(btnView);
+                actionButtons.getChildren().addAll(btnView, btnEdit);
             }
 
             @Override
@@ -892,35 +1021,56 @@ public class DashboardController implements Initializable {
                     EmployeeData employee = getTableView().getItems().get(getIndex());
 
                     btnView.setOnAction(e -> {
-                        System.out.println("View details for: " + employee.getName());
-                        emp_view_name.setText(employee.getName());
-                        emp_view_email.setText(employee.getEmail());
-                        emp_view_phone.setText(employee.getPhone());
-                        emp_view_position.setText(employee.getPosition());
-                        emp_view_gender.setText(employee.getGender());
+                        emp_view_name.setText(employee.getData("name"));
+                        emp_view_email.setText(employee.getData("email"));
+                        emp_view_phone.setText(employee.getData("phone"));
+                        emp_view_position.setText(employee.getData("position"));
+                        emp_view_gender.setText(employee.getData("gender"));
+
+                        String docPath = employee.getData("doc");
+
+                        // Check if the docPath is valid
+                        if (docPath != null && !docPath.isEmpty()) {
+                            File file = new File(docPath);
+                            if (file.exists() && file.isFile()) {
+                                String filePath = file.toURI().toString();
+                                Image image = new Image(filePath, 100, 150, true, true);
+                                add_emp_image_view1.setImage(image); // Set the image
+                            } else {
+                                System.out.println("File does not exist or is not a valid file: " + docPath);
+                                // Optionally set a placeholder image
+                                add_emp_image_view1.setImage(new Image("file:/path/to/placeholder.jpg"));
+                            }
+                        } else {
+                            System.out.println("Document path is empty or null.");
+                            // Optionally set a placeholder image
+                            add_emp_image_view1.setImage(new Image("file:/path/to/placeholder.jpg"));
+                        }
+
                         view_emp.setVisible(true);
                         emp_list.setVisible(false);
                     });
 
-//                    btnEdit.setOnAction(e -> {
-//                        System.out.println("Edit details for: " + employee.getName());
-//                        // Add custom logic to edit employee details.
-//                    });
+                    btnEdit.setOnAction(e -> {
+                        emp_name1.setText(employee.getData("name"));
+                        emp_email1.setText(employee.getData("email"));
+                        emp_phoneNo1.setText(employee.getData("phone"));
+                        emp_position1.setValue(employee.getData("position"));
+                        emp_gender1.setValue(employee.getData("gender"));
 
-                    btnView.getStyleClass().add("view-button");
-//                    btnEdit.getStyleClass().add("view-button");
-//                    btndelete.getStyleClass().add("view-button");
+                        update_emp.setVisible(true);
+                        emp_list.setVisible(false);
+                    });
 
                     setGraphic(actionButtons);
                 }
             }
         });
 
-
         emp_tableview.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        emp_tableview.setItems(addEmployeeSalList);
+        emp_tableview.setItems(addEmployeeList);
 
-        System.out.println(addEmployeeSalList);
+        System.out.println(addEmployeeList);
     }
 
     // Leave Request Screen Function
@@ -1341,54 +1491,54 @@ public class DashboardController implements Initializable {
 
 
 
-//    private ArrayList<String> name;
-public void markAttendence() {
-    connect = connectDb();
+    //    private ArrayList<String> name;
+    public void markAttendence() {
+        connect = connectDb();
 
-    try {
-        // Check if the date already exists in the database
-        String checkQuery = "SELECT COUNT(*) FROM attendence WHERE date = ?";
-        PreparedStatement checkStatement = connect.prepareStatement(checkQuery);
-        checkStatement.setString(1, attend_date.getValue().toString());
-        ResultSet result = checkStatement.executeQuery();
+        try {
+            // Check if the date already exists in the database
+            String checkQuery = "SELECT COUNT(*) FROM attendence WHERE date = ?";
+            PreparedStatement checkStatement = connect.prepareStatement(checkQuery);
+            checkStatement.setString(1, attend_date.getValue().toString());
+            ResultSet result = checkStatement.executeQuery();
 
-        if (result.next() && result.getInt(1) > 0) {
-            // Attendance for the given date already exists
-            showAlert(Alert.AlertType.WARNING, "Warning Message", "Attendance for this date is already marked.");
-        } else {
-            // Insert new attendance record
-            String insertQuery = "INSERT INTO attendence (date, comments) VALUES(?, ?)";
-            PreparedStatement insertStatement = connect.prepareStatement(insertQuery);
-            insertStatement.setString(1, attend_date.getValue().toString());
-            insertStatement.setString(2, attend_comments.getText().trim());
-
-            int rowsInserted = insertStatement.executeUpdate();
-            if (rowsInserted > 0) {
-                showAlert(Alert.AlertType.INFORMATION, "Information Message", "Attendance marked successfully!");
-
-                // Perform UI updates
-                mark_attendence.setVisible(false);
-                resetActiveClasses();
-                mark_attendence_list.setVisible(true);
+            if (result.next() && result.getInt(1) > 0) {
+                // Attendance for the given date already exists
+                showAlert(Alert.AlertType.WARNING, "Warning Message", "Attendance for this date is already marked.");
             } else {
-                showAlert(Alert.AlertType.ERROR, "Error Message", "Failed to mark attendance.");
+                // Insert new attendance record
+                String insertQuery = "INSERT INTO attendence (date, comments) VALUES(?, ?)";
+                PreparedStatement insertStatement = connect.prepareStatement(insertQuery);
+                insertStatement.setString(1, attend_date.getValue().toString());
+                insertStatement.setString(2, attend_comments.getText().trim());
+
+                int rowsInserted = insertStatement.executeUpdate();
+                if (rowsInserted > 0) {
+                    showAlert(Alert.AlertType.INFORMATION, "Information Message", "Attendance marked successfully!");
+
+                    // Perform UI updates
+                    mark_attendence.setVisible(false);
+                    resetActiveClasses();
+                    mark_attendence_list.setVisible(true);
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Error Message", "Failed to mark attendance.");
+                }
+
+                insertStatement.close();
             }
 
-            insertStatement.close();
-        }
-
-        checkStatement.close();
-    } catch (Exception e) {
-        e.printStackTrace();
-        showAlert(Alert.AlertType.ERROR, "Error Message", "An error occurred: " + e.getMessage());
-    } finally {
-        try {
-            if (connect != null) connect.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            checkStatement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error Message", "An error occurred: " + e.getMessage());
+        } finally {
+            try {
+                if (connect != null) connect.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
-}
 
 
 

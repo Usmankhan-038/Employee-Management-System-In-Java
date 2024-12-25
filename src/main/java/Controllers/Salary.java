@@ -18,8 +18,13 @@ public class Salary extends EmployeeData{
 
 
 
-    public void setSalary(int salary) {
-        this.salary = salary;
+    public void netSalary() {
+        int basicsalary = Integer.parseInt(getData("salary"));
+        int tax = Integer.parseInt(getData("tax"));
+        int medical_allowance = Integer.parseInt(getData("medical_allowance"));
+        int leave_charges = Integer.parseInt(getData("charges"));
+      int netSalary = (salary - (salary * taxPercentage) + medical_allowance) - leave_charges;
+        this.salary = netSalary;
     }
 
     public int getTaxPercentage() {
